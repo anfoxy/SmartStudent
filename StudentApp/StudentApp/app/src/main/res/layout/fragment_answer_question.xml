@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.AnswerQuestionFragment">
+
+
+        <Button
+            android:id="@+id/look_answer_button"
+            android:layout_width="141dp"
+            android:layout_height="96dp"
+            android:text="Посмотреть ответ"
+            android:textColor="@color/textcolor"
+            app:layout_constraintEnd_toStartOf="@+id/yes_answer_button"
+            app:layout_constraintStart_toEndOf="@+id/no_answer_button"
+            app:layout_constraintTop_toTopOf="@+id/no_answer_button" />
+
+        <Button
+            android:id="@+id/no_answer_button"
+            android:layout_width="117dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginBottom="185dp"
+            android:text="Не знаю"
+            android:textColor="@color/textcolor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/look_answer_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_answer" />
+
+        <Button
+            android:id="@+id/yes_answer_button"
+            android:layout_width="117dp"
+            android:layout_height="53dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="185dp"
+            android:text="Знаю"
+            android:textColor="@color/textcolor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/look_answer_button"
+            />
+
+        <TextView
+            android:id="@+id/text_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_style"
+            android:gravity="center"
+            android:text="TextView"
+            android:layout_marginStart="38dp"
+            android:layout_marginLeft="38dp"
+            android:layout_marginEnd="38dp"
+            android:layout_marginRight="38dp"
+            app:layout_constraintBottom_toTopOf="@+id/yes_answer_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1 Вопрос"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toTopOf="@+id/text_question"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+
+            android:id="@+id/text_answer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginLeft="38dp"
+            android:layout_marginEnd="38dp"
+            android:layout_marginRight="38dp"
+            android:layout_marginBottom="51dp"
+            android:background="@drawable/edit_text_style"
+            android:gravity="center"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/no_answer_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_question" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

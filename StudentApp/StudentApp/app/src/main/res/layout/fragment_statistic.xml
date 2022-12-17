@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.StatisticFragment"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/kolvop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Количество вопросов:      "
+                android:paddingBottom="20dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/kolzap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingBottom="20dp"
+                android:text="Колличество запомненых вопросов:  " />
+
+            <TextView
+                android:id="@+id/dateob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingBottom="20dp"
+                android:text="Количество невыученных вопросов:  " />
+
+            <TextView
+                android:id="@+id/dateex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Дата экзамена:  "
+                android:paddingBottom="20dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/kold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Количество дней до экзамена:  "
+                android:paddingBottom="20dp"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Редактировать план" />
+
+    </LinearLayout>
+</layout>

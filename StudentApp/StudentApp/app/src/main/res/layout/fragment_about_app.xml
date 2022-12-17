@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AboutAppFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Smart Student - мобильное приложение для Android, которое поможет вам эффективно подготовиться к экзаменам. \n
+  В первую очередь наше приложение помогает создать график обучения, который будет меняться в зависимости от вашего прогресса. После того, как вы создали предмет и ввели все вопросы и ответы вы можете проходить тестирование.
+\n  Во время тестирования вам выводится вопрос, вы стараетесь вспомнить всю информацию, которую знаете. После этого просматриваете правильный ответ и самостоятельно оцениваете, выучили ли вы этот вопрос или нет. Когда вы выучите все вопросы к этому предмету, приложение выведет соответствующее сообщение.
+\n  Тестирование устроено таким образом, что вам выдаются не только новые вопросы, но и старые для повторения, поэтому вы можете не беспокоиться, что забудете старые вопросы."
+        android:textSize="18sp"
+        android:padding="20dp"
+        />
+
+</LinearLayout>

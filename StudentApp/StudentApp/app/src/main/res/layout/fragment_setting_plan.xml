@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.SettingPlanFragment"
+    android:orientation="vertical"
+    android:layout_marginBottom="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/t1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:text="Даты подготовки"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/all1"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:text="Выбрать всё"
+            android:textSize="8dp"
+            app:backgroundTint="#C5F6FF" />
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageView32"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@android:drawable/bottom_bar" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/AddPlan"
+        android:bottomLeftRadius="15dp"
+        android:bottomRightRadius="15dp"
+        android:textColor="@color/textcolor"
+        android:topLeftRadius="15dp"
+        android:topRightRadius="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="сохранить план" />
+
+</LinearLayout>

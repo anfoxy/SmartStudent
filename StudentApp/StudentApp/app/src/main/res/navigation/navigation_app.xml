@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_app"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.studentapp.fragments.CalendarFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_answerQuestionFragment"
+            app:destination="@id/answerQuestionFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_addPlanFragment"
+            app:destination="@id/addPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.studentapp.fragments.ListFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_addPlanFragment"
+            app:destination="@id/addPlanFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_statisticFragment"
+            app:destination="@id/statisticFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/anotherFragment"
+        android:name="com.example.studentapp.fragments.AnotherFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_another" >
+        <action
+            android:id="@+id/action_anotherFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_anotherFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_anotherFragment_to_contactFragment"
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.studentapp.fragments.AboutAppFragment"
+        android:label="@string/about_app"
+        tools:layout="@layout/fragment_about_app"/>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.studentapp.fragments.SettingFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.studentapp.fragments.ContactFragment"
+        android:label="@string/title_contact"
+        tools:layout="@layout/fragment_contact" />
+    <fragment
+
+        android:id="@+id/answerQuestionFragment"
+        android:name="com.example.studentapp.fragments.AnswerQuestionFragment"
+        android:label="Подготовка"
+        tools:layout="@layout/fragment_answer_question">
+        <action
+        android:id="@+id/action_answerQuestionFragment_to_calendarFragment"
+        app:destination="@id/calendarFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+    android:id="@+id/statisticFragment"
+    android:name="com.example.studentapp.fragments.StatisticFragment"
+    android:label="Статистика"
+    tools:layout="@layout/fragment_statistic">
+    <action
+        android:id="@+id/action_statisticFragment_to_editPlanFragment"
+        app:destination="@id/editPlanFragment" />
+    <argument
+        android:name="id"
+        app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addPlanFragment"
+        android:name="com.example.studentapp.fragments.AddPlanFragment"
+        android:label="Добавление"
+        tools:layout="@layout/fragment_add_plan">
+        <action
+            android:id="@+id/action_addPlanFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingPlanFragment"
+        android:name="com.example.studentapp.fragments.SettingPlanFragment"
+        android:label="fragment_setting_plan"
+        tools:layout="@layout/fragment_setting_plan" />
+
+    <fragment
+        android:id="@+id/editPlanFragment"
+        android:name="com.example.studentapp.fragments.EditPlanFragment"
+        android:label="Изменение"
+        tools:layout="@layout/fragment_edit_plan">
+        <action
+            android:id="@+id/action_editPlanFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/editItemPlanFragment"
+        android:name="com.example.studentapp.fragments.EditItemPlanFragment"
+        android:label="fragment_edit_item_plan"
+        tools:layout="@layout/fragment_edit_item_plan" />
+
+</navigation>
