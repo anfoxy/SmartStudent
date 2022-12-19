@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.AddPlanFragment"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".fragments.AddPlanFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,10 +27,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Название плана:"
-                    android:textColor="@color/textcolor"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:layout_marginTop="20dp" />
+                    android:text="Название плана:"
+                    android:textColor="@color/textcolor" />
 
                 <EditText
                     android:id="@+id/Text1"
@@ -58,9 +58,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:textColor="@color/textcolor"
                     android:gravity="center"
-                    android:text="Дата экзамена:" />
+                    android:text="Дата экзамена:"
+                    android:textColor="@color/textcolor" />
 
                 <EditText
                     android:id="@+id/editTextDate"
@@ -68,28 +68,27 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:focusable="false"
-                    android:state_pressed="true"
-                    android:state_enabled="true"
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:state_enabled="true"
+                    android:state_pressed="true"
                     android:textColor="@color/textcolor"
                     android:textIsSelectable="true"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
         <Button
             android:id="@+id/addque"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textColor="@color/textcolor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Добавить вопрос" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Добавить вопрос"
+            android:textColor="@color/textcolor" />
 
         <ImageView
             android:id="@+id/imageView32"
@@ -100,9 +99,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="50dp">
+            android:layout_height="574dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listVop"
@@ -111,12 +110,13 @@
                 android:layout_weight="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+
             <Button
                 android:id="@+id/AddPlan1"
-                android:textColor="@color/textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Далее" />
+                android:text="Сохранить"
+                android:textColor="@color/textcolor" />
         </LinearLayout>
 
     </LinearLayout>

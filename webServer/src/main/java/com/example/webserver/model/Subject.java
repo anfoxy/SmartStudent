@@ -31,7 +31,7 @@ public class Subject {
     private User userId;
 
     transient private List<Question> questions;
-
+    transient private List<Plan> plans;
     public Subject() {}
 
     public Subject(Long id, String name, String date, Boolean isCompleted, User idUser) {

@@ -10,4 +10,5 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
 
     ArrayList<Question> findAllBySubId(Subject subject);
 
+    void deleteAllBySubId(Subject subject);
 }

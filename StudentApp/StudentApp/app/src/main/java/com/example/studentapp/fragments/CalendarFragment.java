@@ -61,8 +61,6 @@ public class CalendarFragment extends Fragment {
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
             public void onClickPlanItem(Subjects subject, int position) {
-                Log.d("Ыегву", ""+subject.getId());
-
                 CalendarFragmentDirections.ActionCalendarFragmentToAnswerQuestionFragment action = CalendarFragmentDirections.actionCalendarFragmentToAnswerQuestionFragment(subject.getId());
                 Navigation.findNavController(getView()).navigate(action);
 
@@ -123,7 +121,6 @@ public class CalendarFragment extends Fragment {
                     for (int i = 0; i < subjs.size();i++){
                         LocalDate date = LocalDate.parse(subjs.get(i).getDaysString().split("T")[0]);
                         LocalDate datePicked = LocalDate.parse(dateStr);
-
                         if (LocalDate.now().compareTo(datePicked) * datePicked.compareTo(date) < 0) subjs.remove(subjs.get(i));
                     }
                     binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));

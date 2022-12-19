@@ -1,9 +1,11 @@
 package com.example.webserver.controller;
 
 import com.example.webserver.exception.ResourceNotFoundException;
+import com.example.webserver.model.Plan;
 import com.example.webserver.model.Question;
 import com.example.webserver.model.Subject;
 import com.example.webserver.model.SubjectQuestion;
+import com.example.webserver.repository.PlanRepository;
 import com.example.webserver.repository.QuestionRepository;
 import com.example.webserver.repository.SubjectRepository;
 import com.example.webserver.service.SubjectService;
@@ -24,7 +26,8 @@ public class SubjectController {
     SubjectRepository subjectRepository;
     @Autowired
     QuestionRepository questionRepository;
-
+    @Autowired
+    PlanRepository planRepository;
     @Autowired
     UserService userService;
 
@@ -35,17 +38,11 @@ public class SubjectController {
     @Transactional
     @GetMapping("/subjects/{id}")
     public SubjectQuestion getSubjectById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-   /*     Subject subject = new Subject(subjectService.findById(id));
-        ArrayList<Question> q = questionRepository.findAllBySubId(subject);
-        for (Question question :q) {
-            question = new Question(question);
-            question.setSubId(null);
-        }
-        subject.setQuestions(q);
-        return subject;*/
+
         Subject subject = new Subject(subjectService.findById(id));
         ArrayList<Question> q = questionRepository.findAllBySubId(subject);
-        return new SubjectQuestion(subject, q);
+        ArrayList<Plan> p = planRepository.findAllBySubId(subject);
+        return new SubjectQuestion(subject, q,p);
     }
     @Transactional
     @GetMapping("subjects/byUser/{id}")
@@ -54,7 +51,8 @@ public class SubjectController {
         ArrayList<SubjectQuestion> subjectQuestion = new ArrayList<>();
         for (int i = 0; i < subjectArrayList.size(); i++) {
             ArrayList<Question> q = questionRepository.findAllBySubId(subjectArrayList.get(i));
-            subjectQuestion.add(new SubjectQuestion(subjectArrayList.get(i),q));
+            ArrayList<Plan> p = planRepository.findAllBySubId(subjectArrayList.get(i));
+            subjectQuestion.add(new SubjectQuestion(subjectArrayList.get(i),q,p));
         }
         return subjectQuestion;
     }
@@ -66,7 +64,7 @@ public class SubjectController {
 
         return  subjectService.save(subject);
     }
-
+    @Transactional
     @DeleteMapping("/subjects/{id}")
     public Subject deleteSubject(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Subject s =  subjectService.findById(id);

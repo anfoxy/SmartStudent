@@ -4,6 +4,8 @@ import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.dto.SubjectDTO;
 import com.example.webserver.mapper.CustomerMapper;
 import com.example.webserver.model.Subject;
+import com.example.webserver.repository.PlanRepository;
+import com.example.webserver.repository.QuestionRepository;
 import com.example.webserver.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,10 @@ public class SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
 
+    @Autowired
+    QuestionRepository questionRepository;
+    @Autowired
+    PlanRepository planRepository;
     @Autowired
     CustomerMapper mapper;
 
@@ -48,6 +54,8 @@ public class SubjectService {
 
     public void delete(Long id) throws ResourceNotFoundException {
         Subject subject = findById(id);
+        questionRepository.deleteAllBySubId(subject);
+        planRepository.deleteAllBySubId(subject);
         subjectRepository.delete(subject);
     }
     public Subject save(Subject subject){

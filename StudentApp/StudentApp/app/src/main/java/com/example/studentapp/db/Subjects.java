@@ -18,15 +18,28 @@ public class Subjects {
     private Users userId;
     @SerializedName("questions")
     private ArrayList<Questions> questions;
+    @SerializedName("plans")
+    private ArrayList<Plan> plans;
 
-    public Subjects(int id, String name, String days, boolean completed, Users userId, ArrayList<Questions> questions) {
+    public Subjects(int id, String name, String days, boolean completed, Users userId, ArrayList<Questions> questions, ArrayList<Plan> plans) {
         this.id = id;
         this.name = name;
         this.days = days;
         this.completed = completed;
         this.userId = userId;
         this.questions = questions;
+        this.plans = plans;
     }
+    public Subjects(Subjects subjects) {
+        this.id = subjects.id;
+        this.name =  subjects.name;
+        this.days =  subjects.days;
+        this.completed =  subjects.completed;
+        this.userId =  subjects.userId;
+        this.questions =  subjects.questions;
+        this.plans =  subjects.plans;
+    }
+
 
     public ArrayList<Questions> getQuestions() {
         return questions;
@@ -60,7 +73,21 @@ public class Subjects {
         this.name = name;
     }
 
+    public String getDays() {
+        return days;
+    }
 
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    public ArrayList<Plan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(ArrayList<Plan> plans) {
+        this.plans = plans;
+    }
 
     public boolean isCompleted() {
         return completed;

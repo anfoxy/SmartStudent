@@ -1,5 +1,7 @@
 package com.example.studentapp.fragments;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -25,14 +27,17 @@ import com.example.studentapp.R;
 import com.example.studentapp.adapters.SubjectAddRecycler;
 import com.example.studentapp.databinding.FragmentAddPlanBinding;
 import com.example.studentapp.db.ApiInterface;
+import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -45,7 +50,7 @@ public class AddPlanFragment extends Fragment {
     ApiInterface apiInterface;
     FragmentAddPlanBinding binding;
     final Calendar myCalendar = Calendar.getInstance();
-
+    int idSub;
     SubjectAddRecycler.OnItemClickListener itemClick;
 
     @Override
@@ -53,6 +58,7 @@ public class AddPlanFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Paper.book("questions").destroy();
+        Paper.book("plan").destroy();
 
         itemClick = new SubjectAddRecycler.OnItemClickListener() {
 
@@ -131,19 +137,22 @@ public class AddPlanFragment extends Fragment {
                 if (Questions.getQuestions().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
                 }else{
-                    Subjects sub = new Subjects(0, binding.Text1.getText().toString(), binding.editTextDate.getText().toString(), false, Users.getUser(), new ArrayList<Questions>());
+                    Subjects sub = new Subjects(0, binding.Text1.getText().toString(), binding.editTextDate.getText().toString(), false, Users.getUser(), new ArrayList<Questions>(),new ArrayList<Plan>());
                     Call<Subjects> addSub = apiInterface.addSubject(sub);
+
                     addSub.enqueue(new Callback<Subjects>() {
                         @Override
                         public void onResponse(Call<Subjects> call, Response<Subjects> response) {
 
                             if (response.body()!= null){
-                                Subjects subject = response.body();
+                                Subjects newSubject = response.body();
+                                idSub=newSubject.getId();
+                                ArrayList<Plan> plans = setNewPlan(newSubject);
                                 ArrayList<Questions> questions = Questions.getQuestions();
                                 for (int i = 0; i < questions.size(); i++){
                                     Questions ques = questions.get(i);
                                     ques.setId(null);
-                                    ques.setSubId(subject);
+                                    ques.setSubId(newSubject);
                                     Log.d("Вопрос ", ques.toString());
                                     Call<Questions> questionsCall = apiInterface.addQuestion(ques);
                                     questionsCall.enqueue(new Callback<Questions>() {
@@ -163,6 +172,28 @@ public class AddPlanFragment extends Fragment {
                                     });
 
                                 }
+                                for (int i = 0; i < plans.size(); i++){
+                                    Plan plan = plans.get(i);
+                                    plan.setId(null);
+                                    Call<Plan> planCall = apiInterface.addPlan(plan);
+                                    planCall.enqueue(new Callback<Plan>() {
+                                        @Override
+                                        public void onResponse(Call<Plan> call, Response<Plan> response) {
+                                            if (response.body()!= null){
+                                                Log.d("ok", response.message());
+                                            }else{
+                                                Log.d("not ok", response.message());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Plan> call, Throwable t) {
+                                            Log.d("not ok", t.getMessage());
+                                        }
+                                    });
+
+                                }
+
                             }else {
                                 Toast.makeText(getActivity(), "Не получилось", Toast.LENGTH_SHORT).show();
                             }
@@ -174,7 +205,8 @@ public class AddPlanFragment extends Fragment {
                             Log.d("not ok", t.getMessage());
                         }
                     });
-                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToListFragment();
+                    Log.d("Новый предмет =  ", ""+ idSub);
+                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(idSub);
                     Navigation.findNavController(getView()).navigate(action);
                 }
             }
@@ -186,9 +218,27 @@ public class AddPlanFragment extends Fragment {
                 showAlertDialogButtonClicked(view);
             }
         });
+    }
 
+    private ArrayList<Plan> setNewPlan(Subjects subj){
+        LocalDate date = LocalDate.parse(subj.getDaysString().split("T")[0]);
+        long days = DAYS.between(LocalDate.now(), date);
 
+        Calendar cal = new GregorianCalendar();
+        ArrayList<Plan> p = new ArrayList<Plan>();
 
+        for(int i=0; i<days; i++){
+            Plan plan = new Plan(0,
+                    "" + cal.get(Calendar.YEAR)+
+                            "-" + cal.get(Calendar.MONTH)+
+                            "-" + cal.get(Calendar.DATE),
+                    Questions.getQuestions().size(),subj);
+            p.add(plan);
+            Plan.addPlan(plan);
+            cal.add(Calendar.DATE, 1);
+        }
+
+        return p;
     }
 
     private void updateLabel(){
@@ -203,8 +253,7 @@ public class AddPlanFragment extends Fragment {
         binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), questions, itemClick));
     }
 
-    public void showAlertDialogButtonClicked(View view)
-    {
+    public void showAlertDialogButtonClicked(View view) {
 
         // Create an alert builder
         AlertDialog.Builder builder

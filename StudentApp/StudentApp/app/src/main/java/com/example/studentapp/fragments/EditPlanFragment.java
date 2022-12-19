@@ -53,8 +53,6 @@ public class EditPlanFragment extends Fragment {
         itemClick = new SubjectAddRecycler.OnItemClickListener() {
             @Override
             public void onClickQuestion(Questions ques, int position) {
-                Toast.makeText(getActivity(), "ПРОВЕРЯЕМ", Toast.LENGTH_SHORT).show();
-
                 showItemDialog(view, ques);
             }
         };

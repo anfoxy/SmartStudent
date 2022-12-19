@@ -27,6 +27,9 @@ public interface ApiInterface {
     @POST("questions")
     Call<Questions> addQuestion(@Body Questions questions);
 
+    @POST("plan")
+    Call<Plan> addPlan(@Body Plan plan);
+
     @DELETE("subjects/{id}")
     Call<Subjects> deleteSubject(@Path("id") int id);
 
@@ -38,4 +41,7 @@ public interface ApiInterface {
 
     @PUT("questions/{id}")
     Call<Questions> updateQuestion(@Path("id") int id, @Body Questions question);
+
+    @PUT("plan/{id}")
+    Call<Plan> updatePlan(@Path("id") int id, @Body Plan plan);
 }
