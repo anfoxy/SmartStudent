@@ -52,12 +52,6 @@ public class CalendarFragment extends Fragment {
 
         dateStr = LocalDate.now().toString();
 
-        if (isNetworkWorking()){
-            Toast.makeText(getContext(), "Инет есть", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getContext(), "Инета нет", Toast.LENGTH_SHORT).show();
-        }
-
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
             public void onClickPlanItem(Subjects subject, int position) {
@@ -140,7 +134,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         binding = DataBindingUtil.inflate(inflater , R.layout.fragment_calendar, container, false);
         Paper.init(getContext());
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);

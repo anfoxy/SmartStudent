@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#E6E6E6"
         tools:context=".fragments.CalendarFragment">
 
         <CalendarView
@@ -24,17 +25,20 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="Добавить новый предмет"
-            app:layout_constraintTop_toBottomOf="@id/choose_date" />
+            app:layout_constraintTop_toBottomOf="@id/choose_date"
+            tools:layout_editor_absoluteX="0dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_sub"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/line_view"
             android:layout_marginTop="6dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/subj_card"/>
+            app:layout_constraintTop_toBottomOf="@id/line_view"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp"
+            tools:listitem="@layout/subj_card" />
 
         <ImageView
             android:id="@+id/line_view"

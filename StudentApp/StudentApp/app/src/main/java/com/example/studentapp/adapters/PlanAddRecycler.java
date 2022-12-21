@@ -2,6 +2,7 @@ package com.example.studentapp.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ public class PlanAddRecycler extends RecyclerView.Adapter<PlanAddRecycler.ViewHo
     private boolean p [];
 
     public boolean[] getPlanArray(){
+        Log.d("plan array  =  ", ""+ p);
+        boolean h = p[0];
         return p;
     }
 

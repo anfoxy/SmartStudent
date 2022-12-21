@@ -73,14 +73,14 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
 
         private TextView subjName;
         private TextView subjStat;
-        private ImageButton startQ;
+
 
         public SubjectViewHolder(@NonNull View itemView) {
             super(itemView);
 
             subjName = itemView.findViewById(R.id.subj_name);
             subjStat = itemView.findViewById(R.id.subj_stat);
-            startQ = itemView.findViewById(R.id.start_plan);
+
         }
     }
 }

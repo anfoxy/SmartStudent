@@ -3,16 +3,16 @@
 
 
     <string name="s1">Статистика</string>
-    <string name="title_activity__plan">План</string>
+    <string name="title_activityplan">План</string>
     <string name="action_settings">Настройка оповещений</string>
     <string name="title_activity_add_plan">Добавление нового плана</string>
-    <string name="title_activity__v_plan">Выбор плана</string>
+    <string name="title_activityv_plan">Выбор плана</string>
     <string name="Название">Название</string>
     <string name="Name">Столица</string>
     <string name="Na">Выбор подготовки</string>
     <string name="title_activity_scrolling_plan"></string>
     <string name="title_activity_main2">MainActivity</string>
-    <string name="title_home">Календарь</string>
+    <string name="title_home">Smart Student</string>
     <string name="title_dashboard">Список предметов</string>
     <string name="title_notifications">Прочее</string>
     <string name="title_contact">Связаться с нами</string>

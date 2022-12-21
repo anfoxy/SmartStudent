@@ -146,8 +146,14 @@ public class AddPlanFragment extends Fragment {
 
                             if (response.body()!= null){
                                 Subjects newSubject = response.body();
-                                idSub=newSubject.getId();
+
+                                idSub=response.body().getId();
+                                sub.setId(response.body().getId());
+                                Log.d("id предметаfff =", ""+idSub);
+
                                 ArrayList<Plan> plans = setNewPlan(newSubject);
+
+
                                 ArrayList<Questions> questions = Questions.getQuestions();
                                 for (int i = 0; i < questions.size(); i++){
                                     Questions ques = questions.get(i);
@@ -172,14 +178,17 @@ public class AddPlanFragment extends Fragment {
                                     });
 
                                 }
-                                for (int i = 0; i < plans.size(); i++){
-                                    Plan plan = plans.get(i);
-                                    plan.setId(null);
-                                    Call<Plan> planCall = apiInterface.addPlan(plan);
-                                    planCall.enqueue(new Callback<Plan>() {
+
+                                    Call<ArrayList<Plan>> planCall = apiInterface.addPlan(plans);
+                                    planCall.enqueue(new Callback<ArrayList<Plan>>() {
                                         @Override
-                                        public void onResponse(Call<Plan> call, Response<Plan> response) {
+                                        public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
                                             if (response.body()!= null){
+                                                // Поправить данный момент, когда появится локальная бд. Т.к из-за того,
+                                                // что я жду пока отправится план на сервер и сохранится все приложение работает медленно!
+                                                // потом надо сделать переходы именно по локальным данным, а на сервер со временем все придет.
+                                                NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(idSub);
+                                                Navigation.findNavController(getView()).navigate(action);
                                                 Log.d("ok", response.message());
                                             }else{
                                                 Log.d("not ok", response.message());
@@ -187,13 +196,10 @@ public class AddPlanFragment extends Fragment {
                                         }
 
                                         @Override
-                                        public void onFailure(Call<Plan> call, Throwable t) {
+                                        public void onFailure(Call<ArrayList<Plan>> call, Throwable t) {
                                             Log.d("not ok", t.getMessage());
                                         }
                                     });
-
-                                }
-
                             }else {
                                 Toast.makeText(getActivity(), "Не получилось", Toast.LENGTH_SHORT).show();
                             }
@@ -205,9 +211,7 @@ public class AddPlanFragment extends Fragment {
                             Log.d("not ok", t.getMessage());
                         }
                     });
-                    Log.d("Новый предмет =  ", ""+ idSub);
-                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(idSub);
-                    Navigation.findNavController(getView()).navigate(action);
+
                 }
             }
         });
@@ -228,7 +232,7 @@ public class AddPlanFragment extends Fragment {
         ArrayList<Plan> p = new ArrayList<Plan>();
 
         for(int i=0; i<days; i++){
-            Plan plan = new Plan(0,
+            Plan plan = new Plan(null,
                     "" + cal.get(Calendar.YEAR)+
                             "-" + cal.get(Calendar.MONTH)+
                             "-" + cal.get(Calendar.DATE),

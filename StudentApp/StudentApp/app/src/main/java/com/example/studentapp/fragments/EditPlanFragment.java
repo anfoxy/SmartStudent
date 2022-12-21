@@ -103,36 +103,41 @@ public class EditPlanFragment extends Fragment {
                 });
             }
         });
+        binding.editPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save();
+                NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToEditItemPlanFragment2(args.getId());
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
 
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                subject.setDaysString(binding.editTextDate.getText().toString());
-                subject.setName(binding.Text1.getText().toString());
-                Call<Subjects> subjectsCall = apiInterface.updateSubject(subject.getId(), subject);
-                subjectsCall.enqueue(new Callback<Subjects>() {
-                    @Override
-                    public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-                        if (response.isSuccessful()){
-                            NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
-                            Navigation.findNavController(getView()).navigate(action);
-                        }else {
-                            Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Subjects> call, Throwable t) {
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+             save();
+             NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
+             Navigation.findNavController(getView()).navigate(action);
             }
         });
-
     }
 
+    private void save(){
+        subject.setDaysString(binding.editTextDate.getText().toString());
+        subject.setName(binding.Text1.getText().toString());
+        Call<Subjects> subjectsCall = apiInterface.updateSubject(subject.getId(), subject);
+        subjectsCall.enqueue(new Callback<Subjects>() {
+            @Override
+            public void onResponse(Call<Subjects> call, Response<Subjects> response) {
 
+            }
 
+            @Override
+            public void onFailure(Call<Subjects> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void updateLabel(){
         String myFormat="yyyy-MM-dd";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat);
@@ -159,7 +164,6 @@ public class EditPlanFragment extends Fragment {
 
             }
         });
-
     }
 
     @Override
@@ -219,7 +223,6 @@ public class EditPlanFragment extends Fragment {
                                 dialog.dismiss();
                             }
                         }
-
                         @Override
                         public void onFailure(Call<Questions> call, Throwable t) {
 

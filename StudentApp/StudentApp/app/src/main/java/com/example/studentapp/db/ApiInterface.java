@@ -28,7 +28,10 @@ public interface ApiInterface {
     Call<Questions> addQuestion(@Body Questions questions);
 
     @POST("plan")
-    Call<Plan> addPlan(@Body Plan plan);
+    Call<ArrayList<Plan>> addPlan(@Body ArrayList<Plan> plan);
+
+    @POST("plans")
+    Call<ArrayList<Plan>> addPlans(@Body ArrayList<Plan> plan);
 
     @DELETE("subjects/{id}")
     Call<Subjects> deleteSubject(@Path("id") int id);

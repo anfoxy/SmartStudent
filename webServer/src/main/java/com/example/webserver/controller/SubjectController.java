@@ -49,10 +49,10 @@ public class SubjectController {
     public ArrayList<SubjectQuestion> getSubjectByUser(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         ArrayList<Subject> subjectArrayList = subjectRepository.findAllByUserId(userService.findById(id));
         ArrayList<SubjectQuestion> subjectQuestion = new ArrayList<>();
-        for (int i = 0; i < subjectArrayList.size(); i++) {
-            ArrayList<Question> q = questionRepository.findAllBySubId(subjectArrayList.get(i));
-            ArrayList<Plan> p = planRepository.findAllBySubId(subjectArrayList.get(i));
-            subjectQuestion.add(new SubjectQuestion(subjectArrayList.get(i),q,p));
+        for (Subject subject : subjectArrayList) {
+            ArrayList<Question> q = questionRepository.findAllBySubId(subject);
+            ArrayList<Plan> p = planRepository.findAllBySubId(subject);
+            subjectQuestion.add(new SubjectQuestion(subject, q, p));
         }
         return subjectQuestion;
     }

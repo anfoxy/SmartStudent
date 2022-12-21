@@ -30,6 +30,7 @@
                     android:textColor="@color/textcolor"
                     android:text="Название плана:"
                     android:gravity="center"
+                    android:textSize="18dp"
                     android:layout_marginTop="20dp" />
 
                 <EditText
@@ -57,6 +58,7 @@
                     android:textColor="@color/textcolor"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
+                    android:textSize="17dp"
                     android:text="Дата экзамена:" />
 
                 <EditText
@@ -83,7 +85,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textcolor"
+            android:background="#4CB3E1"
             android:text="Добавить вопрос" />
+        <Button
+            android:id="@+id/editPlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textcolor"
+            android:text="Изменить план" />
 
         <ImageView
             android:id="@+id/imageView32"
@@ -111,10 +120,10 @@
 
                 <ImageButton
                     android:id="@+id/del"
-                    android:layout_width="150dp"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#FA8585"
+                    android:background="#FF5722"
                     app:srcCompat="@drawable/ic_delete"
                     tools:ignore="VectorDrawableCompat" />
 
@@ -129,9 +138,9 @@
                     android:paddingBottom="15dp"
                     android:paddingTop="10dp"
                     android:gravity="center"
-                    android:background="@color/osn"
+                    android:background="#4CB3E1"
                     android:text="Cохранить"
-                    android:textColor="#000000"
+                    android:textColor="@color/textcolor"
                     android:textSize="18dp" />
 
 
