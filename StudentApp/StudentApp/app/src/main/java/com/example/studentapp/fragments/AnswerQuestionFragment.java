@@ -84,19 +84,19 @@ public class AnswerQuestionFragment extends Fragment {
                 }
             }
         });
-//        binding.speakButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Thread thr = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        apiRequest();
-//                    }
-//                });
-//                thr.start();
-//            }
-//        });
-//
+        binding.speakButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thr = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        apiRequest();
+                    }
+                });
+                thr.start();
+            }
+        });
+
         binding.noAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
