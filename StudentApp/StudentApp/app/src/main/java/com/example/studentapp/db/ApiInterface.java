@@ -18,8 +18,11 @@ public interface ApiInterface {
     @GET("subjects/byUser/{id}")
     Call<ArrayList<Subjects>> getSubjectsByUser(@Path("id") int id);
 
-    @GET("subjects/{id}")
+    @GET("subjects_question/{id}")
     Call<Subjects> getSubjectById(@Path("id") int id);
+
+    @GET("subjects/{id}")
+    Call<Subjects> getSubjectByIdNotQuestion(@Path("id") int id);
 
     @POST("subjects")
     Call<Subjects> addSubject(@Body Subjects subjects);
@@ -30,8 +33,8 @@ public interface ApiInterface {
     @POST("plan")
     Call<ArrayList<Plan>> addPlan(@Body ArrayList<Plan> plan);
 
-    @POST("plans")
-    Call<ArrayList<Plan>> addPlans(@Body ArrayList<Plan> plan);
+    @POST("plans/{id}")
+    Call<ArrayList<Plan>> addPlans(@Path("id") int id, @Body ArrayList<Plan> plan);
 
     @DELETE("subjects/{id}")
     Call<Subjects> deleteSubject(@Path("id") int id);

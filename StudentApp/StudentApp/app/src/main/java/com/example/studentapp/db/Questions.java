@@ -19,7 +19,7 @@ public class Questions {
     @SerializedName("subId")
     private Subjects subId;
 
-    public Questions(int id, String question, String answer, boolean completed, Subjects sub_id) {
+    public Questions(Integer id, String question, String answer, boolean completed, Subjects sub_id) {
         this.id = id;
         this.question = question;
         this.answer = answer;

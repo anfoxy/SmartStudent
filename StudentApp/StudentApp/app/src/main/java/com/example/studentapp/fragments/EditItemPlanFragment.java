@@ -29,6 +29,7 @@ import com.example.studentapp.db.Subjects;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -57,14 +58,14 @@ public class EditItemPlanFragment extends Fragment {
             public void onClick(View view) {
 
                 boolean p [] = adapter.getPlanArray();
-                ArrayList<Plan> plans = new ArrayList<>();
+                ArrayList<Plan> plans = new ArrayList<Plan>();
 
                 for (int i=0;i<subj.getPlans().size();i++)
                     if (p[i]) plans.add(subj.getPlans().get(i));
 
                 Log.d("Запускаю поиск gkfyf  =  ", ""+plans);
-                Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(plans);
-                updatePlan.enqueue(new Callback<ArrayList<Plan>>() {
+                Call<ArrayList<Plan>> updatePlans = apiInterface.addPlans(args.getId(),plans);
+                updatePlans.enqueue(new Callback<ArrayList<Plan>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
                     }
@@ -81,7 +82,6 @@ public class EditItemPlanFragment extends Fragment {
         binding.all1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("План предмета =  ", ""+ subj);
                 ind = ind == 0 ? 1 : 0;
                 editPlan(subj.getPlans(),ind);
             }
@@ -89,19 +89,11 @@ public class EditItemPlanFragment extends Fragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_edit_item_plan, container, false);
-        Paper.init(getContext());
-        apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
-        args = EditItemPlanFragmentArgs.fromBundle(getArguments());
-        return binding.getRoot();
-    }
 
     private void setPlan(){
 
-        Call<Subjects> getSubj = apiInterface.getSubjectById(args.getId());
+        Call<Subjects> getSubj = apiInterface.getSubjectByIdNotQuestion(args.getId());
         getSubj.enqueue(new Callback<Subjects>() {
             @Override
             public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -109,9 +101,12 @@ public class EditItemPlanFragment extends Fragment {
                     subj = new Subjects(response.body());
                     ArrayList<Plan> p = removeDatesAfterToday();
 
+                    boolean []b = setNewPlan(p);
+                    Log.d("massiv = ", ""+ Arrays.toString(b));
+
                     binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listPlan.setHasFixedSize(true);
-                    adapter = new PlanAddRecycler(getActivity(),subj.getPlans(),1, setNewPlan(p,subj));
+                    adapter = new PlanAddRecycler(getActivity(),subj.getPlans(),3,b);
                     binding.listPlan.setAdapter(adapter);
                 }else{
                     Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
@@ -132,35 +127,30 @@ public class EditItemPlanFragment extends Fragment {
     }
 
 
-    private boolean[] setNewPlan(ArrayList<Plan> dates, Subjects subj){
+    private boolean[] setNewPlan(ArrayList<Plan> dates){
         LocalDate date = LocalDate.parse(subj.getDaysString().split("T")[0]);
+
         long days = DAYS.between(LocalDate.now(), date);
-
+        Log.d("date = ", ""+days);
         Calendar cal = new GregorianCalendar();
-
-        boolean [] p = new boolean[Math.toIntExact(days)];
+        boolean [] p = new boolean[Math.toIntExact(days)+1];
         for(int i=0; i<days; i++){
             String time = "" + cal.get(Calendar.YEAR)+
                     "-" + cal.get(Calendar.MONTH)+
                     "-" + cal.get(Calendar.DATE);
-            if(!checkDate(time)){
-                Plan plan = new Plan(null, time, 0,subj);
-                dates.add(plan);
-                p[i] = false;
-            } else  p[i] = true;
+            p[i] = checkDate(time);
+            Plan plan = new Plan(null, time, 0,null);
+            dates.add(plan);
             cal.add(Calendar.DATE, 1);
         }
-
         subj.setPlans(dates);
+
         return p;
     }
 
     private boolean checkDate(String str){
-
-        for (Plan plan : subj.getPlans()) {
-            if(plan.getDate().equals(str))
-                return true;
-        }
+        for (Plan plan : subj.getPlans())
+            if(plan.getDate().equals(str)) return true;
         return false;
     }
 
@@ -180,10 +170,18 @@ public class EditItemPlanFragment extends Fragment {
 
             if (year > todayYear) return true;
             if (year == todayYear && month > todayMonth) return true;
-            return  (year == todayYear && month == todayMonth && day > todayDay);
+            return  (year == todayYear && month == todayMonth && day >= todayDay);
 
         });
         return dates;
     }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_edit_item_plan, container, false);
+        Paper.init(getContext());
+        apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
+        args = EditItemPlanFragmentArgs.fromBundle(getArguments());
+        return binding.getRoot();
+    }
 }

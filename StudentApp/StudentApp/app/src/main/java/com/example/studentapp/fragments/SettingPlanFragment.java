@@ -51,7 +51,7 @@ public class SettingPlanFragment extends Fragment {
                     if (p[i]) plans.add(subj.getPlans().get(i));
 
                 Log.d("Запускаю поиск gkfyf  =  ", ""+plans);
-                Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(plans);
+                Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(args.getId(),plans);
                 updatePlan.enqueue(new Callback<ArrayList<Plan>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {

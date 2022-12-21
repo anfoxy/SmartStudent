@@ -236,7 +236,7 @@ public class AddPlanFragment extends Fragment {
                     "" + cal.get(Calendar.YEAR)+
                             "-" + cal.get(Calendar.MONTH)+
                             "-" + cal.get(Calendar.DATE),
-                    Questions.getQuestions().size(),subj);
+                    0,subj);
             p.add(plan);
             Plan.addPlan(plan);
             cal.add(Calendar.DATE, 1);

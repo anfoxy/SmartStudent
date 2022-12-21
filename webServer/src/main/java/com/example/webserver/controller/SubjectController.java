@@ -36,13 +36,19 @@ public class SubjectController {
         return subjectService.findAll();
     }
     @Transactional
-    @GetMapping("/subjects/{id}")
-    public SubjectQuestion getSubjectById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+    @GetMapping("/subjects_question/{id}")
+    public SubjectQuestion getSubjectByIdQuestion(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
 
         Subject subject = new Subject(subjectService.findById(id));
         ArrayList<Question> q = questionRepository.findAllBySubId(subject);
         ArrayList<Plan> p = planRepository.findAllBySubId(subject);
         return new SubjectQuestion(subject, q,p);
+    }
+    @GetMapping("/subjects/{id}")
+    public SubjectQuestion getSubjectById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        Subject subject = new Subject(subjectService.findById(id));
+        ArrayList<Plan> p = planRepository.findAllBySubId(subject);
+        return new SubjectQuestion(subject,null,p);
     }
     @Transactional
     @GetMapping("subjects/byUser/{id}")

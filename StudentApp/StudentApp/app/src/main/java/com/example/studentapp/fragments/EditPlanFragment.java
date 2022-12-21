@@ -287,8 +287,8 @@ public class EditPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-                    Questions newQuestion = new Questions(0,tvQ.getText().toString(),tvAnswer.getText().toString(),false,subject);//Тут было args.getId()
-                    newQuestion.setId(null);
+                    Questions newQuestion = new Questions(null,tvQ.getText().toString(),tvAnswer.getText().toString(),false,subject);//Тут было args.getId()
+
                     Call<Questions> questionsCall = apiInterface.addQuestion(newQuestion);
                     questionsCall.enqueue(new Callback<Questions>() {
                         @Override

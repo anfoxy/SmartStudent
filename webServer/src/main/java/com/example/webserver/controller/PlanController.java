@@ -5,6 +5,7 @@ import com.example.webserver.model.Plan;
 import com.example.webserver.model.Question;
 import com.example.webserver.model.Subject;
 import com.example.webserver.repository.PlanRepository;
+import com.example.webserver.repository.SubjectRepository;
 import com.example.webserver.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class PlanController {
     @Autowired
     PlanRepository planRepository;
 
+    @Autowired
+    SubjectRepository subjectRepository;
+
     @GetMapping("/plan")
     public List<Plan> getAllQuestion() {
         return planService.findAll();
@@ -40,14 +44,18 @@ public class PlanController {
         return plan;
     }
 
-    @PostMapping("/plans")
-    public ArrayList<Plan> updatePlans(@RequestBody ArrayList<Plan> plan){
+    @PostMapping("/plans/{id}")
+    public ArrayList<Plan> updatePlans(@PathVariable(value = "id") Long id,@RequestBody ArrayList<Plan> plan){
         System.out.println("план изначально "+plan);
+        Subject subject = subjectRepository.findById(id).orElse(null);
         if(plan.size()>0) {
-            ArrayList<Plan> plansBD = planRepository.findAllBySubId(plan.get(0).getSubId());
+            ArrayList<Plan> plansBD = planRepository.findAllBySubId(subject);
             System.out.println("план bd "+plansBD);
             planService.removeDatesAfterToday(plansBD);
-            for (Plan p : plan) planService.save(p);
+            for (Plan p : plan) {
+                p.setSubId(subject);
+                planService.save(p);
+            }
         }
         return plan;
     }
