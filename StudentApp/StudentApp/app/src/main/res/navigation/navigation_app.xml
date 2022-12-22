@@ -42,18 +42,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_anotherFragment_to_settingFragment"
-            app:destination="@id/settingFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
             android:id="@+id/action_anotherFragment_to_contactFragment"
             app:destination="@id/contactFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left" />
+        <action
+            android:id="@+id/action_anotherFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
     </fragment>
 
     <fragment
@@ -66,6 +62,11 @@
         android:name="com.example.studentapp.fragments.SettingFragment"
         android:label="@string/action_settings"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.studentapp.fragments.AccountFragment"
+        android:label="@string/action_account"
+        tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/contactFragment"
         android:name="com.example.studentapp.fragments.ContactFragment"

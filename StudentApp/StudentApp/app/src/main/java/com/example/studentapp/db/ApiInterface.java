@@ -15,6 +15,12 @@ public interface ApiInterface {
     @POST("users/auth")
     Call<Users> authUsers(@Body Users user);
 
+    @POST("users/register")
+    Call<String> regUsers(@Body Users user);
+
+    @PUT("/user/{id}")
+    Call<Users> editUsers(@Path("id") int id,@Body Users user);
+
     @GET("subjects/byUser/{id}")
     Call<ArrayList<Subjects>> getSubjectsByUser(@Path("id") int id);
 

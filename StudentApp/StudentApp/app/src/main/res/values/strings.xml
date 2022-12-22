@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">StudentApp</string>
+    <string name="app_name">Smart student</string>
 
 
     <string name="s1">Статистика</string>
     <string name="title_activityplan">План</string>
     <string name="action_settings">Настройка оповещений</string>
+    <string name="action_account">Личный кабинет</string>
     <string name="title_activity_add_plan">Добавление нового плана</string>
     <string name="title_activityv_plan">Выбор плана</string>
     <string name="Название">Название</string>

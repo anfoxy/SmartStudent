@@ -36,26 +36,24 @@ public class UserService {
     }
 
     public User login(String userName, String password) {
-        String str =  userRepository.searchUserByLoginAndPassword(userName, password);
+        String str =  userRepository.searchUserByEmailAndPassword(userName, password);
         return userRepository.findById(Long.valueOf(str)).orElseThrow(null);
 
 
     }
-    public Boolean register(User user) {
-        if(userRepository.searchUserByLoginAndPassword(user.getLogin(), user.getPassword())==null){
-            saveUser(user);
-            return true;
-        } else return false;
+    public String register(User user) {
+        if (userRepository.findByEmail(user.getEmail()) != null) return "email exists";
+        if(!user.getPassword().equals(user.getMatchingPassword())) return "password doesn't match";
+        if (userRepository.findByLogin(user.getLogin()) != null) return "login exists";
+        userRepository.save(user);
+        return "ok";
     }
 
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findUserByLogin(user.getLogin());
+        User userFromDB = userRepository.findByLogin(user.getLogin());
 
-        if (userFromDB != null) {
-            return false;
-        }
+        if (userFromDB != null) return false;
 
-        user.setPassword(user.getPassword());
         userRepository.save(user);
         return true;
     }

@@ -1,24 +1,34 @@
 package com.example.studentapp.fragments;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.studentapp.AuthActivity;
+import com.example.studentapp.LaunchActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.db.Questions;
+import com.example.studentapp.db.Users;
 
 
 public class AnotherFragment extends Fragment {
 
     private ConstraintLayout aboutConstraint;
-    private ConstraintLayout settingsConstraint;
+    private ConstraintLayout loginConstraint;
     private ConstraintLayout contactConstraint;
+    private ConstraintLayout outConstraint;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -31,10 +41,10 @@ public class AnotherFragment extends Fragment {
             }
         });
 
-        settingsConstraint.setOnClickListener(new View.OnClickListener() {
+        loginConstraint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_anotherFragment_to_settingFragment);
+                Navigation.findNavController(view).navigate(R.id.action_anotherFragment_to_accountFragment);
             }
         });
 
@@ -42,6 +52,54 @@ public class AnotherFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_anotherFragment_to_contactFragment);
+            }
+        });
+
+        outConstraint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder
+                        = new AlertDialog.Builder(getContext());
+
+                // set the custom layout
+                final View customLayout
+                        = getLayoutInflater()
+                        .inflate(
+                                R.layout.dialog_out,
+                                null);
+                builder.setView(customLayout);
+
+
+
+                AlertDialog dialog
+                        = builder.create();
+
+
+                Button out = customLayout.findViewById(R.id.out_acc);
+                AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+
+                out.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Users.deleteUser();
+                        Intent intent = new Intent(getActivity(), LaunchActivity.class);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                });
+
+                clsBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
+
             }
         });
 
@@ -53,9 +111,9 @@ public class AnotherFragment extends Fragment {
         // Inflate the layout for this fragment
         View anotherFrag = inflater.inflate(R.layout.fragment_another, container, false);
         aboutConstraint = anotherFrag.findViewById(R.id.constraint_about);
-        settingsConstraint = anotherFrag.findViewById(R.id.constraint_settings);
+        loginConstraint = anotherFrag.findViewById(R.id.constraint_login);
         contactConstraint = anotherFrag.findViewById(R.id.constraint_contact);
-
+        outConstraint = anotherFrag.findViewById(R.id.constraint_out);
 
 
 

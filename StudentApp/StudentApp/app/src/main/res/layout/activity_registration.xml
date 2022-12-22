@@ -10,15 +10,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".AuthActivity">
+        tools:context=".RegistrationActivity">
 
         <EditText
             android:id="@+id/login_auth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/password_auth"
-            android:hint="Логин"
+            android:hint="Имя пользователя"
             android:layout_margin="20dp" />
+
+        <EditText
+            android:id="@+id/email_auth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/login_auth"
+            android:hint="email"
+            android:layout_margin="20dp"/>
 
         <EditText
             android:id="@+id/password_auth"
@@ -29,28 +37,28 @@
             android:hint="Пароль"
             android:layout_margin="20dp"
             android:inputType="textPassword"/>
+        <EditText
+            android:id="@+id/password2_auth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password_auth"
+            android:hint="Повторите пароль"
+            android:layout_margin="20dp"
+            android:inputType="textPassword"/>
 
         <Button
             android:id="@+id/auth_btn"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="Авторизация"
+            android:text="Зарегистрироваться"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_auth"
+            app:layout_constraintTop_toBottomOf="@id/password2_auth"
             android:layout_marginTop="16dp" />
-        <TextView
-            android:id="@+id/regist_btn"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:text="Регистрация"
-            android:gravity="center"
-            android:textColor="@color/gray_600"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/auth_btn"
-            android:layout_marginTop="10dp" />
+
 
 
 

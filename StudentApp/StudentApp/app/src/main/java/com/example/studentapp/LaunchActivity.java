@@ -29,7 +29,6 @@ public class LaunchActivity extends AppCompatActivity {
 
         Animation animationStart = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
 
-
         binding.logoLaunch.startAnimation(animationStart);
 
 

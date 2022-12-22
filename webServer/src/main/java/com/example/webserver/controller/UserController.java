@@ -20,15 +20,13 @@ public class UserController {
 
     @PostMapping("/users/auth")
     public ResponseEntity<User> login(@Valid @RequestBody User  user){
-        System.out.println("ПОЛЬЗОВАТЕЛЬ: " + user);
-        return ResponseEntity.ok(userService.login(user.getLogin(),user.getPassword()));
+
+        return ResponseEntity.ok(userService.login(user.getEmail(),user.getPassword()));
     }
 
     @PostMapping("/users/register")
-    public String register(@Valid @RequestBody User  user){
-        if(!user.getPassword().equals(user.getMatchingPassword())) return "password doesn't match";
-        if(userService.register(user)) return "OK";
-       else return "NO";
+    public ResponseEntity<String> register(@Valid @RequestBody User  user){
+      return ResponseEntity.ok(userService.register(user));
     }
 
     @GetMapping("/user")

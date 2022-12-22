@@ -10,13 +10,14 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "SELECT id_user From public.user " +
-            "WHERE user_name IN(:user_name) " +
+            "WHERE email IN(:email) " +
             "AND   user_password IN(:user_password);",nativeQuery = true)
-    String searchUserByLoginAndPassword(@Param("user_name") String user_name,
+    String searchUserByEmailAndPassword(@Param("email") String email,
                                               @Param("user_password") String user_password);
 
+    User findByEmail(String email);
 
-    User findUserByLogin(String login);
+    User findByLogin(String login);
 
 
 }

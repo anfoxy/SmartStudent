@@ -7,7 +7,7 @@
     tools:context=".fragments.AnotherFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_about"
+        android:id="@+id/constraint_login"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="75dp">
@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="О приложении"
+            android:text="Личный кабинет"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,12 +43,12 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         app:srcCompat="@android:drawable/bottom_bar"
-        app:layout_constraintTop_toBottomOf="@id/constraint_about"
+        app:layout_constraintTop_toBottomOf="@id/constraint_login"
         android:scaleType="centerCrop"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_settings"
+        android:id="@+id/constraint_about"
         app:layout_constraintTop_toBottomOf="@id/line_1"
         android:layout_width="match_parent"
         android:layout_height="75dp">
@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Настройка уведомлений"
+            android:text="О приложении"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         app:srcCompat="@android:drawable/bottom_bar"
-        app:layout_constraintTop_toBottomOf="@id/constraint_settings"
+        app:layout_constraintTop_toBottomOf="@id/constraint_about"
         android:scaleType="centerCrop"
         />
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,6 +125,48 @@
         android:layout_height="1dp"
         app:srcCompat="@android:drawable/bottom_bar"
         app:layout_constraintTop_toBottomOf="@id/constraint_contact"
+        android:scaleType="centerCrop"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_out"
+        app:layout_constraintTop_toBottomOf="@id/line_3"
+        android:background="#FAEBEB"
+        android:layout_width="match_parent"
+        android:layout_height="75dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выход из аккаунта"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_arrow_right"
+            tools:ignore="VectorDrawableCompat"
+            android:scaleType="fitXY"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/line_4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:srcCompat="@android:drawable/bottom_bar"
+        app:layout_constraintTop_toBottomOf="@id/constraint_out"
         android:scaleType="centerCrop"
         />
 

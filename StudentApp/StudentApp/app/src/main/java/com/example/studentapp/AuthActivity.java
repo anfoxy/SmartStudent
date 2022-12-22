@@ -36,16 +36,13 @@ public class AuthActivity extends AppCompatActivity {
         binding.authBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Users aUser = new Users(2,binding.loginAuth.getText().toString(),
+                Users aUser = new Users(null,binding.loginAuth.getText().toString(),
                         binding.passwordAuth.getText().toString());
+
                 Call<Users> authUser = apiInterface.authUsers(aUser);
                 authUser.enqueue(new Callback<Users>() {
                     @Override
                     public void onResponse(Call<Users> call, Response<Users> response) {
-
-                        Toast.makeText(AuthActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
-
-
                         if (response.body()!= null){
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -53,7 +50,7 @@ public class AuthActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }else{
-                            Toast.makeText(AuthActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AuthActivity.this, "Неправильный пароль или логин!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -62,6 +59,14 @@ public class AuthActivity extends AppCompatActivity {
                         Toast.makeText(AuthActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        binding.registBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivity(intent);
             }
         });
 

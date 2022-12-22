@@ -7,23 +7,58 @@ import io.paperdb.Paper;
 public class Users {
 
     @SerializedName("id")
-    private int id;
+    private Integer id;
     @SerializedName("login")
     private String login;
+    @SerializedName("email")
+    private String email;
     @SerializedName("password")
     private String password;
+    @SerializedName("matchingPassword")
+    private String matchingPassword;
 
-    public Users(int id, String login, String password) {
+    public Users(Integer id, String login,String email, String password) {
         this.id = id;
         this.login = login;
+        this.email = email;
         this.password = password;
     }
 
-    public int getId() {
+    public Users(Integer id, String login, String email, String password, String matchingPassword) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.matchingPassword = matchingPassword;
+    }
+
+    public Users(Integer id, String email, String password) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getMatchingPassword() {
+        return matchingPassword;
+    }
+
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -46,6 +81,10 @@ public class Users {
 
     public static void writeUser(Users user){
         Paper.book("user").write("user", user);
+    }
+
+    public static void deleteUser(){
+        Paper.book("user").delete("user");
     }
 
     public static Users getUser(){
