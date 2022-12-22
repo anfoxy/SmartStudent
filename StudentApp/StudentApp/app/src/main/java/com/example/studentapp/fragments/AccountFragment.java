@@ -4,10 +4,12 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,8 +53,57 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         user = Users.getUser();
-
+        binding.section1.setTextColor(getResources().getColor(R.color.selected_text_color));
+        binding.underline.setBackgroundColor(Color.BLUE);
         binding.name.setText(user.getLogin());
+        binding.layProfile.setVisibility(View.VISIBLE);
+        binding.section1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.section1.setTextColor(getResources().getColor(R.color.selected_text_color));
+
+                binding.section2.setTextColor(getResources().getColor(R.color.normal_text_color));
+                binding.section3.setTextColor(getResources().getColor(R.color.normal_text_color));
+                binding.underline.setBackgroundColor(Color.BLUE);
+                binding.underline2.setBackgroundColor(Color.GRAY);
+                binding.underline3.setBackgroundColor(Color.GRAY);
+                binding.editpng.setVisibility(View.VISIBLE);
+                binding.password.setVisibility(View.VISIBLE);
+                binding.layProfile.setVisibility(View.VISIBLE);
+            }
+        });
+        binding.section2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.section2.setTextColor(getResources().getColor(R.color.selected_text_color));
+
+                binding.section1.setTextColor(getResources().getColor(R.color.normal_text_color));
+                binding.section3.setTextColor(getResources().getColor(R.color.normal_text_color));
+                binding.underline.setBackgroundColor(Color.GRAY);
+                binding.underline2.setBackgroundColor(Color.BLUE);
+                binding.underline3.setBackgroundColor(Color.GRAY);
+                binding.editpng.setVisibility(View.INVISIBLE);
+                binding.password.setVisibility(View.INVISIBLE);
+                binding.layProfile.setVisibility(View.INVISIBLE);
+
+            }
+        });
+        binding.section3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.section3.setTextColor(getResources().getColor(R.color.selected_text_color));
+
+                binding.section1.setTextColor(getResources().getColor(R.color.normal_text_color));
+                binding.section2.setTextColor(getResources().getColor(R.color.normal_text_color));
+                binding.underline.setBackgroundColor(Color.GRAY);
+                binding.underline2.setBackgroundColor(Color.GRAY);
+                binding.underline3.setBackgroundColor(Color.BLUE);
+
+                binding.password.setVisibility(View.INVISIBLE);
+                binding.editpng.setVisibility(View.INVISIBLE);
+                binding.layProfile.setVisibility(View.INVISIBLE);
+            }
+        });
 
         binding.password.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +177,13 @@ public class AccountFragment extends Fragment {
             }
         });
 
+    }
+
+
+    private void updateInfo(int sectionId) {
+        // Здесь можете реализовать логику обновления информации ниже по странице
+        // в зависимости от выбранного раздела. Например, можете использовать свитч-кейс или
+        // использовать фрагменты.
     }
 
     @Override
