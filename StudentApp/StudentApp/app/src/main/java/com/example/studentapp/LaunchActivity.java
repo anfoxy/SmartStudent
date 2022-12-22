@@ -50,6 +50,5 @@ public class LaunchActivity extends AppCompatActivity {
                 }
             }
         },3000);
-
     }
 }

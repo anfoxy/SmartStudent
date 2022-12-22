@@ -9,12 +9,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".fragments.ListFragment"
-        android:orientation="vertical"
+        android:layout_height="733dp"
+        android:layout_marginBottom="30dp"
         android:background="#E6E6E6"
-        android:layout_marginBottom="30dp">
+        android:orientation="vertical"
+        tools:context=".fragments.ListFragment">
 
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/AddPlan"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#4E61C8"
+            android:text="Добавить новый предмет"
+            android:textColor="@color/textbutton"
+            android:textSize="18sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_sub_view"
@@ -25,18 +39,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/list_item"/>
-
-        <Button
-            android:bottomLeftRadius="15dp"
-            android:bottomRightRadius="15dp"
-            android:textColor="@color/textcolor"
-            android:topLeftRadius="15dp"
-            android:topRightRadius="15dp"
-            android:id="@+id/AddPlan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Добавить новый предмет" />
+            tools:listitem="@layout/list_item" />
 
 
     </LinearLayout>

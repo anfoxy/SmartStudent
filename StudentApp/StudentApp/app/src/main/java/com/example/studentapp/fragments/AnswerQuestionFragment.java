@@ -73,7 +73,8 @@ public class AnswerQuestionFragment extends Fragment {
                     binding.yesAnswerButton.setVisibility(View.VISIBLE);
                     binding.noAnswerButton.setVisibility(View.VISIBLE);
                     binding.speakButton.setVisibility(View.VISIBLE);
-                    binding.textSpen.setVisibility(View.INVISIBLE);
+                    binding.textSpen.setText("Пожалуйста, нажмите на кнопку 'знаю' или 'не знаю', чтобы продолжить.");
+                    binding.textSpen.setVisibility(View.VISIBLE);
                     binding.nextBtn.setVisibility(View.INVISIBLE);
                 } else {
                     binding.textAnswer.setVisibility(View.VISIBLE);

@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F1F1F1"
         tools:context=".RegistrationActivity">
 
         <EditText
@@ -25,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/login_auth"
-            android:hint="email"
+            android:hint="Email"
             android:layout_margin="20dp"/>
 
         <EditText
@@ -59,7 +60,16 @@
             app:layout_constraintTop_toBottomOf="@id/password2_auth"
             android:layout_marginTop="16dp" />
 
-
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Регистрация"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/email_auth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

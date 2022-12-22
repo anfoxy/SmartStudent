@@ -61,15 +61,6 @@ public class CalendarFragment extends Fragment {
             }
         };
 
-        binding.addNewSub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                @NonNull NavDirections action = CalendarFragmentDirections.actionCalendarFragmentToAddPlanFragment();
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        });
-
         binding.chooseDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
@@ -120,6 +111,11 @@ public class CalendarFragment extends Fragment {
                     binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listSub.setHasFixedSize(true);
                     binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subjs, itemClick));
+                    if(subjs.size() == 0) {
+                        binding.textPlanNull.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.textPlanNull.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
 
