@@ -29,12 +29,12 @@ public class PlanController {
     SubjectRepository subjectRepository;
 
     @GetMapping("/plan")
-    public List<Plan> getAllQuestion() {
+    public List<Plan> getAllPlan() {
         return planService.findAll();
     }
 
     @GetMapping("/plan/{id}")
-    public Plan getQuestionById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+    public Plan getPlanById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         return planService.findById(id);
     }
 
@@ -60,14 +60,14 @@ public class PlanController {
         return plan;
     }
     @DeleteMapping("/plan/{id}")
-    public Plan deleteQuestion(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+    public Plan deletePlan(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Plan q =  planService.findById(id);
         planService.delete(id);
         return q;
     }
 
     @PutMapping("/plan/{id}")
-    public Plan putUser(@PathVariable Long id,@RequestBody Plan req) throws ResourceNotFoundException {
+    public Plan putPlan(@PathVariable Long id,@RequestBody Plan req) throws ResourceNotFoundException {
         System.out.println(req);
         return planService.putMet(id,req);
     }

@@ -1,12 +1,9 @@
 package com.example.webserver.service;
 
-import com.example.webserver.dto.QuestionDTO;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.mapper.CustomerMapper;
 import com.example.webserver.model.Plan;
-import com.example.webserver.model.Question;
 import com.example.webserver.repository.PlanRepository;
-import com.example.webserver.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

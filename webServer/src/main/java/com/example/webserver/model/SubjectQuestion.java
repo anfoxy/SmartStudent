@@ -21,7 +21,7 @@ public class SubjectQuestion {
 
     private String days;
 
-    private Boolean completed;
+    private int todayLearned;
 
     private User userId;
 
@@ -34,7 +34,7 @@ public class SubjectQuestion {
         this.id = subject.getId();
         this.name = subject.getName();
         this.days = subject.getDays();
-        this.completed = subject.getCompleted();
+        this.todayLearned = subject.getTodayLearned();
         this.userId = subject.getUserId();
         this.questions = questions;
         this.plans = plans;

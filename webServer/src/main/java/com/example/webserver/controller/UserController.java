@@ -34,11 +34,6 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PostMapping("/test")
-    public String get(@Valid @RequestBody Msg  user) {
-        return user.getMsg()+"ОтветОтСервера";
-    }
-
     @GetMapping("/user/{id}")
     public User getUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         return userService.findById(id);
@@ -57,10 +52,10 @@ public class UserController {
         return u;
     }
 
-    @PatchMapping(value = "/user/{id}")
+/*    @PatchMapping(value = "/user/{id}")
     public User patchUser(@PathVariable Long id, @RequestBody User req) throws ResourceNotFoundException {
         return userService.updateUser(req,id);
-    }
+    }*/
 
     @PutMapping("/user/{id}")
     public User putUser(@PathVariable Long id,@RequestBody User req) throws ResourceNotFoundException {

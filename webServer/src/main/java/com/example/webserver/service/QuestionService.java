@@ -24,19 +24,21 @@ public class QuestionService {
         question.setQuestion(q.getQuestion());
         question.setAnswer(q.getAnswer());
         question.setSubId(q.getSubId());
-        question.setCompleted(q.getCompleted());
+        question.setDate(q.getDate());
+        question.setPercentKnow(q.getPercentKnow());
+        question.setSizeOfView(q.getSizeOfView());
         questionRepository.save(question);
         return question;
     }
 
-    public Question updateQuestion(Question d, Long id) throws ResourceNotFoundException {
+  /*  public Question updateQuestion(Question d, Long id) throws ResourceNotFoundException {
         QuestionDTO dto = new QuestionDTO(d);
         dto.setId(id);
         Question question = findById(id);
         mapper.updateQuestionFromDto(dto, question);
         questionRepository.save(question);
         return question;
-    }
+    }*/
 
     public boolean deleteQuestion(Long userId) {
         if (questionRepository.findById(userId).isPresent()) {

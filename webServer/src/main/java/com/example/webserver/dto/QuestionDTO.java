@@ -15,16 +15,16 @@ public class QuestionDTO {
 
     private Subject subId;
 
-    private Boolean completed;
 
 
 
-    public QuestionDTO(Long id, String question, String answer, Subject sub_id,Boolean completed) {
+
+    public QuestionDTO(Long id, String question, String answer, Subject sub_id) {
         this.id = id;
         this.question = question;
         this.answer = answer;
         this.subId = sub_id;
-        this.completed = completed;
+
     }
 
     public void setId(Long id) {
@@ -36,7 +36,7 @@ public class QuestionDTO {
         this.question = c.getQuestion();
         this.answer = c.getAnswer();
         this.subId = c.getSubId();
-        this.completed = c.getCompleted();
+
     }
 
     public Question convertToEntity() {
@@ -45,7 +45,6 @@ public class QuestionDTO {
         c.setQuestion(question);
         c.setAnswer(answer);
         c.setSubId(subId);
-        c.setCompleted(completed);
         return c;
     }
 }

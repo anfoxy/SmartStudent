@@ -28,11 +28,12 @@ public class SubjectService {
         Subject subject = findById(id);
         subject.setName(s.getName());
         subject.setUserId(s.getUserId());
-        subject.setCompleted(s.getCompleted());
+        subject.setTodayLearned(s.getTodayLearned());
         subject.setDays(s.getDays());
         subjectRepository.save(subject);
         return subject;
     }
+/*
 
     public Subject updateSubject(Subject s, Long id) throws ResourceNotFoundException {
         SubjectDTO dto = new SubjectDTO(s);
@@ -42,6 +43,7 @@ public class SubjectService {
         subjectRepository.save(subject);
         return subject;
     }
+*/
 
 
     public boolean deleteUser(Long subjectId) {

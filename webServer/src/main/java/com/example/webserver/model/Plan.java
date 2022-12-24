@@ -23,7 +23,7 @@ public class Plan {
     private String date;
 
     @Column(name = "number_of_questions", nullable = false)
-    private int NumberOfQuestions;
+    private int numberOfQuestions;
     @ManyToOne
     @JoinColumn(name = "id_sub")
     private Subject subId;
@@ -34,7 +34,7 @@ public class Plan {
     public Plan(Long id, String date, Integer numberOfQuestions, Subject subId) {
         this.id = id;
         this.date = date;
-        NumberOfQuestions = numberOfQuestions;
+        this.numberOfQuestions = numberOfQuestions;
         this.subId = subId;
     }
 }

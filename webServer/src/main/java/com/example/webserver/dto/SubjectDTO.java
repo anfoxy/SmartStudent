@@ -15,15 +15,15 @@ public class SubjectDTO {
     private User userId;
 
     private String days;
-    private Boolean completed;
 
 
-    public SubjectDTO(Long id, String name, User userId,String days, Boolean completed) {
+
+    public SubjectDTO(Long id, String name, User userId,String days) {
         this.id = id;
         this.days = days;
         this.name = name;
         this.userId = userId;
-        this.completed = completed;
+
     }
 
     public SubjectDTO(Subject c) {
@@ -31,7 +31,7 @@ public class SubjectDTO {
         this.name = c.getName();
         this.days = c.getDays();
         this.userId = c.getUserId();
-        this.completed = c.getCompleted();
+
 
     }
 
@@ -45,7 +45,6 @@ public class SubjectDTO {
         c.setName(name);
         c.setDays(days);
         c.setUserId(userId);
-        c.setCompleted(completed);
         return c;
     }
 }

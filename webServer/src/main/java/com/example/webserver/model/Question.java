@@ -26,12 +26,19 @@ public class Question {
     @Column(name = "question_answer", nullable = false)
     private String answer;
 
-    @Column(name = "is_completed", nullable = false)
-    private Boolean completed;
+    @Column(name = "date", nullable = false)
+    private String date;
+
+    @Column(name = "percent_know", nullable = false)
+    private double percentKnow;
+
+    @Column(name = "size_of_view", nullable = false)
+    private int sizeOfView;
 
     @ManyToOne
     @JoinColumn(name = "subId")
     private Subject subId;
+
 
     public Question() {
     }
@@ -40,7 +47,9 @@ public class Question {
         this.id = q.id;
         this.question = q.question;
         this.answer = q.answer;
-        this.completed = q.completed;
+        this.percentKnow = q.percentKnow;
+        this.sizeOfView = q.sizeOfView;
+        this.date = q.date;
         this.subId = q.subId;
     }
 

@@ -60,6 +60,7 @@ public class SubjectController {
             ArrayList<Plan> p = planRepository.findAllBySubId(subject);
             subjectQuestion.add(new SubjectQuestion(subject, q, p));
         }
+        System.out.println(subjectQuestion);
         return subjectQuestion;
     }
 
@@ -78,10 +79,10 @@ public class SubjectController {
         return s;
     }
 
-    @PatchMapping(value = "/subjects/{id}")
+   /* @PatchMapping(value = "/subjects/{id}")
     public Subject patchSubject(@PathVariable Long id, @RequestBody Subject req) throws ResourceNotFoundException {
         return subjectService.updateSubject(req,id);
-    }
+    }*/
 
     @PutMapping("/subjects/{id}")
     public Subject putSubject(@PathVariable Long id,@RequestBody Subject req) throws ResourceNotFoundException {

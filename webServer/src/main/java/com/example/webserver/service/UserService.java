@@ -26,12 +26,17 @@ public class UserService {
         return user;
     }
 
-    public User updateUser(User s, Long id) throws ResourceNotFoundException {
+/*    public User updateUser(User s, Long id) throws ResourceNotFoundException {
         UserDTO dto = new UserDTO(s);
         dto.setId(id);
         User user = findById(id);
         mapper.updateUserFromDto(dto, user);
         userRepository.save(user);
+        return user;
+    }*/
+
+    public User findByLogin(String login){
+        User user = userRepository.findByLogin(login);
         return user;
     }
 

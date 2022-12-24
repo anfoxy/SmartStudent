@@ -1,12 +1,10 @@
 package com.example.webserver.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +22,8 @@ public class Subject {
     private String name;
     @Column(name = "subject_date",nullable = false)
     private String days;
-    @Column(name = "is_completed",nullable = false)
-    private Boolean completed;
+    @Column(name = "today_learned",nullable = false)
+    private int todayLearned;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User userId;
@@ -34,18 +32,18 @@ public class Subject {
     transient private List<Plan> plans;
     public Subject() {}
 
-    public Subject(Long id, String name, String date, Boolean isCompleted, User idUser) {
+    public Subject(Long id, String name, String date, int todayLearned, User idUser) {
         this.id = id;
         this.name = name;
         this.days = date;
-        this.completed = isCompleted;
+        this.todayLearned = todayLearned;
         this.userId = idUser;
     }
 
-    public Subject(String name, String date, Boolean isCompleted, User idUser) {
+    public Subject(String name, String date, int todayLearned, User idUser) {
         this.name = name;
         this.days = date;
-        this.completed = isCompleted;
+        this.todayLearned = todayLearned;
         this.userId = idUser;
     }
 
@@ -53,7 +51,7 @@ public class Subject {
         this.id = subject.id;
         this.name = subject.name;
         this.days = subject.days;
-        this.completed = subject.completed;
+        this.todayLearned = subject.todayLearned;
         this.userId = subject.userId;
     }
 }
