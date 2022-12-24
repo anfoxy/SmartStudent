@@ -13,14 +13,14 @@ public class Plan {
     @SerializedName("date")
     private String date;
     @SerializedName("NumberOfQuestions")
-    private int NumberOfQuestions;
+    private int numberOfQuestions;
     @SerializedName("subId")
     private Subjects subId;
 
     public Plan(Integer id, String date, int numberOfQuestions, Subjects subId) {
         this.id = id;
         this.date = date;
-        NumberOfQuestions = numberOfQuestions;
+        this.numberOfQuestions = numberOfQuestions;
         this.subId = subId;
     }
 
@@ -33,11 +33,11 @@ public class Plan {
     }
 
     public int isNumberOfQuestions() {
-        return NumberOfQuestions;
+        return numberOfQuestions;
     }
 
     public void setNumberOfQuestions(int numberOfQuestions) {
-        NumberOfQuestions = numberOfQuestions;
+        this.numberOfQuestions = numberOfQuestions;
     }
 
     public Subjects getSubId() {
@@ -95,7 +95,7 @@ public class Plan {
         return "Plan{" +
                 "id=" + id +
                 ", date='" + date + '\'' +
-                ", NumberOfQuestions=" + NumberOfQuestions +
+                ", NumberOfQuestions=" + numberOfQuestions +
                 ", subId=" + subId +
                 '}';
     }

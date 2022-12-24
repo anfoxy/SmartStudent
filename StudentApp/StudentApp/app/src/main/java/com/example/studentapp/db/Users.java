@@ -17,7 +17,12 @@ public class Users {
     @SerializedName("matchingPassword")
     private String matchingPassword;
 
-    public Users(Integer id, String login,String email, String password) {
+    public Users(Integer id, String login) {
+        this.id = id;
+        this.login = login;
+    }
+
+    public Users(Integer id, String login, String email, String password) {
         this.id = id;
         this.login = login;
         this.email = email;

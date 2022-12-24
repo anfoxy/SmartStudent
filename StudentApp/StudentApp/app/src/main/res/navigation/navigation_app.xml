@@ -46,10 +46,22 @@
             app:destination="@id/contactFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left" />
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_anotherFragment_to_accountFragment"
-            app:destination="@id/accountFragment" />
+            app:destination="@id/accountFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_anotherFragment_to_friendsFragment"
+            app:destination="@id/friendsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -67,6 +79,12 @@
         android:name="com.example.studentapp.fragments.AccountFragment"
         android:label="@string/action_account"
         tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.example.studentapp.fragments.FriendsFragment"
+        android:label="Друзья"
+        tools:layout="@layout/fragment_friends" />
     <fragment
         android:id="@+id/contactFragment"
         android:name="com.example.studentapp.fragments.ContactFragment"

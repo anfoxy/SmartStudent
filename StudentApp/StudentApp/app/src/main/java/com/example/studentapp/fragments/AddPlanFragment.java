@@ -137,7 +137,7 @@ public class AddPlanFragment extends Fragment {
                 if (Questions.getQuestions().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
                 }else{
-                    Subjects sub = new Subjects(0, binding.Text1.getText().toString(), binding.editTextDate.getText().toString(), false, Users.getUser(), new ArrayList<Questions>(),new ArrayList<Plan>());
+                    Subjects sub = new Subjects(0, binding.Text1.getText().toString(), binding.editTextDate.getText().toString(), 0, Users.getUser(), new ArrayList<Questions>(),new ArrayList<Plan>());
                     Call<Subjects> addSub = apiInterface.addSubject(sub);
 
                     addSub.enqueue(new Callback<Subjects>() {
@@ -149,17 +149,16 @@ public class AddPlanFragment extends Fragment {
 
                                 idSub=response.body().getId();
                                 sub.setId(response.body().getId());
-                                Log.d("id предметаfff =", ""+idSub);
+                                //Log.d("id предметаfff =", ""+idSub);
 
                                 ArrayList<Plan> plans = setNewPlan(newSubject);
-
 
                                 ArrayList<Questions> questions = Questions.getQuestions();
                                 for (int i = 0; i < questions.size(); i++){
                                     Questions ques = questions.get(i);
                                     ques.setId(null);
                                     ques.setSubId(newSubject);
-                                    Log.d("Вопрос ", ques.toString());
+                                   // Log.d("Вопрос ", ques.toString());
                                     Call<Questions> questionsCall = apiInterface.addQuestion(ques);
                                     questionsCall.enqueue(new Callback<Questions>() {
                                         @Override
@@ -287,7 +286,7 @@ public class AddPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-                    Questions question = new Questions(0, tvQ.getText().toString(), tvAnswer.getText().toString(), false, null);
+                    Questions question = new Questions(0, tvQ.getText().toString(), tvAnswer.getText().toString(), "",0,0, null);
                     Questions.addQuestion(question);
                     setQuestions(Questions.getQuestions());
                     dialog.dismiss();

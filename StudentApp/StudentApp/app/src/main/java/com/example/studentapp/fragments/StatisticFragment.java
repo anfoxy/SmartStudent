@@ -55,12 +55,12 @@ public class StatisticFragment extends Fragment {
                     binding.kolvop.setText("Количество вопросов: "+subj.getQuestions().size());
                     int completed=0;
                     for(int i =0; i < subj.getQuestions().size(); i++){
-                        if (subj.getQuestions().get(i).isCompleted()) completed++;
+                        //if (subj.getQuestions().get(i).isCompleted()) completed++;
                     }
                     binding.kolzap.setText("Колличество запомненых вопросов: "+completed);
                     int uncompleted = 0;
                     for(int i =0; i < subj.getQuestions().size(); i++){
-                        if (!subj.getQuestions().get(i).isCompleted()) uncompleted++;
+                       // if (!subj.getQuestions().get(i).isCompleted()) uncompleted++;
                     }
                     binding.dateob.setText("Количество невыученных вопросов:" +uncompleted);
                     binding.dateex.setText(subj.getDaysString().split("T")[0]);

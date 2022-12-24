@@ -14,16 +14,26 @@ public class Questions {
     private String question;
     @SerializedName("answer")
     private String answer;
-    @SerializedName("completed")
-    private boolean completed;
+
+    @SerializedName("date")
+    private String date;
+
+    @SerializedName("percentKnow")
+    private double percentKnow;
+
+    @SerializedName("sizeOfView")
+    private int sizeOfView;
+
     @SerializedName("subId")
     private Subjects subId;
 
-    public Questions(Integer id, String question, String answer, boolean completed, Subjects sub_id) {
+    public Questions(Integer id, String question, String answer, String date,double percentKnow,int sizeOfView, Subjects sub_id) {
         this.id = id;
         this.question = question;
         this.answer = answer;
-        this.completed = completed;
+        this.percentKnow = percentKnow;
+        this.sizeOfView = sizeOfView;
+        this.date = date;
         this.subId = sub_id;
     }
 
@@ -51,12 +61,28 @@ public class Questions {
         this.answer = answer;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public String getDate() {
+        return date;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public double getPercentKnow() {
+        return percentKnow;
+    }
+
+    public void setPercentKnow(double percentKnow) {
+        this.percentKnow = percentKnow;
+    }
+
+    public int getSizeOfView() {
+        return sizeOfView;
+    }
+
+    public void setSizeOfView(int sizeOfView) {
+        this.sizeOfView = sizeOfView;
     }
 
     public Subjects getSubId() {
@@ -94,7 +120,7 @@ public class Questions {
 
     public static void updateQuestion(int position, String text, String answer){
         ArrayList<Questions> questions = getQuestions();
-        Questions questions1  = new Questions(0, text, answer, false, null);
+        Questions questions1  = new Questions(0, text, answer, "",0,0, null);
         questions.remove(questions.get(position));
         questions.add(questions1);
         saveListQuestions(questions);
@@ -106,7 +132,9 @@ public class Questions {
                 "id=" + id +
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
-                ", completed=" + completed +
+                ", date='" + date + '\'' +
+                ", percentKnow='" + percentKnow + '\'' +
+                ", sizeOfView='" + sizeOfView + '\'' +
                 ", subId=" + subId +
                 '}';
     }

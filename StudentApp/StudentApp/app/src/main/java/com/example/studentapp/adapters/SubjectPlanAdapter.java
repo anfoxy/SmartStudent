@@ -48,10 +48,11 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
         holder.subjName.setText(subject.getName());
         int allQuestions = subject.getQuestions().size();
         int comQues = 0;
-        Iterator<Questions> iterator = subject.getQuestions().iterator();
+
+   /*     Iterator<Questions> iterator = subject.getQuestions().iterator();
         while (iterator.hasNext()){
             if (iterator.next().isCompleted()) comQues++;
-        }
+        }*/
         holder.subjStat.setText("Выполнено "+comQues+" из "+allQuestions);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

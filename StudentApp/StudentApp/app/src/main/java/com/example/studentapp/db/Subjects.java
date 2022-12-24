@@ -12,8 +12,8 @@ public class Subjects {
     private String name;
     @SerializedName("days")
     private String days;
-    @SerializedName("completed")
-    private boolean completed;
+    @SerializedName("todayLearned")
+    private int todayLearned;
     @SerializedName("userId")
     private Users userId;
     @SerializedName("questions")
@@ -21,11 +21,11 @@ public class Subjects {
     @SerializedName("plans")
     private ArrayList<Plan> plans;
 
-    public Subjects(int id, String name, String days, boolean completed, Users userId, ArrayList<Questions> questions, ArrayList<Plan> plans) {
+    public Subjects(int id, String name, String days, int todayLearned, Users userId, ArrayList<Questions> questions, ArrayList<Plan> plans) {
         this.id = id;
         this.name = name;
         this.days = days;
-        this.completed = completed;
+        this.todayLearned = todayLearned;
         this.userId = userId;
         this.questions = questions;
         this.plans = plans;
@@ -34,7 +34,7 @@ public class Subjects {
         this.id = subjects.id;
         this.name =  subjects.name;
         this.days =  subjects.days;
-        this.completed =  subjects.completed;
+        this.todayLearned =  subjects.todayLearned;
         this.userId =  subjects.userId;
         this.questions =  subjects.questions;
         this.plans =  subjects.plans;
@@ -89,14 +89,6 @@ public class Subjects {
         this.plans = plans;
     }
 
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
     public Users getUserId() {
         return userId;
     }
@@ -105,15 +97,24 @@ public class Subjects {
         this.userId = userId;
     }
 
+    public int getTodayLearned() {
+        return todayLearned;
+    }
+
+    public void setTodayLearned(int todayLearned) {
+        this.todayLearned = todayLearned;
+    }
+
     @Override
     public String toString() {
         return "Subjects{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", days='" + days + '\'' +
-                ", completed=" + completed +
+                ", todayLearned=" + todayLearned +
                 ", userId=" + userId +
                 ", questions=" + questions +
+                ", plans=" + plans +
                 '}';
     }
 }

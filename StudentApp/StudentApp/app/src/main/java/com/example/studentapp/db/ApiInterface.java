@@ -56,4 +56,7 @@ public interface ApiInterface {
 
     @PUT("plan/{id}")
     Call<Plan> updatePlan(@Path("id") int id, @Body Plan plan);
+
+    @POST("friends_add")
+    Call<String> friendsAdd(@Body Friends friends);
 }

@@ -29,6 +29,7 @@ public class AnotherFragment extends Fragment {
     private ConstraintLayout loginConstraint;
     private ConstraintLayout contactConstraint;
     private ConstraintLayout outConstraint;
+    private ConstraintLayout friendConstraint;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,52 +55,17 @@ public class AnotherFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_anotherFragment_to_contactFragment);
             }
         });
+        friendConstraint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_anotherFragment_to_friendsFragment);
+            }
+        });
 
         outConstraint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder builder
-                        = new AlertDialog.Builder(getContext());
-
-                // set the custom layout
-                final View customLayout
-                        = getLayoutInflater()
-                        .inflate(
-                                R.layout.dialog_out,
-                                null);
-                builder.setView(customLayout);
-
-
-
-                AlertDialog dialog
-                        = builder.create();
-
-
-                Button out = customLayout.findViewById(R.id.out_acc);
-                AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
-
-                out.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Users.deleteUser();
-                        Intent intent = new Intent(getActivity(), LaunchActivity.class);
-                        startActivity(intent);
-                        dialog.dismiss();
-                    }
-                });
-
-                clsBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-
-
+                out();
             }
         });
 
@@ -114,10 +80,51 @@ public class AnotherFragment extends Fragment {
         loginConstraint = anotherFrag.findViewById(R.id.constraint_login);
         contactConstraint = anotherFrag.findViewById(R.id.constraint_contact);
         outConstraint = anotherFrag.findViewById(R.id.constraint_out);
-
-
-
+        friendConstraint = anotherFrag.findViewById(R.id.constraint_friend);
         return anotherFrag;
+    }
+
+    private void out(){
+
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getContext());
+
+        // set the custom layout
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.dialog_out,
+                        null);
+        builder.setView(customLayout);
+
+
+
+        AlertDialog dialog
+                = builder.create();
+
+
+        Button out = customLayout.findViewById(R.id.out_acc);
+        AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+
+        out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Users.deleteUser();
+                Intent intent = new Intent(getActivity(), LaunchActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        clsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
 
     }
 }
