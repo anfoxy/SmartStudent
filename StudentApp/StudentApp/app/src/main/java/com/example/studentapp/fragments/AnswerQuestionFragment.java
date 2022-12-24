@@ -7,6 +7,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -68,19 +69,23 @@ public class AnswerQuestionFragment extends Fragment {
             public void onClick(View view) {
                 binding.lookAnswerButton.setVisibility(View.INVISIBLE);
                 CountAnswerText = CountSpen();
+
                 if(CountAnswerText <5) {
                     binding.textAnswer.setVisibility(View.VISIBLE);
                     binding.yesAnswerButton.setVisibility(View.VISIBLE);
                     binding.noAnswerButton.setVisibility(View.VISIBLE);
                     binding.speakButton.setVisibility(View.VISIBLE);
-                    binding.textSpen.setVisibility(View.INVISIBLE);
+                    binding.textYesNo.setVisibility(View.VISIBLE);
+                    binding.textYesNo.setText("Проверив себя, нажмите на одну из кнопок 'Знаю' или 'Не знаю'");
                     binding.nextBtn.setVisibility(View.INVISIBLE);
                 } else {
+                    TextSpen();
                     binding.textAnswer.setVisibility(View.VISIBLE);
                     binding.speakButton.setVisibility(View.VISIBLE);
-                    binding.textSpen.setVisibility(View.VISIBLE);
                     binding.nextBtn.setVisibility(View.VISIBLE);
-                    TextSpen();
+                    binding.textYesNo.setVisibility(View.VISIBLE);
+                    binding.textYesNo.setText("Нажмите на те предложения, на котрые вы вероятно ответили, перед тем, как нажать 'Посмотреть ответ'");
+
                 }
             }
         });
@@ -132,12 +137,12 @@ public class AnswerQuestionFragment extends Fragment {
 
     private void setQuestions() {
         if (number < questions.size()+1){
+            binding.textYesNo.setText("Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите 'Посмотреть ответ' и сделайте вердикт.");
             binding.lookAnswerButton.setVisibility(View.VISIBLE);
             binding.textAnswer.setVisibility(View.INVISIBLE);
             binding.yesAnswerButton.setVisibility(View.INVISIBLE);
             binding.noAnswerButton.setVisibility(View.INVISIBLE);
             binding.speakButton.setVisibility(View.INVISIBLE);
-            binding.textSpen.setVisibility(View.INVISIBLE);
             binding.nextBtn.setVisibility(View.INVISIBLE);
             binding.textNumber.setText("Вопрос "+number);
             binding.textQuestion.setText(questions.get(number-1).getQuestion());
@@ -188,13 +193,12 @@ public class AnswerQuestionFragment extends Fragment {
     private int CountSpen() {
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
         iterator.setText(questions.get(number-1).getAnswer());
-        int end = iterator.next();
-        spannable = new SpannableString(questions.get(number-1).getAnswer());
-        while (end != BreakIterator.DONE) {
-            end = iterator.next();
-            CountAnswerText++;
+        int count = 0;
+        int start = iterator.first();
+        for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next()) {
+            count++;
         }
-        return CountAnswerText;
+        return count;
     }
 
     private void apiRequest() {
@@ -242,14 +246,14 @@ public class AnswerQuestionFragment extends Fragment {
         public void onClick(View widget) {
             int start = spannable.getSpanStart(this);
             int end = spannable.getSpanEnd(this);
-            ForegroundColorSpan[] spans = spannable.getSpans(start, end, ForegroundColorSpan.class);
+            BackgroundColorSpan[] spans = spannable.getSpans(start, end, BackgroundColorSpan.class);
             if (spans.length > 0) {
                 // Если предложение уже выделено, то удаляем выделение
                 spannable.removeSpan(spans[0]);
                 selectedCount--;
             } else {
                 // Если предложение не выделено, то выделяем его
-                spannable.setSpan(new ForegroundColorSpan(Color.GREEN), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new BackgroundColorSpan(Color.YELLOW), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 selectedCount++;
             }
             // Обновляем текст с процентом выделенных предложений

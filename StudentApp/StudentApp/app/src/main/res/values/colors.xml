@@ -4,7 +4,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="osn">#40C8FD</color>
+    <color name="osn">#7482CE</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -14,4 +14,8 @@
     <color name="gray_600">#FF757575</color>
     <color name="textcolor">#323131</color>
     <color name="textbutton">#FFFFFF</color>
+    <color name="normal_text_color">#454545</color>
+    <color name="selected_text_color">#000000</color>
+    <color name="normal_view_color">#AFAFAF</color>
+    <color name="selected_view_color">#5C75FF</color>
 </resources>

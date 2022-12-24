@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#E6E6E6"
         tools:context=".fragments.AddPlanFragment">
 
         <LinearLayout
@@ -19,38 +20,37 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="Название плана:"
-                    android:textColor="@color/textcolor" />
+                    android:text="Название предмета:"
+                    android:textColor="@color/textcolor"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/Text1"
-                    android:layout_width="match_parent"
+                    android:layout_width="241dp"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:gravity="center"
                     android:textColor="@color/textcolor"
                     android:textCursorDrawable="@null"
                     android:textSize="16dp"
-
-
                     android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="110dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical">
 
                 <TextView
@@ -60,7 +60,8 @@
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="Дата экзамена:"
-                    android:textColor="@color/textcolor" />
+                    android:textColor="@color/textcolor"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/editTextDate"
@@ -80,15 +81,20 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/addque"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:layout_width="400dp"
+            android:layout_gravity="center"
+            android:layout_height="54dp"
+            android:backgroundTint="#4E61C8"
             android:text="Добавить вопрос"
-            android:textColor="@color/textcolor" />
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+        >
 
         <ImageView
             android:id="@+id/imageView32"
@@ -111,12 +117,21 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/AddPlan1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_height="54dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#4E61C8"
                 android:text="Сохранить"
-                android:textColor="@color/textcolor" />
+                android:textColor="@color/textbutton"
+                android:textSize="15sp"
+                app:cornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+            >
         </LinearLayout>
 
     </LinearLayout>

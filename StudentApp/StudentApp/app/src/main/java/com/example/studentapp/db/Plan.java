@@ -62,12 +62,12 @@ public class Plan {
     }
 
     public static ArrayList<Plan> getPlans(){
-       ArrayList<Plan> plans =  Paper.book("plan").read("plan");
-       if (plans == null){
-           return new ArrayList<Plan>();
-       }else {
-           return plans;
-       }
+        ArrayList<Plan> plans =  Paper.book("plan").read("plan");
+        if (plans == null){
+            return new ArrayList<Plan>();
+        }else {
+            return plans;
+        }
     }
 
     public static void addPlan(Plan plan){

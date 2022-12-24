@@ -1,56 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/tv_question"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#E0F2FF"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="20dp"
-        android:textSize="18sp"
+        android:background="#E0F2FF"
         android:gravity="clip_horizontal"
-        android:padding="10dp"
         android:hint="Вопрос"
-        />
+        android:padding="10dp"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/tv_answer"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_margin="20dp"
-        android:gravity="clip_horizontal"
-        android:padding="10dp"
         android:layout_marginTop="16dp"
         android:background="#E0F2FF"
+        android:gravity="clip_horizontal"
         android:hint="Ответ"
+        android:padding="10dp"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/tv_question"
         tools:layout_editor_absoluteX="20dp" />
 
-    <Button
-        android:id="@+id/add_question"
-        android:layout_width="140dp"
-        android:layout_height="42dp"
-        android:background="#FF837A"
-        android:layout_margin="20dp"
-        android:text="Добавить"
-        android:paddingBottom="30dp"
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answer" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel_window"
-        android:layout_width="140dp"
-        android:layout_height="42dp"
-        android:background="#FF837A"
-        android:layout_margin="20dp"
-        android:text="Закрыть"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answer" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_question"
+            android:layout_width="120dp"
+            android:layout_height="42dp"
+            android:layout_margin="5dp"
+            android:background="#51B2FF"
+            android:text="Добавить" />
+
+        <ImageButton
+            android:id="@+id/camera_btn"
+            android:layout_width="63dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#FFEB3B"
+            app:srcCompat="@drawable/ic_camera"
+            tools:ignore="VectorDrawableCompat" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_window"
+            android:layout_width="120dp"
+            android:layout_height="42dp"
+            android:layout_margin="5dp"
+            android:background="#FF837A"
+            android:text="Закрыть" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,9 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.EditItemPlanFragment"
-        android:orientation="vertical"
-        android:layout_marginBottom="30dp">
+        tools:context=".fragments.SettingPlanFragment"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,24 +29,27 @@
 
             <Button
                 android:id="@+id/all1"
-                android:layout_width="149dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Выбрать всё"
-                android:textSize="8dp"
-                app:backgroundTint="#C5F6FF" />
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:backgroundTint="#4E61C8" />
 
         </LinearLayout>
         <ImageView
             android:id="@+id/imageView32"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="2dp"
             android:scaleType="centerCrop"
             app:srcCompat="@android:drawable/bottom_bar" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listPlan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="701dp"
             android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -55,16 +57,22 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/AddPlan"
-            android:bottomLeftRadius="15dp"
-            android:bottomRightRadius="15dp"
-            android:textColor="@color/textcolor"
-            android:topLeftRadius="15dp"
-            android:topRightRadius="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="сохранить план" />
+            android:layout_width="400dp"
+            android:layout_gravity="center"
+            android:layout_height="54dp"
+            android:backgroundTint="#4E61C8"
+            android:text="Сохранить план"
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.407"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
     </LinearLayout>
 </layout>

@@ -10,219 +10,174 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E6E6E6"
+        android:background="#fff"
         tools:context=".fragments.AnswerQuestionFragment">
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/look_answer_button"
-            android:layout_width="316dp"
-            android:layout_height="121dp"
-            android:layout_marginBottom="4dp"
-            android:backgroundTint="#876CB8"
+            android:layout_width="393dp"
+            android:layout_height="54dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#4E61C8"
             android:text="Посмотреть ответ"
             android:textColor="@color/textbutton"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/speak_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.509"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/no_answer_button"
-            android:layout_width="178dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:backgroundTint="#876CB8"
-            android:text="Не знаю"
-            android:visibility="invisible"
-            android:textColor="@color/textbutton"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/yes_answer_button"
-            android:layout_width="178dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#876CB8"
-            android:text="Знаю"
-            android:visibility="invisible"
-            android:textColor="@color/textbutton"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="50dp"
+            android:textSize="15sp"
+            app:cornerRadius="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_btn"
+            android:layout_width="400dp"
+            android:layout_height="54dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#4E61C8"
+            android:text="Применить выделение и продолжить"
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="414dp"
-            android:layout_height="136dp"
-
-            android:elevation="8dp"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="409dp"
+            android:layout_height="730dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+            <TextView
+                android:id="@+id/text_number"
+                android:layout_width="284dp"
+                android:layout_height="62dp"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:paddingTop="20dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="459dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/text_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text=""
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/text_question"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text=""
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
-            android:layout_width="419dp"
-            android:layout_height="50dp"
-
-            android:elevation="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="1dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/bottom_bar" />
 
-                <LinearLayout
-                    android:layout_width="459dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+                android:layout_marginTop="10dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="414dp"
-                        android:layout_height="13dp"
-                        android:background="#A5A5A5"
-                        android:elevation="20dp" />
+                <TextView
+                    android:id="@+id/text_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text=""
+                    android:textColor="#4C3F63"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </ScrollView>
 
-                    <TextView
-                        android:id="@+id/text_spen"
-                        android:layout_width="400dp"
-                        android:visibility="invisible"
-                        android:layout_height="60dp"
-                        android:gravity="center|top"
-                        android:text="Нажмите на те предложения, на которые у вас получилось ответить"
-                        android:textColor="#FF5722"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/yes_answer_button"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.204" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="402dp"
-            android:layout_height="407dp"
-            android:fadeScrollbars="false"
-            android:scrollbarSize="10dp"
-            android:scrollbars="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.444"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/bottom_bar" />
 
             <TextView
-                android:id="@+id/text_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#F2FFF3"
-                android:fontFamily="@font/font2"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:text=""
-                android:textColor="#4C3F63"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:fontFamily="@font/font2" />
+                android:id="@+id/text_yes_no"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center"
+                android:text="Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите 'Посмотреть ответ' и сделайте вердикт."
+                android:textColor="#6070C8"
+                android:textSize="17sp" />
 
-        </ScrollView>
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/bottom_bar" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/speak_button"
-            android:layout_width="249dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="4dp"
-            android:visibility="invisible"
-            android:backgroundTint="#876CB8"
-            android:text="Прослушать тему"
-            android:textColor="@color/textbutton"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/next_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.518"
-            app:layout_constraintStart_toStartOf="parent" />
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="349dp"
+                android:background="#FFFFFF"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="10dp"
+                android:scrollbars="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_btn"
-            android:layout_width="384dp"
-            android:layout_height="48dp"
-            android:backgroundTint="#876CB8"
-            android:text="Применить выделение и продолжить"
-            android:textColor="@color/textbutton"
-            android:visibility="invisible"
-            app:cornerRadius="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.592"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+                <TextView
+                    android:id="@+id/text_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text=""
+                    android:textColor="#4C3F63"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </ScrollView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/speak_button"
+                android:layout_width="400dp"
+                android:layout_height="49dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:backgroundTint="#4E61C8"
+                android:text="Прослушать тему"
+                android:textColor="@color/textbutton"
+                android:textSize="15sp"
+                android:visibility="invisible"
+                app:cornerRadius="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/no_answer_button"
+                    android:layout_width="187dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:backgroundTint="#EC5728"
+                    android:text="Не знаю"
+                    android:textColor="@color/textbutton"
+                    android:textSize="15sp"
+                    android:visibility="invisible"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/yes_answer_button"
+                    android:layout_width="187dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#337E36"
+                    android:text="Знаю"
+                    android:textColor="@color/textbutton"
+                    android:textSize="15sp"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
