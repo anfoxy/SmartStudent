@@ -113,7 +113,6 @@ public class AnswerQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Questions question = questions.get(number-1);
-              //  question.setCompleted(true);
                 Call<Questions> questionsCall = apiInterface.updateQuestion(question.getId(), question);
                 questionsCall.enqueue(new Callback<Questions>() {
                     @Override
