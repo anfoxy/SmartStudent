@@ -140,7 +140,7 @@
     <fragment
         android:id="@+id/editItemPlanFragment"
         android:name="com.example.studentapp.fragments.EditItemPlanFragment"
-        android:label="fragment_edit_item_plan"
+        android:label="Изменение подготовки"
         tools:layout="@layout/fragment_edit_item_plan"
         >
         <argument

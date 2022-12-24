@@ -8,7 +8,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ServiceBuilder {
 
-   private static String URL = "http://192.168.0.16:8080/";
+    private static String URL = "http://192.168.1.2:8080/";
     private static Retrofit retrofit = null;
 
     public static Retrofit buildRequest(){

@@ -58,9 +58,11 @@ public class ListFragment extends Fragment {
                     binding.listSubView.setAdapter(new SubjectAdapter(getContext(), response.body(), itemClickListener));
                     ArrayList<Subjects> subjs = response.body();
                     if(subjs.size() == 0) {
+                        binding.predmNullPng.setVisibility(View.VISIBLE);
                         binding.textList.setVisibility(View.VISIBLE);
                     } else {
                         binding.textList.setVisibility(View.INVISIBLE);
+                        binding.predmNullPng.setVisibility(View.INVISIBLE);
                     }
                 }
             }

@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#E6E6E6"
         tools:context=".fragments.EditPlanFragment"
         android:orientation="vertical">
 
@@ -19,34 +20,34 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="248dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textcolor"
-                    android:text="Название плана:"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:textSize="18dp"
-                    android:layout_marginTop="20dp" />
+                    android:text="Название плана:"
+                    android:textColor="@color/textcolor"
+                    android:textSize="19sp" />
 
                 <EditText
                     android:id="@+id/Text1"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
+                    android:layout_width="244dp"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/textcolor"
-                    android:textCursorDrawable="@null" />
+                    android:textCursorDrawable="@null"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="130dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
 
                 android:orientation="vertical">
@@ -58,7 +59,7 @@
                     android:textColor="@color/textcolor"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:textSize="17dp"
+                    android:textSize="19dp"
                     android:text="Дата экзамена:" />
 
                 <EditText
@@ -77,22 +78,20 @@
         </LinearLayout>
 
 
-
-
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/b"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textcolor"
-            android:background="#4CB3E1"
-            android:text="Добавить вопрос" />
-        <Button
-            android:id="@+id/editPlan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textcolor"
-            android:text="Изменить план" />
+            android:layout_width="400dp"
+            android:layout_gravity="center"
+            android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#4E61C8"
+            android:text="Добавить вопрос"
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <ImageView
             android:id="@+id/imageView32"
@@ -109,9 +108,37 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listVop"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="391dp"
+                android:layout_weight="2"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editPlan"
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_height="54dp"
+                android:backgroundTint="#4E61C8"
+                android:text="Изменить даты подготовки"
+                android:textColor="@color/textbutton"
+                android:textSize="15sp"
+                app:cornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save"
+                android:layout_width="400dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#4E61C8"
+                android:text="Сохранить"
+                android:textColor="@color/textbutton"
+                android:textSize="15sp"
+                app:cornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,28 +147,14 @@
 
                 <ImageButton
                     android:id="@+id/del"
-                    android:layout_width="130dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center"
+                    android:layout_height="45dp"
                     android:layout_weight="1"
+                    android:layout_marginTop="5dp"
                     android:background="#FF5722"
                     app:srcCompat="@drawable/ic_delete"
                     tools:ignore="VectorDrawableCompat" />
-
-                <TextView
-                    android:id="@+id/save"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:state_pressed="true"
-                    android:state_enabled="true"
-                    android:clickable="true"
-                    android:layout_weight="1"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="10dp"
-                    android:gravity="center"
-                    android:background="#4CB3E1"
-                    android:text="Cохранить"
-                    android:textColor="@color/textcolor"
-                    android:textSize="18dp" />
 
 
             </LinearLayout>

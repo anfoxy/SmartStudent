@@ -31,28 +31,40 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_question"
         tools:layout_editor_absoluteX="20dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/add_question"
-        android:layout_width="140dp"
-        android:layout_height="42dp"
-        android:layout_margin="20dp"
-        android:background="#51B2FF"
-        android:text="Добавить"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.819"
-        app:layout_constraintStart_toEndOf="@+id/cancel_window"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answer"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel_window"
-        android:layout_width="140dp"
-        android:layout_height="42dp"
-        android:layout_margin="20dp"
-        android:background="#FF837A"
-        android:text="Закрыть"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answer" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_question"
+            android:layout_width="120dp"
+            android:layout_height="42dp"
+            android:layout_margin="5dp"
+            android:background="#51B2FF"
+            android:text="Добавить" />
+
+        <ImageButton
+            android:id="@+id/camera_btn"
+            android:layout_width="63dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#FFEB3B"
+            app:srcCompat="@drawable/ic_camera"
+            tools:ignore="VectorDrawableCompat" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_window"
+            android:layout_width="120dp"
+            android:layout_height="42dp"
+            android:layout_margin="5dp"
+            android:background="#FF837A"
+            android:text="Закрыть" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/password_auth"
             android:hint="Email"
+            android:inputType="textEmailAddress"
             android:layout_margin="20dp" />
 
         <EditText
@@ -29,6 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:hint="Пароль"
             android:layout_margin="20dp"
+            android:maxLength="25"
             android:inputType="textPassword"/>
 
         <Button

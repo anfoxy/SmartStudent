@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
-            android:weightSum="3">
+            android:weightSum="2">
 
             <TextView
                 android:id="@+id/section_1"
@@ -61,7 +61,7 @@
                 android:layout_weight="1"
                 android:text="Профиль"
                 android:gravity="center"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/section_2"
@@ -70,18 +70,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Достижения"
+                android:textSize="18sp"/>
 
-                android:textSize="17sp"/>
 
-            <TextView
-                android:id="@+id/section_3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Друзья"
-
-                android:textSize="17sp"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -97,26 +88,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
-        android:weightSum="3">
+        android:weightSum="2">
         <View
             android:id="@+id/underline"
-            android:layout_width="85dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="25dp"
-            android:background="@color/normal_view_color" />
-
-        <View
-            android:id="@+id/underline2"
-            android:layout_width="110dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="40dp"
+            android:layout_width="100dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="50dp"
             android:background="@color/normal_view_color" />
 
         <View
             android:id="@+id/underline3"
-            android:layout_width="83dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="40dp"
+            android:layout_width="120dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="100dp"
             android:background="@color/normal_view_color" />
     </LinearLayout>
 
@@ -127,27 +111,29 @@
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/password"
-                android:layout_width="match_parent"
+                android:id="@+id/editpng"
+                android:layout_width="400dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:backgroundTint="#4E61C8"
-                android:text="Изменить пароль"
+                android:layout_marginTop="10dp"
+                android:text="Сменить фото профиля"
                 android:textColor="@color/textbutton"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/editpng"
-                android:layout_width="match_parent"
+                android:id="@+id/password"
+                android:layout_width="400dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#4E61C8"
-                android:text="Сменить фото профиля"
+                android:text="Изменить пароль"
                 android:textColor="@color/textbutton"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -205,8 +191,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Дата регистрации"
+                        android:text="Ближайший экзамен"
                         android:textColor="#000000"
+                        android:gravity="center"
                         android:textSize="14sp" />
 
                     <TextView
@@ -232,16 +219,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Подписка"
+                        android:text="Количество предметов"
                         android:textColor="#000000"
-                        android:textSize="15sp" />
+                        android:gravity="center"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textView12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Premium" />
+                        android:text="5" />
                 </LinearLayout>
 
             </LinearLayout>

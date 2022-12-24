@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -258,28 +259,27 @@ public class AddPlanFragment extends Fragment {
     }
 
     public void showAlertDialogButtonClicked(View view) {
-
         // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         // set the custom layout
-        final View customLayout
-                = getLayoutInflater()
-                .inflate(
-                        R.layout.dialog_add_question,
-                        null);
+        final View customLayout = getLayoutInflater().inflate(R.layout.dialog_add_question, null);
         builder.setView(customLayout);
 
-
-
-        AlertDialog dialog
-                = builder.create();
+        AlertDialog dialog = builder.create();
 
         EditText tvAnswer = customLayout.findViewById(R.id.tv_answer);
         EditText tvQ = customLayout.findViewById(R.id.tv_question);
         Button addBtn = customLayout.findViewById(R.id.add_question);
+        ImageButton addBtnCam = customLayout.findViewById(R.id.camera_btn);
         AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+
+        addBtnCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // ДИАНА. При нажатии на кнопку, вызываем эту функцию с Tesseract
+            }
+        });
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override

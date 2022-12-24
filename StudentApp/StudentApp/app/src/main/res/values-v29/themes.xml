@@ -3,7 +3,7 @@
 
     <style name="Theme.MyApplication" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#7482CE</item>
+        <item name="colorPrimary">#7989E1</item>
         <item name="colorPrimaryVariant">#000000</item>
         <item name="colorOnPrimary">#5E5E5E</item>
         <!-- Secondary brand color. -->

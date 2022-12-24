@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#F1F1F1"
+        android:background="#E6E6E6"
         tools:context=".fragments.AddPlanFragment">
 
         <LinearLayout
@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="Название плана:"
+                    android:text="Название предмета:"
                     android:textColor="@color/textcolor"
                     android:textSize="20sp" />
 
@@ -41,6 +41,7 @@
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:gravity="center"
                     android:textColor="@color/textcolor"
                     android:textCursorDrawable="@null"
                     android:textSize="16dp"
@@ -82,13 +83,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addque"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
+            android:layout_gravity="center"
             android:layout_height="54dp"
-            android:layout_marginTop="5dp"
             android:backgroundTint="#4E61C8"
             android:text="Добавить вопрос"
             android:textColor="@color/textbutton"
-            android:textSize="18sp"
+            android:textSize="15sp"
             app:cornerRadius="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,13 +119,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/AddPlan1"
-                android:layout_width="match_parent"
+                android:layout_width="400dp"
+                android:layout_gravity="center"
                 android:layout_height="54dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
                 android:backgroundTint="#4E61C8"
                 android:text="Сохранить"
                 android:textColor="@color/textbutton"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
