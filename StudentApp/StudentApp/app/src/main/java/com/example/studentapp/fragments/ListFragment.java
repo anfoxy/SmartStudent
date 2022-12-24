@@ -51,10 +51,19 @@ public class ListFragment extends Fragment {
         getSubjs.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
+
                 if (response.isSuccessful()){
                     binding.listSubView.setHasFixedSize(true);
                     binding.listSubView.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listSubView.setAdapter(new SubjectAdapter(getContext(), response.body(), itemClickListener));
+                    ArrayList<Subjects> subjs = response.body();
+                    if(subjs.size() == 0) {
+                        binding.predmNullPng.setVisibility(View.VISIBLE);
+                        binding.textList.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.textList.setVisibility(View.INVISIBLE);
+                        binding.predmNullPng.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
 
@@ -62,6 +71,7 @@ public class ListFragment extends Fragment {
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
 
             }
+
         });
 
         binding.AddPlan.setOnClickListener(new View.OnClickListener() {

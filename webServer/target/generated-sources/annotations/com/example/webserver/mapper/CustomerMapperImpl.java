@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-12-18T15:06:56+0300",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 13.0.12 (Azul Systems, Inc.)"
+    date = "2022-12-24T14:11:31+0300",
+    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 13.0.13 (Azul Systems, Inc.)"
 )
 @Component
 public class CustomerMapperImpl implements CustomerMapper {
@@ -31,9 +31,6 @@ public class CustomerMapperImpl implements CustomerMapper {
         }
         if ( dto.getAnswer() != null ) {
             entity.setAnswer( dto.getAnswer() );
-        }
-        if ( dto.getCompleted() != null ) {
-            entity.setCompleted( dto.getCompleted() );
         }
         if ( dto.getSubId() != null ) {
             entity.setSubId( dto.getSubId() );
@@ -54,9 +51,6 @@ public class CustomerMapperImpl implements CustomerMapper {
         }
         if ( dto.getDays() != null ) {
             entity.setDays( dto.getDays() );
-        }
-        if ( dto.getCompleted() != null ) {
-            entity.setCompleted( dto.getCompleted() );
         }
         if ( dto.getUserId() != null ) {
             entity.setUserId( dto.getUserId() );
