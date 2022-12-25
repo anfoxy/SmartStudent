@@ -100,9 +100,7 @@ public class EditItemPlanFragment extends Fragment {
                 if (response.body()!= null){
                     subj = new Subjects(response.body());
                     ArrayList<Plan> p = removeDatesAfterToday();
-
                     boolean []b = setNewPlan(p);
-                    Log.d("massiv = ", ""+ Arrays.toString(b));
 
                     binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listPlan.setHasFixedSize(true);
