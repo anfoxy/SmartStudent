@@ -11,6 +11,15 @@ public class PlanToSub {
     private  int learnedBefore;
     private  int todayLearned; //сколько выучили именно сегодня //Это передается из бд
     private LocalDate dateOfExams; //Дата, когда будет экзамен //Это из бд
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public PlanToSub(Subject sub_, LocalDate dateOfExams){
         sub=sub_;
@@ -172,5 +181,23 @@ public class PlanToSub {
             learnedBefore = sub.getSizeKnow();
             todayLearned--;
         }
+    }
+
+    public String dateToString() {
+        String dateStr;
+        if (dateOfExams.getMonthValue() >=10){
+            if (dateOfExams.getDayOfMonth()>=10){
+                dateStr = dateOfExams.getYear()+"-"+(dateOfExams.getMonthValue())+"-"+dateOfExams.getDayOfMonth();
+            }else {
+                dateStr = dateOfExams.getYear()+"-"+dateOfExams.getMonthValue()+"-0"+dateOfExams.getDayOfMonth();
+            }
+        } else {
+            if (dateOfExams.getDayOfMonth()>=10){
+                dateStr = dateOfExams.getYear()+"-0"+dateOfExams.getMonthValue()+"-"+dateOfExams.getDayOfMonth();
+            }else {
+                dateStr = dateOfExams.getYear()+"-0"+dateOfExams.getMonthValue()+"-0"+dateOfExams.getDayOfMonth();
+            }
+        }
+        return dateStr;
     }
 }

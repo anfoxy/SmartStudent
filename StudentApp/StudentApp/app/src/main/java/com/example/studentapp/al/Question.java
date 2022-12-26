@@ -9,6 +9,15 @@ public class Question {
     private LocalDate lastDate; //Дата, когда попадался этот вопрос последний раз
     private Integer sizeOfView; //сколько раз попадался этот вопрос //так же это показатель был вопрос или нет.
     private Double percentKnow; //Процент знаний
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Question() {
         question = "";
