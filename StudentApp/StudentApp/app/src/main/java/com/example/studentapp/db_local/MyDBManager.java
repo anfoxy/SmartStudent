@@ -36,7 +36,7 @@ public class MyDBManager {
         db = myDBHelper.getWritableDatabase();
     }
 
-    public void get(PlanToSub pl) {
+    public void setFromDB(PlanToSub pl) {
         Subject s = pl.getSub();
         ArrayList<PlanToDay> Date_Plan = pl.getLastPlan();
         ArrayList<PlanToDay> futurePlan = pl.getFuturePlan();
@@ -306,5 +306,16 @@ public class MyDBManager {
         }
         return GlSub;
     }
+
+    public void delete_QUE(Integer id_que) {
+        db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_ID_QUESTION + " = ?", new String[]{String.valueOf(id_que)});
+    }
+    public void delete_SUB(String sub_name) {
+        db.delete(MyConstants.TABLE_SUBJECT, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
+        db.delete(MyConstants.TABLE_PLAN, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
+        db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
+    }
+
+    // функция обновления
 
 }
