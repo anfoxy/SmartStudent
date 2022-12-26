@@ -7,6 +7,16 @@ public class PlanToDay {
     private int sizeOfQuetion;
     private Integer id;
 
+    public Boolean getBoolPlan() {
+        return boolPlan;
+    }
+
+    public void setBoolPlan(Boolean boolPlan) {
+        this.boolPlan = boolPlan;
+    }
+
+    private Boolean boolPlan;
+
     public Integer getId() {
         return id;
     }

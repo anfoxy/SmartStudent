@@ -1,5 +1,8 @@
 package com.example.studentapp.al;
 
+import com.example.studentapp.db.Plan;
+import com.example.studentapp.db.Questions;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +22,14 @@ public class PlanToSub {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public PlanToSub(){
+        sub=new Subject();
+        futurePlan =new ArrayList<PlanToDay>();
+        lastPlan=new ArrayList<PlanToDay>();
+        todayLearned =0;
+        this.dateOfExams=LocalDate.now();
     }
 
     public PlanToSub(Subject sub_, LocalDate dateOfExams){
@@ -181,6 +192,18 @@ public class PlanToSub {
             learnedBefore = sub.getSizeKnow();
             todayLearned--;
         }
+    }
+
+    public  ArrayList<Plan> getPlans(){
+        ArrayList<Plan> res=new ArrayList<>();
+
+        for(PlanToDay planToDay:lastPlan){
+            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null));
+        }
+        for(PlanToDay planToDay:futurePlan){
+            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null));
+        }
+        return res;
     }
 
     public String dateToString() {

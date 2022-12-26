@@ -27,6 +27,16 @@ public class Question {
         percentKnow=0.0;
     }
 
+    public Question(String quest, String answer, Integer id) {
+        this.question = quest;
+        this.answer = answer;
+        lastDate = LocalDate.now();
+        sizeOfView = 0;
+        percentKnow=0.0;
+        this.id= id;
+        //?? Забиваем question,  answer, last_date, size_of_view, know
+    }
+
     public Question(String quest, String answer) {
         this.question = quest;
         this.answer = answer;
