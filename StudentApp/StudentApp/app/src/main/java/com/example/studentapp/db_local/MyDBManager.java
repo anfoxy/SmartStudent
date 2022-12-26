@@ -66,6 +66,7 @@ public class MyDBManager {
     }
 
 
+
     public void insert_TABLE_PLAN(PlanToSub pl, PlanToDay pld, int bool_plan) {
         ContentValues cv = new ContentValues();
         String date = pld.dateToString();
@@ -317,5 +318,44 @@ public class MyDBManager {
     }
 
     // функция обновления
+    public void updatePlan(PlanToSub pl, String name_sub) {
+        ArrayList<PlanToDay> pld = pl.getFuturePlan();
+        pld.addAll(pl.getLastPlan());
 
+        // всю строку обновить кроме названия
+        ContentValues cv = new ContentValues();
+        String query_pl = "SELECT " + MyConstants.KEY_ID_PLAN + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_DATE_PLAN + ", " + MyConstants.KEY_NUM_QUE_PLAN  + ", " + MyConstants.KEY_BOOL_DATE + " FROM " + MyConstants.TABLE_PLAN;
+
+        Cursor cursor1 = db.rawQuery(query_pl, null);
+        int count_plan=0;
+        cursor1.moveToFirst();
+        do {
+            count_plan++;
+        } while (cursor1.moveToNext());
+        cursor1.moveToFirst();
+
+        ArrayList<String> Arr_sub_plan = new ArrayList<>();
+        int col_idx_name_sub_plan = cursor1.getColumnIndex("subject_name");
+        for (int i = 0; i < count_plan; i++) {
+            Arr_sub_plan.add(cursor1.getString(col_idx_name_sub_plan));
+            cursor1.moveToNext();
+        }
+        cursor1.moveToFirst();
+
+
+        for(int i = 0; i < count_plan; i++) {
+            if(name_sub == Arr_sub_plan.get(i)) {
+                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_ID_PLAN + "= ?",new String[] {pld.get(i).getId().toString()});
+                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_DATE_PLAN + "= ?",new String[] {pld.get(i).dateToString()});
+                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_NUM_QUE_PLAN + "= ?",new String[] {""+pld.get(i).getSizeOfQuetion()});
+                    if (pld.get(i) == pl.getFuturePlan().get(0)) {
+                        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_BOOL_DATE + "= ?",new String[] {"1"});
+                    } else {
+                        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_BOOL_DATE + "= ?",new String[] {"0"});
+                    }
+                }
+
+
+        }
+    }
 }
