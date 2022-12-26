@@ -6,10 +6,10 @@ import com.example.studentapp.db.Subjects;
 
 public class MyConstants {
     // При изменении в бд +1
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 1;
 
     // Название бд
-    public static final String DB_NAME = "smart_students";
+    public static final String DB_NAME = "smart_student";
 
     // Название таблиц в бд
     public static final String TABLE_PLAN = "table_plan";

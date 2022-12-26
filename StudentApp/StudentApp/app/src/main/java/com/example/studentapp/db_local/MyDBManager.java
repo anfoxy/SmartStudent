@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 public class MyDBManager {
     private Context context;
@@ -41,9 +42,6 @@ public class MyDBManager {
         ArrayList<PlanToDay> Date_Plan = pl.getLastPlan();
         ArrayList<PlanToDay> futurePlan = pl.getFuturePlan();
         int bool_plan;
-        LocalDate date_of_exams1 = pl.getDateOfExams();
-        ArrayList<Question> question = pl.getSub().getQuestion();
-        String name_of_sub = pl.getSub().getNameOfSubme();
 
         Users user = Users.getUser();
         insert_TABLE_SUBJECT(user, pl);
@@ -197,7 +195,7 @@ public class MyDBManager {
             cursor3.moveToFirst();
 
             int col_idx_name_sub_question = cursor2.getColumnIndex("subject_name");
-            for (int i = 0; i < count_sub; i++) {
+            for (int i = 0; i < count_que; i++) {
                 name_sub_question.add(cursor2.getString(col_idx_name_sub_question));
                 cursor2.moveToNext();
             }
@@ -308,21 +306,18 @@ public class MyDBManager {
         return GlSub;
     }
 
-    public void delete_QUE(Integer id_que) {
-        db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_ID_QUESTION + " = ?", new String[]{String.valueOf(id_que)});
-    }
+
     public void delete_SUB(String sub_name) {
         db.delete(MyConstants.TABLE_SUBJECT, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
         db.delete(MyConstants.TABLE_PLAN, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
         db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
     }
 
-    // функция обновления
+    // функция обновления плана (изменение) кнопка AddPlan в SettingPlanFragment
     public void updatePlan(PlanToSub pl, String name_sub) {
         ArrayList<PlanToDay> pld = pl.getFuturePlan();
         pld.addAll(pl.getLastPlan());
 
-        // всю строку обновить кроме названия
         ContentValues cv = new ContentValues();
         String query_pl = "SELECT " + MyConstants.KEY_ID_PLAN + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_DATE_PLAN + ", " + MyConstants.KEY_NUM_QUE_PLAN  + ", " + MyConstants.KEY_BOOL_DATE + " FROM " + MyConstants.TABLE_PLAN;
 
@@ -345,17 +340,64 @@ public class MyDBManager {
 
         for(int i = 0; i < count_plan; i++) {
             if(name_sub == Arr_sub_plan.get(i)) {
-                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_ID_PLAN + "= ?",new String[] {pld.get(i).getId().toString()});
-                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_DATE_PLAN + "= ?",new String[] {pld.get(i).dateToString()});
-                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_NUM_QUE_PLAN + "= ?",new String[] {""+pld.get(i).getSizeOfQuetion()});
+
+                cv.put(MyConstants.KEY_ID_PLAN, pld.get(i).getId());
+                cv.put(MyConstants.KEY_DATE_PLAN, pld.get(i).dateToString());
+                cv.put(MyConstants.KEY_NUM_QUE_PLAN, pld.get(i).getSizeOfQuetion());
+
                     if (pld.get(i) == pl.getFuturePlan().get(0)) {
-                        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_BOOL_DATE + "= ?",new String[] {"1"});
+                        cv.put(MyConstants.KEY_BOOL_DATE, 1);
                     } else {
-                        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_BOOL_DATE + "= ?",new String[] {"0"});
+                        cv.put(MyConstants.KEY_BOOL_DATE, 0);
                     }
+                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {name_sub});
                 }
-
-
         }
     }
+
+    // обновление вопросов, так же функция удаления вопроса и загрузки вопроса при изменении.
+    // так как она удаляет старые для предмета в Question таблицы и добавляет все что есть для этого
+    // предмета. Если удаление всех вопросов то она удалит их всех и загрузит
+    public void updateQuestionsToSubject(PlanToSub pl) {
+        ContentValues cv = new ContentValues();
+        Subject s = pl.getSub();
+        String query_que = "SELECT " + MyConstants.KEY_ID_QUESTION + ", " + MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_TEXT_QUESTION + ", " + MyConstants.KEY_TEXT_ANSWER + ", " + MyConstants.KEY_PERCENT_KNOW + ", " + MyConstants.KEY_DATE_QUESTION + ", " + MyConstants.KEY_SIZE_OF_VIEW + " FROM " + MyConstants.TABLE_QUESTION;
+        Cursor cursor = db.rawQuery(query_que, null);
+
+        cursor.moveToFirst();
+        int count_que = 0;
+        do {
+            count_que++;
+        } while (cursor.moveToNext());
+        cursor.moveToFirst();
+
+        ArrayList<String> name_sub_question = new ArrayList<>();
+        int col_idx_name_sub_question = cursor.getColumnIndex("subject_name");
+        for (int i = 0; i < count_que; i++) {
+            name_sub_question.add(cursor.getString(col_idx_name_sub_question));
+            cursor.moveToNext();
+        }
+        cursor.moveToFirst();
+
+
+        for(int i=0; i<count_que;i++) {
+            if (Objects.equals(s.getNameOfSubme(), name_sub_question.get(i))) {
+                db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{s.getNameOfSubme()});
+            }
+        }
+        for(int i=0; i<s.getSizeAllQuest(); i++) {
+            insert_TABLE_QUESTION(pl, i);
+        }
+    }
+
+// Обновление предмета(его изменение). При нажатии на save()/Кнопка сохранить. Обновляется название и дата
+    public void updateNameSubAndDateExams(String name_sub, String date_exams) {
+        ContentValues cv = new ContentValues();
+        cv.put(MyConstants.KEY_SUBJECT_NAME, name_sub);
+        cv.put(MyConstants.KEY_SUBJECT_DATE, date_exams);
+        db.update(MyConstants.TABLE_SUBJECT, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {name_sub});
+    }
+
+    // обновление
+
 }
