@@ -38,4 +38,21 @@ public class PlanToDay {
     public void setSizeOfQuetion(int sizeOfQ){
         sizeOfQuetion=sizeOfQ;
     }
+    public String dateToString() {
+        String dateStr;
+        if (date.getMonthValue() >=10){
+            if (date.getDayOfMonth()>=10){
+                dateStr = date.getYear()+"-"+(date.getMonthValue())+"-"+date.getDayOfMonth();
+            }else {
+                dateStr = date.getYear()+"-"+date.getMonthValue()+"-0"+date.getDayOfMonth();
+            }
+        } else {
+            if (date.getDayOfMonth()>=10){
+                dateStr = date.getYear()+"-0"+date.getMonthValue()+"-"+date.getDayOfMonth();
+            }else {
+                dateStr = date.getYear()+"-0"+date.getMonthValue()+"-0"+date.getDayOfMonth();
+            }
+        }
+        return dateStr;
+    }
 }
