@@ -68,8 +68,8 @@ public class MyDBManager {
 
     public void insert_TABLE_PLAN(PlanToSub pl, PlanToDay pld, int bool_plan) {
         ContentValues cv = new ContentValues();
-        String date = pld.getDate().getYear() + "-" + pld.getDate().getMonth() + "-" + pld.getDate().getDayOfMonth();
-//        cv.put(MyConstants.KEY_ID_PLAN, pl.getIDSubject());
+        String date = pld.dateToString();
+        cv.put(MyConstants.KEY_ID_PLAN, pld.getId());
         cv.put(MyConstants.KEY_SUBJECT_NAME, pl.getSub().getNameOfSubme());
         cv.put(MyConstants.KEY_DATE_PLAN, date);
         cv.put(MyConstants.KEY_BOOL_DATE, bool_plan);
@@ -80,8 +80,8 @@ public class MyDBManager {
 
     public void insert_TABLE_QUESTION(PlanToSub pl, int i) {
         ContentValues cv = new ContentValues();
-        String date = pl.getSub().getQuestion(i).getLastDate().getYear() + "-" + pl.getSub().getQuestion(i).getLastDate().getMonth() + "-" + pl.getSub().getQuestion(i).getLastDate().getDayOfMonth();
-//        cv.put(MyConstants.KEY_ID_QUESTION, pl.getIDQuestion());
+        String date = pl.getSub().getQuestion(i).dateToString();
+        cv.put(MyConstants.KEY_ID_QUESTION, pl.getSub().getQuestion(i).getId());
         cv.put(MyConstants.KEY_SUBJECT_NAME, pl.getSub().getNameOfSubme());
         cv.put(MyConstants.KEY_TEXT_QUESTION, pl.getSub().getQuestion(i).getQuestion());
         cv.put(MyConstants.KEY_TEXT_ANSWER, pl.getSub().getQuestion(i).getAnswer());
@@ -94,8 +94,8 @@ public class MyDBManager {
 
     public void insert_TABLE_SUBJECT(Users user, PlanToSub pl) {
         ContentValues cv = new ContentValues();
-        String st = pl.getDateOfExams().getYear() + "-" + pl.getDateOfExams().getMonth() + "-" + pl.getDateOfExams().getDayOfMonth();
-//        cv.put(MyConstants.KEY_ID_SUBJECT, pl.getIDQuestion());
+        String st = pl.dateToString();
+        cv.put(MyConstants.KEY_ID_SUBJECT, pl.getId());
         cv.put(MyConstants.KEY_USER_ID, user.getId());
         cv.put(MyConstants.KEY_SUBJECT_NAME, pl.getSub().getNameOfSubme());
         cv.put(MyConstants.KEY_SUBJECT_DATE, st);
@@ -110,9 +110,9 @@ public class MyDBManager {
     }
 
     public ArrayList<PlanToSub> set() {
-        String query_que = "SELECT " + MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_TEXT_QUESTION + ", " + MyConstants.KEY_TEXT_ANSWER + ", " + MyConstants.KEY_PERCENT_KNOW + ", " + MyConstants.KEY_DATE_QUESTION + ", " + MyConstants.KEY_SIZE_OF_VIEW + " FROM " + MyConstants.TABLE_QUESTION;
-        String query_sub = "SELECT " + MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_SUBJECT_DATE + ", " + MyConstants.KEY_TODAY_LEARNED + " FROM " + MyConstants.TABLE_SUBJECT;
-        String query_pl = "SELECT " + MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_DATE_PLAN + ", " + MyConstants.KEY_NUM_QUE_PLAN  + ", " + MyConstants.KEY_BOOL_DATE + " FROM " + MyConstants.TABLE_PLAN;
+        String query_que = "SELECT " + MyConstants.KEY_ID_QUESTION + ", " + MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_TEXT_QUESTION + ", " + MyConstants.KEY_TEXT_ANSWER + ", " + MyConstants.KEY_PERCENT_KNOW + ", " + MyConstants.KEY_DATE_QUESTION + ", " + MyConstants.KEY_SIZE_OF_VIEW + " FROM " + MyConstants.TABLE_QUESTION;
+        String query_sub = "SELECT " + MyConstants.KEY_ID_SUBJECT + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_SUBJECT_DATE + ", " + MyConstants.KEY_TODAY_LEARNED + " FROM " + MyConstants.TABLE_SUBJECT;
+        String query_pl = "SELECT " + MyConstants.KEY_ID_PLAN + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_DATE_PLAN + ", " + MyConstants.KEY_NUM_QUE_PLAN  + ", " + MyConstants.KEY_BOOL_DATE + " FROM " + MyConstants.TABLE_PLAN;
 
         //Вывод из таблицы все ID
         Cursor yourCursor = getYourTableContents();
@@ -297,7 +297,6 @@ public class MyDBManager {
 
                         LocalDate date_local1 = LocalDate.of(year, month, day);
                         Local_Date_que.add(date_local1);
-                        // String quest, String answer,  LocalDate Local_Date_que, Integer sizeOfView, Double percentKnow
                         Arr_que.add(new Question(quest.get(m), answer.get(m), Local_Date_que.get(m), sizeOfView.get(m), percentKnow.get(m))); // Local date функцию for преобразование
                     }
                 }
