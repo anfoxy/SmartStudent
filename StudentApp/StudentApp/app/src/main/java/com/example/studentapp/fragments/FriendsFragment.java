@@ -1,6 +1,7 @@
 package com.example.studentapp.fragments;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,16 +18,24 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.R;
+import com.example.studentapp.adapters.FriendsAdapter;
+import com.example.studentapp.adapters.FriendsInAdapter;
+import com.example.studentapp.adapters.FriendsIsAdapter;
+import com.example.studentapp.adapters.SubjectAdapter;
+import com.example.studentapp.adapters.SubjectPlanAdapter;
 import com.example.studentapp.databinding.FragmentAccountBinding;
 import com.example.studentapp.databinding.FragmentFriendsBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Friends;
 import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.ServiceBuilder;
+import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import io.paperdb.Paper;
@@ -40,6 +49,10 @@ public class FriendsFragment extends Fragment {
     FragmentFriendsBinding binding;
     ApiInterface apiInterface;
     Users user;
+    FriendsAdapter.OnItemClickListener itemClickListener;
+    FriendsInAdapter.OnItemClickListenerIn itemClickListenerIn;
+    FriendsIsAdapter.OnItemClickListenerIs itemClickListenerIs;
+
   //  AccountFragmentArgs args;
 
     @Override
@@ -47,6 +60,82 @@ public class FriendsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         user = Users.getUser();
 
+        itemClickListener =new FriendsAdapter.OnItemClickListener() {
+            @Override
+            public void onClickFriends(Users friends, int position) {
+                FriendsFragmentDirections.ActionFriendsFragmentToFriendsProfileFragment action = FriendsFragmentDirections.actionFriendsFragmentToFriendsProfileFragment(friends.getId());
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        };
+        itemClickListenerIn =new FriendsInAdapter.OnItemClickListenerIn() {
+
+            @Override
+            public void onClickFriendsCheck(ArrayList<Users> friends, int position) {
+                Users subj = friends.get(position);
+                friends.remove(position);
+                Users myUser = Users.getUser();
+                Call<Friends> planCall = apiInterface.friendsAccept(new Friends(null,"",subj,myUser));
+                planCall.enqueue(new Callback<Friends>() {
+                    @Override
+                    public void onResponse(Call<Friends> call, Response<Friends> response) {
+                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                        binding.listVop.setHasFixedSize(true);
+                        binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                    }
+                    @Override
+                    public void onFailure(Call<Friends> call, Throwable t) {
+                        Log.d("not ok", t.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onClickFriendsClear(ArrayList<Users> friends, int position) {
+                Users subj = friends.get(position);
+                Users myUser = Users.getUser();
+                friends.remove(position);
+                Call<Friends> planCall = apiInterface.friendsRefuse(new Friends(null,"",subj,myUser));
+                planCall.enqueue(new Callback<Friends>() {
+                    @Override
+                    public void onResponse(Call<Friends> call, Response<Friends> response) {
+                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                        binding.listVop.setHasFixedSize(true);
+                        binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                    }
+                    @Override
+                    public void onFailure(Call<Friends> call, Throwable t) {
+                        Log.d("not ok", t.getMessage());
+                    }
+                });
+            }
+        };
+        itemClickListenerIs = new FriendsIsAdapter.OnItemClickListenerIs() {
+
+            @Override
+            public void onClickFriendsCheck(ArrayList<Users> friends, int position) {
+                Users subj = friends.get(position);
+                Users myUser = Users.getUser();
+                friends.remove(position);
+                Call<Friends> planCall = apiInterface.friendsDeleteIs(new Friends(0,"",subj,myUser));
+                planCall.enqueue(new Callback<Friends>() {
+                    @Override
+                    public void onResponse(Call<Friends> call, Response<Friends> response) {
+
+                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                        binding.listVop.setHasFixedSize(true);
+                        binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                    }
+                    @Override
+                    public void onFailure(Call<Friends> call, Throwable t) {
+                        Log.d("not ok", t.getMessage());
+                    }
+                });
+            }
+        };
+
+
+
+        setFriends();
 
         binding.sendFriends.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +155,9 @@ public class FriendsFragment extends Fragment {
                                 case "OK":
                                     Toast.makeText(getActivity(), "Запрос отправлен.", Toast.LENGTH_SHORT).show();
                                     break;
+                                case "exists":
+                                    Toast.makeText(getActivity(), "Запрос уже отправлен", Toast.LENGTH_SHORT).show();
+                                    break;
                                 case "your username":
                                     Toast.makeText(getActivity(), "Нельзя добавить себя в друзья.", Toast.LENGTH_SHORT).show();
                                     break;
@@ -83,9 +175,108 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-
-
+        binding.friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFriends();
+            }
+        });
+        binding.isFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setIsFriends();
+            }
+        });
+        binding.inFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setInFriends();
+            }
+        });
     }
+
+
+    private void setFriends(){
+
+    /*    binding.inFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));
+        binding.friends.setBackgroundColor(Color.parseColor("@color/osn"));
+        binding.isFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));*/
+
+        Call<ArrayList<Users>> getSubs = apiInterface.friendsByUser(user.getId());
+        getSubs.enqueue(new Callback<ArrayList<Users>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
+
+                    ArrayList<Users> friends = response.body();
+
+                    binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                    binding.listVop.setHasFixedSize(true);
+                    binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
+                System.out.println("не работает!!!");
+            }
+        });
+    }
+
+    private void setInFriends(){
+
+/*        binding.inFriends.setBackgroundColor(Color.parseColor("@color/osn"));
+        binding.friends.setBackgroundColor(Color.parseColor("#EAEAEA"));
+        binding.isFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));*/
+
+        Call<ArrayList<Users>> getSubs = apiInterface.friendsIn(user.getId());
+        getSubs.enqueue(new Callback<ArrayList<Users>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
+
+                    ArrayList<Users> friends = response.body();
+
+                    binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                    binding.listVop.setHasFixedSize(true);
+                    binding.listVop.setAdapter(new FriendsInAdapter(getContext(), friends, itemClickListenerIn));
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
+                System.out.println("не работает2!!!");
+            }
+        });
+    }
+
+    private void setIsFriends(){
+
+/*        binding.inFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));
+        binding.friends.setBackgroundColor(Color.parseColor("#EAEAEA"));
+        binding.isFriends.setBackgroundColor(Color.parseColor("@color/osn"));*/
+
+        Call<ArrayList<Users>> getSubs = apiInterface.friendsIs(user.getId());
+        getSubs.enqueue(new Callback<ArrayList<Users>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
+
+                    ArrayList<Users> friends = response.body();
+
+                    binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                    binding.listVop.setHasFixedSize(true);
+                    binding.listVop.setAdapter(new FriendsIsAdapter(getContext(),friends, itemClickListenerIs));
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
+                System.out.println("не работает1!!!");
+            }
+        });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

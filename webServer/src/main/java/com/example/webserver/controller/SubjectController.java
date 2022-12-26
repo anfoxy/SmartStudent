@@ -8,6 +8,7 @@ import com.example.webserver.model.SubjectQuestion;
 import com.example.webserver.repository.PlanRepository;
 import com.example.webserver.repository.QuestionRepository;
 import com.example.webserver.repository.SubjectRepository;
+import com.example.webserver.service.DeleteSercice;
 import com.example.webserver.service.SubjectService;
 import com.example.webserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class SubjectController {
     PlanRepository planRepository;
     @Autowired
     UserService userService;
-
+    @Autowired
+    DeleteSercice deleteSercice;
     @GetMapping("/subjects")
     public List<Subject> getAllSubject() {
         return subjectService.findAll();
@@ -75,14 +77,9 @@ public class SubjectController {
     @DeleteMapping("/subjects/{id}")
     public Subject deleteSubject(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Subject s =  subjectService.findById(id);
-        subjectService.delete(id);
+        deleteSercice.deleteSub(id);
         return s;
     }
-
-   /* @PatchMapping(value = "/subjects/{id}")
-    public Subject patchSubject(@PathVariable Long id, @RequestBody Subject req) throws ResourceNotFoundException {
-        return subjectService.updateSubject(req,id);
-    }*/
 
     @PutMapping("/subjects/{id}")
     public Subject putSubject(@PathVariable Long id,@RequestBody Subject req) throws ResourceNotFoundException {

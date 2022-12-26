@@ -12,4 +12,7 @@ import java.util.List;
 public interface SubjectRepository extends JpaRepository<Subject,Long> {
 
     ArrayList<Subject> findAllByUserId(User user);
+
+
+
 }

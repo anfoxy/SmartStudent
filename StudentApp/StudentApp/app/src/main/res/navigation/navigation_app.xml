@@ -84,14 +84,48 @@
         android:id="@+id/friendsFragment"
         android:name="com.example.studentapp.fragments.FriendsFragment"
         android:label="Друзья"
-        tools:layout="@layout/fragment_friends" />
+        tools:layout="@layout/fragment_friends" >
+        <action
+            android:id="@+id/action_friendsFragment_to_friendsProfileFragment"
+            app:destination="@id/friendsProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/friendsProfileFragment"
+        android:name="com.example.studentapp.fragments.FriendsProfileFragment"
+        android:label="@string/title_contact"
+        tools:layout="@layout/fragment_profile_friends" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_friendsProfileFragment_to_friendsFragment"
+            app:destination="@id/friendsFragment" />
+        <action
+            android:id="@+id/action_friendsProfileFragment_to_addSubjectsFriendFragment"
+            app:destination="@id/addSubjectFriendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addSubjectFriendFragment"
+        android:name="com.example.studentapp.fragments.AddSubjectFriendFragment"
+        android:label="Поделиться планом"
+        tools:layout="@layout/fragment_add_subject_friend" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_addSubjectFriendFragment_to_friendsProfileFragment"
+            app:destination="@id/friendsProfileFragment" />
+
+    </fragment>
+
+
     <fragment
         android:id="@+id/contactFragment"
         android:name="com.example.studentapp.fragments.ContactFragment"
         android:label="@string/title_contact"
         tools:layout="@layout/fragment_contact" />
-    <fragment
 
+    <fragment
         android:id="@+id/answerQuestionFragment"
         android:name="com.example.studentapp.fragments.AnswerQuestionFragment"
         android:label="Подготовка"
@@ -102,7 +136,6 @@
         <argument
             android:name="id"
             app:argType="integer" />
-
     </fragment>
 
     <fragment

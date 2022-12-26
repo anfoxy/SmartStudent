@@ -11,4 +11,5 @@ public interface PlanRepository extends JpaRepository<Plan,Long> {
 
     ArrayList<Plan> findAllBySubId(Subject subject);
     void deleteAllBySubId(Subject subject);
+
 }

@@ -26,14 +26,6 @@ public class UserService {
         return user;
     }
 
-/*    public User updateUser(User s, Long id) throws ResourceNotFoundException {
-        UserDTO dto = new UserDTO(s);
-        dto.setId(id);
-        User user = findById(id);
-        mapper.updateUserFromDto(dto, user);
-        userRepository.save(user);
-        return user;
-    }*/
 
     public User findByLogin(String login){
         User user = userRepository.findByLogin(login);
@@ -63,18 +55,15 @@ public class UserService {
         return true;
     }
 
-    public boolean deleteUser(Long userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
-            return true;
-        }
-        return false;
-    }
 
-    public void delete(Long id) throws ResourceNotFoundException {
+
+/*    public void delete(Long id) throws ResourceNotFoundException {
         User user = findById(id);
+        subjectService.deleteAll(subjectService.findAllByUserId(user));
+        friendService.deleteAll(user);
+        friendSubjectsService.deleteAll(user);
         userRepository.delete(user);
-    }
+    }*/
 
     public User save(User user) {
         return userRepository.save(user);

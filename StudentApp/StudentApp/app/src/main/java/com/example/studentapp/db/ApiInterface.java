@@ -18,6 +18,9 @@ public interface ApiInterface {
     @POST("users/register")
     Call<String> regUsers(@Body Users user);
 
+    @GET("/user/{id}")
+    Call<Users> getUsers(@Path("id") int id);
+
     @PUT("/user/{id}")
     Call<Users> editUsers(@Path("id") int id,@Body Users user);
 
@@ -59,4 +62,47 @@ public interface ApiInterface {
 
     @POST("friends_add")
     Call<String> friendsAdd(@Body Friends friends);
+
+    @POST("friends_delete")
+    Call<String> friendsDelete(@Body Friends friends);
+
+    @GET("friends_by_user/{id}")
+    Call<ArrayList<Users>> friendsByUser(@Path("id") int id);
+
+    @GET("friends_is/{id}")
+    Call<ArrayList<Users>> friendsIs(@Path("id") int id);
+
+    @GET("friends_in/{id}")
+    Call<ArrayList<Users>> friendsIn(@Path("id") int id);
+
+    @POST("friends_accept")
+    Call<Friends> friendsAccept(@Body Friends friends);
+
+    @POST("friends_delete_is")
+    Call<Friends> friendsDeleteIs(@Body Friends friends);
+
+    @POST("friends_refuse")
+    Call<Friends> friendsRefuse(@Body Friends friends);
+
+    @POST("friends_subjects_by_id_not_table/{id}")
+    Call<ArrayList<Subjects>> getAllFriendsSubjectsNotTabl(@Path("id") int id,@Body Users user);
+
+    @POST("friends_subjects_delete_is")
+    Call<FriendsSubjects> friendsSubjectsDeleteIs(@Body FriendsSubjects friends);
+
+    @POST("friends_subjects_accept")
+    Call<FriendsSubjects> friendsSubjectsAccept(@Body FriendsSubjects friends);
+
+    @POST("friends_subjects_refuse")
+    Call<FriendsSubjects> friendsSubjectsRefuse(@Body FriendsSubjects friends);
+
+    @POST("friends_subjects_sent")
+    Call<String> sentFriendsSubjects(@Body ArrayList<FriendsSubjects> friends);
+
+    @POST("friends_subjects_is")
+    Call<ArrayList<Subjects>> friendsSubjectsIs(@Body FriendsSubjects friends);
+
+    @POST("friends_subjects_in")
+    Call<ArrayList<Subjects>> friendsSubjectsIn(@Body FriendsSubjects friends);
+
 }

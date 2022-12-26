@@ -9,6 +9,7 @@ import com.example.webserver.repository.FriendsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,10 +22,45 @@ public class FriendService {
     @Autowired
     UserService userService;
 
+
+    public String deleteFriends(Friends friends){
+        if(friends.getFriendId() != null && friends.getUserId() != null){
+            Friends friends1 = friendsRepository.findByUserIdAndFriendId(friends.getUserId(),friends.getFriendId());
+            friendsRepository.delete(friends1);
+            Friends friends2 = friendsRepository.findByUserIdAndFriendId(friends.getFriendId(),friends.getUserId());
+            friendsRepository.delete(friends2);
+            return "ok";
+        } else
+            return "no";
+    }
+
+    public void acceptFriends(Friends friends){
+        Friends friends1 = friendsRepository.findByUserIdAndFriendId(friends.getUserId(),friends.getFriendId());
+        friends1.setStatus("ACCEPTED");
+        friendsRepository.save(friends1);
+        Friends friends2 = friendsRepository.findByUserIdAndFriendId(friends.getFriendId(),friends.getUserId());
+        friends2.setStatus("ACCEPTED");
+        friendsRepository.save(friends2);
+    }
+    public void refuseFriends(Friends friends){
+
+        Friends friends1 = friendsRepository.findByUserIdAndFriendId(friends.getUserId(),friends.getFriendId());
+        if(friends1 != null) friendsRepository.delete(friends1);
+        Friends friends2 = friendsRepository.findByUserIdAndFriendId(friends.getFriendId(),friends.getUserId());
+        if(friends2 != null) friendsRepository.delete(friends2);
+    }
+    public void deleteIsFriends(Friends friends){
+
+        Friends friends1 = friendsRepository.findByUserIdAndFriendId(friends.getUserId(),friends.getFriendId());
+        friendsRepository.delete(friends1);
+    }
+
     public String addFriends(Friends friends){
        User usFriends = userService.findByLogin(friends.getFriendId().getLogin());
        if (usFriends == null) return "Not login";
        if (usFriends.getLogin().equals(friends.getUserId().getLogin())) return "your username";
+       if (friendsRepository.findByUserIdAndFriendId(friends.getUserId(),usFriends) != null ||
+               friendsRepository.findByUserIdAndFriendId(usFriends,friends.getUserId()) != null) return "exists";
        friends.setFriendId(usFriends);
        friendsRepository.save(friends);
        friendsRepository.save(new Friends(null,"INVITATION_RECEIVED",friends.getUserId(),friends.getFriendId()));
@@ -32,6 +68,48 @@ public class FriendService {
     }
 
 
+    public ArrayList<User> findIn(Long id) throws ResourceNotFoundException {
+
+        ArrayList<Friends> friends =  friendsRepository.findAllByUserId( userService.findById(id));
+
+        friends.removeIf(date -> {
+            if(date.getStatus().equals("ACCEPTED")) return true;
+            else return date.getStatus().equals("REQUEST_SENT");
+        });
+
+        ArrayList<User> users = new ArrayList<>();
+        for (Friends user:friends) {
+            users.add(user.getFriendId());
+        }
+        return users;
+    }
+    public ArrayList<User> findIs(Long id) throws ResourceNotFoundException {
+
+        ArrayList<Friends> friends =  friendsRepository.findAllByUserId( userService.findById(id));
+
+        friends.removeIf(date -> {
+            if(date.getStatus().equals("ACCEPTED")) return true;
+            else return date.getStatus().equals("INVITATION_RECEIVED");
+        });
+
+        ArrayList<User> users = new ArrayList<>();
+        for (Friends user:friends) {
+            users.add(user.getFriendId());
+        }
+        System.out.println("friends_is "+users);
+        return users;
+    }
+    public ArrayList<User> findByUserId(Long id) throws ResourceNotFoundException {
+
+        ArrayList<Friends> friends =  friendsRepository.findAllByUserId( userService.findById(id));
+
+        friends.removeIf(date -> !date.getStatus().equals("ACCEPTED"));
+        ArrayList<User> users = new ArrayList<>();
+        for (Friends user:friends) {
+            users.add(user.getFriendId());
+        }
+        return users;
+    }
 
     public Friends putMet(Long id, Friends res) throws ResourceNotFoundException {
         Friends friends = findById(id);
@@ -46,6 +124,9 @@ public class FriendService {
         Friends friends = findById(id);
         friendsRepository.delete(friends);
     }
+   /* public void deleteAll(User user) throws ResourceNotFoundException {
+        friendsRepository.deleteAll(friendsRepository.findAllByUserIdOrFriendId(user, user));
+    }*/
     public Friends save(Friends friends){
         return friendsRepository.save(friends);
     }

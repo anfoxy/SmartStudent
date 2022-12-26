@@ -3,6 +3,7 @@ package com.example.webserver.service;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.mapper.CustomerMapper;
 import com.example.webserver.model.Plan;
+import com.example.webserver.model.Subject;
 import com.example.webserver.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import java.util.List;
 public class PlanService {
     @Autowired
     PlanRepository planRepository;
+    @Autowired
+    SubjectService subjectService;
 
     @Autowired
     CustomerMapper mapper;
@@ -30,7 +33,11 @@ public class PlanService {
         return plan;
     }
 
-    public void removeDatesAfterToday(ArrayList<Plan> dates) {
+    public ArrayList<Plan> findAllBySubId(Subject subject){
+        return planRepository.findAllBySubId(subject);
+    }
+
+    private void removeDatesAfterToday(ArrayList<Plan> dates) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         int todayYear = calendar.get(Calendar.YEAR);
@@ -62,6 +69,29 @@ public class PlanService {
             }
         }
     }
+
+    public ArrayList<Plan> createPlans(ArrayList<Plan> plan){
+        for (Plan p : plan) save(p);
+        return plan;
+    }
+
+   public ArrayList<Plan>  updatePlans(ArrayList<Plan> plan, Long id) throws ResourceNotFoundException {
+
+
+       Subject subject = subjectService.findById(id);
+
+       if(plan.size()>0) {
+           ArrayList<Plan> plansBD = planRepository.findAllBySubId(subject);
+           removeDatesAfterToday(plansBD);
+           for (Plan p : plan) {
+               p.setSubId(subject);
+               save(p);
+           }
+       }
+        return plan;
+   }
+
+
     public void delete(Long id) throws ResourceNotFoundException {
         Plan plan = findById(id);
         planRepository.delete(plan);

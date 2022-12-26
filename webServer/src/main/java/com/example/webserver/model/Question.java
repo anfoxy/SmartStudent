@@ -43,6 +43,16 @@ public class Question {
     public Question() {
     }
 
+    public Question(Long id, String question, String answer, String date, double percentKnow, int sizeOfView, Subject subId) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.date = date;
+        this.percentKnow = percentKnow;
+        this.sizeOfView = sizeOfView;
+        this.subId = subId;
+    }
+
     public Question(Question q) {
         this.id = q.id;
         this.question = q.question;

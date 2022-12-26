@@ -71,7 +71,11 @@ public class CalendarFragment extends Fragment {
                         dateStr = i+"-"+(i1+1)+"-0"+i2;
                     }
                 }else {
-                    dateStr = i+"-0"+(i1+1)+"-"+i2;
+                    if (i2>=10){
+                        dateStr = i+"-0"+(i1+1)+"-"+i2;
+                    }else {
+                        dateStr = i+"-0"+(i1+1)+"-0"+i2;
+                    }
                 }
 
                 getSubjs();
@@ -106,7 +110,10 @@ public class CalendarFragment extends Fragment {
                     for (int i = 0; i < subjs.size();i++){
                         LocalDate date = LocalDate.parse(subjs.get(i).getDaysString().split("T")[0]);
                         LocalDate datePicked = LocalDate.parse(dateStr);
-                        if (LocalDate.now().compareTo(datePicked) * datePicked.compareTo(date) < 0) subjs.remove(subjs.get(i));
+                        if (LocalDate.now().compareTo(datePicked) * datePicked.compareTo(date) < 0) {
+                            subjs.remove(subjs.get(i));
+                            i--;
+                        }
                     }
                     binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listSub.setHasFixedSize(true);

@@ -40,11 +40,7 @@ public class QuestionController {
         questionService.delete(id);
         return q;
     }
-  /*  @PatchMapping(value = "/questions/{id}")
-    public Question patchUser(@PathVariable Long id, @RequestBody Question question) throws ResourceNotFoundException {
-        return questionService.updateQuestion(question,id);
-    }
-*/
+
     @PutMapping("/questions/{id}")
     public Question putQuestion(@PathVariable Long id,@RequestBody Question req) throws ResourceNotFoundException {
         System.out.println(req);

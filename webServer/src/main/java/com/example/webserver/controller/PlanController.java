@@ -40,24 +40,12 @@ public class PlanController {
 
     @PostMapping("/plan")
     public  ArrayList<Plan> createPlans(@RequestBody ArrayList<Plan> plan){
-        for (Plan p : plan) planService.save(p);
-        return plan;
+        return planService.createPlans(plan);
     }
 
     @PostMapping("/plans/{id}")
-    public ArrayList<Plan> updatePlans(@PathVariable(value = "id") Long id,@RequestBody ArrayList<Plan> plan){
-        System.out.println("план изначально "+plan);
-        Subject subject = subjectRepository.findById(id).orElse(null);
-        if(plan.size()>0) {
-            ArrayList<Plan> plansBD = planRepository.findAllBySubId(subject);
-            System.out.println("план bd "+plansBD);
-            planService.removeDatesAfterToday(plansBD);
-            for (Plan p : plan) {
-                p.setSubId(subject);
-                planService.save(p);
-            }
-        }
-        return plan;
+    public ArrayList<Plan> updatePlans(@PathVariable(value = "id") Long id,@RequestBody ArrayList<Plan> plan) throws ResourceNotFoundException {
+        return planService.updatePlans(plan,id);
     }
     @DeleteMapping("/plan/{id}")
     public Plan deletePlan(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {

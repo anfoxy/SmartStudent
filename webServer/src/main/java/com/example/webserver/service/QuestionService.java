@@ -4,10 +4,12 @@ import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.dto.QuestionDTO;
 import com.example.webserver.mapper.CustomerMapper;
 import com.example.webserver.model.Question;
+import com.example.webserver.model.Subject;
 import com.example.webserver.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +20,10 @@ public class QuestionService {
     @Autowired
     CustomerMapper mapper;
 
+
+    public ArrayList<Question> findAllBySubId(Subject subject){
+        return questionRepository.findAllBySubId(subject);
+    }
 
     public Question putMet(Long id, Question q) throws ResourceNotFoundException {
         Question question = findById(id);
@@ -30,15 +36,6 @@ public class QuestionService {
         questionRepository.save(question);
         return question;
     }
-
-  /*  public Question updateQuestion(Question d, Long id) throws ResourceNotFoundException {
-        QuestionDTO dto = new QuestionDTO(d);
-        dto.setId(id);
-        Question question = findById(id);
-        mapper.updateQuestionFromDto(dto, question);
-        questionRepository.save(question);
-        return question;
-    }*/
 
     public boolean deleteQuestion(Long userId) {
         if (questionRepository.findById(userId).isPresent()) {
