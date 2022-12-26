@@ -144,7 +144,7 @@ public class Subject {
         }
         return res;
     }
-//    public ArrayList<Question> getQuestion(){
-//        return question;
-//    }
+    public ArrayList<Question> getQuestion(){
+        return question;
+    }
 }

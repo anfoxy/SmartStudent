@@ -5,6 +5,15 @@ import java.time.LocalDate;
 public class PlanToDay {
     private LocalDate date;
     private int sizeOfQuetion;
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public PlanToDay(LocalDate date_, int size_of_quet){
         date=  date_;
