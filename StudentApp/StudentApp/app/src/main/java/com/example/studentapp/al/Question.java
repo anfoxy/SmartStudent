@@ -101,5 +101,22 @@ public class Question {
         sizeOfView = 0;
         percentKnow=0.0;
     }
+    public String dateToString() {
+        String dateStr;
+        if (lastDate.getMonthValue() >=10){
+            if (lastDate.getDayOfMonth()>=10){
+                dateStr = lastDate.getYear()+"-"+(lastDate.getMonthValue())+"-"+lastDate.getDayOfMonth();
+            }else {
+                dateStr = lastDate.getYear()+"-"+lastDate.getMonthValue()+"-0"+lastDate.getDayOfMonth();
+            }
+        } else {
+            if (lastDate.getDayOfMonth()>=10){
+                dateStr = lastDate.getYear()+"-0"+lastDate.getMonthValue()+"-"+lastDate.getDayOfMonth();
+            }else {
+                dateStr = lastDate.getYear()+"-0"+lastDate.getMonthValue()+"-0"+lastDate.getDayOfMonth();
+            }
+        }
+        return dateStr;
+    }
 
 }
