@@ -1,5 +1,7 @@
 package com.example.studentapp.al;
 
+import com.example.studentapp.db.Questions;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -110,7 +112,15 @@ public class Subject {
         return r;
     }
 
-
+public  ArrayList<Questions> getQuestions(){
+    ArrayList<Questions> res=new ArrayList<>();
+        for(int i=0; i<question.size(); i++){
+            res.add(new Questions(question.get(i).getId(), question.get(i).getQuestion(),
+                    question.get(i).getAnswer(), question.get(i).dateToString(), question.get(i).getPercentKnow(),
+                    question.get(i).getSizeOfView(), null));
+        }
+    return res;
+    }
 
     public int getPositionNoKnowNoViev(){
         for (int i = 0; i < question.size(); i++) {
