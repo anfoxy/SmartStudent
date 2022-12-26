@@ -39,7 +39,7 @@ public class MyConstants {
     public static final String KEY_TODAY_LEARNED = "today_learned";
 
     public static final String CREATE_TABLE_PLAN = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAN + " (" + KEY_ID_PLAN + " INTEGER PRIMARY KEY," + KEY_SUBJECT_NAME + " TEXT," + KEY_DATE_PLAN + " TEXT," + KEY_NUM_QUE_PLAN + " INTEGER,"
-            + KEY_BOOL_DATE + " INTEGER" + ")";
+            + KEY_BOOL_DATE + " BOOLEAN" + ")";
 
     public static final String CREATE_TABLE_QUESTION = "CREATE TABLE IF NOT EXISTS " + TABLE_QUESTION + " (" + KEY_ID_QUESTION + " INTEGER PRIMARY KEY," + KEY_SUBJECT_NAME + " TEXT," + KEY_TEXT_QUESTION + " TEXT," + KEY_TEXT_ANSWER + " TEXT,"
             + KEY_PERCENT_KNOW + " DOUBLE," +  KEY_DATE_QUESTION + " INTEGER,"
