@@ -35,8 +35,7 @@ public class MyDBManager {
     public void deleteDatabase (Context context) {
         context.deleteDatabase(MyConstants.DB_NAME);
     }
-
-
+    
     public void openDB() {
         db = myDBHelper.getWritableDatabase();
     }
