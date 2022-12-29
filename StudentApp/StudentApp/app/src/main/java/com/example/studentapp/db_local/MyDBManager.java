@@ -20,18 +20,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 public class MyDBManager {
     private Context context;
     private MyDBHelper myDBHelper;
     private SQLiteDatabase db;
-    private ActivityAuthBinding binding;
 
     public MyDBManager(Context context) {
         this.context = context;
         myDBHelper = new MyDBHelper(context);
     }
 
+    public void deleteDatabase (Context context) {
+        context.deleteDatabase(MyConstants.DB_NAME);
+    }
+    
     public void openDB() {
         db = myDBHelper.getWritableDatabase();
     }
@@ -41,13 +45,10 @@ public class MyDBManager {
         ArrayList<PlanToDay> Date_Plan = pl.getLastPlan();
         ArrayList<PlanToDay> futurePlan = pl.getFuturePlan();
         int bool_plan;
-        LocalDate date_of_exams1 = pl.getDateOfExams();
-        ArrayList<Question> question = pl.getSub().getQuestion();
-        String name_of_sub = pl.getSub().getNameOfSubme();
 
         Users user = Users.getUser();
-        insert_TABLE_SUBJECT(user, pl);
 
+        insert_TABLE_SUBJECT(user, pl);
         for (int i = 0; i < s.getSizeAllQuest(); i++) {
             insert_TABLE_QUESTION(pl, i);
         }
@@ -163,28 +164,25 @@ public class MyDBManager {
             ArrayList<LocalDate> Local_Date_que = new ArrayList<>();
             ArrayList<Double> percentKnow = new ArrayList<>();
 
-            // String quest, String answer,  LocalDate Local_Date_que, Integer sizeOfView, Double percentKnow
-            int col_idx_quest = cursor1.getColumnIndex("text_question");
-            int col_idx_answer = cursor1.getColumnIndex("text_answer");
-            int col_idx_Local_Date_que = cursor1.getColumnIndex("date_question");
-            int col_idx_sizeOfView = cursor1.getColumnIndex("size_of_view");
-            int col_idx_percentKnow = cursor1.getColumnIndex("percent_know");
-            for (int i = 0; i < count_que; i++) {
+            int col_idx_quest = cursor2.getColumnIndex("text_question");
+            int col_idx_answer = cursor2.getColumnIndex("text_answer");
+            int col_idx_Local_Date_que = cursor2.getColumnIndex("date_question");
+            int col_idx_sizeOfView = cursor2.getColumnIndex("size_of_view");
+            int col_idx_percentKnow = cursor2.getColumnIndex("percent_know");
+            do {
                 quest.add(cursor2.getString(col_idx_quest));
                 answer.add(cursor2.getString(col_idx_answer));
                 String_Date_que.add(cursor2.getString(col_idx_Local_Date_que));
                 sizeOfView.add(cursor2.getInt(col_idx_sizeOfView));
                 percentKnow.add(cursor2.getDouble(col_idx_percentKnow));
-                cursor2.moveToNext();
-            }
+            } while (cursor2.moveToNext());
             cursor2.moveToFirst();
 
-
-
-
             int col_idx_name_sub_plan = cursor1.getColumnIndex("subject_name");
+            int col_idx_date_plan = cursor1.getColumnIndex("date_plan");
             for (int i = 0; i < count_plan; i++) {
                 name_sub_plan.add(cursor1.getString(col_idx_name_sub_plan));
+                date.add(cursor1.getString(col_idx_date_plan));
                 cursor1.moveToNext();
             }
             cursor1.moveToFirst();
@@ -197,36 +195,30 @@ public class MyDBManager {
             cursor3.moveToFirst();
 
             int col_idx_name_sub_question = cursor2.getColumnIndex("subject_name");
-            for (int i = 0; i < count_sub; i++) {
+            for (int i = 0; i < count_que; i++) {
                 name_sub_question.add(cursor2.getString(col_idx_name_sub_question));
                 cursor2.moveToNext();
             }
-            cursor3.moveToFirst();
+            cursor2.moveToFirst();
 
             int col_idx_date_sub = cursor3.getColumnIndex("subject_date");
-            for (int i = 0; i < count_plan; i++) {
+            for (int i = 0; i < count_sub; i++) {
                 Arr_date_sub.add(cursor3.getString(col_idx_date_sub));
                 cursor3.moveToNext();
             }
             cursor3.moveToFirst();
+
             ArrayList<LocalDate> date_local = new ArrayList<>();
             for(int i=0; i< count_sub; i++) { // Проходимся по всем предметам
-                String[] parts = date.get(i).split("-");
+                String[] parts = Arr_date_sub.get(i).split("-");
                 int year, month, day;
 
                 year = Integer.parseInt(parts[0]);
-                month = Integer.parseInt(parts[1]) + 1;
+                month = Integer.parseInt(parts[1]);
                 day = Integer.parseInt(parts[2]);
 
                 date_local.add(LocalDate.of(year, month, day));
             }
-
-            int col_idx_date_plan = cursor1.getColumnIndex("date_plan");
-            for (int i = 0; i < count_plan; i++) {
-                date.add(cursor1.getString(col_idx_date_plan));
-                cursor1.moveToNext();
-            }
-            cursor1.moveToFirst();
 
             int col_idx_bool_plan = cursor1.getColumnIndex("bool_date");
             for (int i = 0; i < count_plan; i++) {
@@ -249,7 +241,6 @@ public class MyDBManager {
             }
             cursor3.moveToFirst();
 
-
             ArrayList<Subject> sub = new ArrayList<Subject>();
             for(int i=0; i < count_sub; i++) {
                 ArrayList<Question> Arr_que = new ArrayList<Question>();
@@ -258,16 +249,14 @@ public class MyDBManager {
                 int flag = 0;
                 int j = 0;
 
-
-
                 for (int k = 0; k < count_plan; k++) {
-                    if (name_sub_subject.get(i) == name_sub_plan.get(k)) {
+                    if (name_sub_subject.get(i).equals(name_sub_plan.get(k))) {
                         String[] parts = date.get(k).split("-");
 
                         int year, month, day;
 
                         year = Integer.parseInt(parts[0]);
-                        month = Integer.parseInt(parts[1]) + 1;
+                        month = Integer.parseInt(parts[1]);
                         day = Integer.parseInt(parts[2]);
 
                         LocalDate date_local1 = LocalDate.of(year, month, day);
@@ -287,13 +276,13 @@ public class MyDBManager {
                     }
                 }
                 for (int m=0; m< count_que; m++) {
-                    if (name_sub_subject.get(i) == name_sub_question.get(m)) {
+                    if (name_sub_subject.get(i).equals(name_sub_question.get(m))) {
                         String[] parts = String_Date_que.get(m).split("-");
 
                         int year, month, day;
 
                         year = Integer.parseInt(parts[0]);
-                        month = Integer.parseInt(parts[1]) + 1;
+                        month = Integer.parseInt(parts[1]);
                         day = Integer.parseInt(parts[2]);
 
                         LocalDate date_local1 = LocalDate.of(year, month, day);
@@ -308,54 +297,55 @@ public class MyDBManager {
         return GlSub;
     }
 
-    public void delete_QUE(Integer id_que) {
-        db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_ID_QUESTION + " = ?", new String[]{String.valueOf(id_que)});
-    }
     public void delete_SUB(String sub_name) {
         db.delete(MyConstants.TABLE_SUBJECT, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
         db.delete(MyConstants.TABLE_PLAN, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
         db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{sub_name});
     }
 
-    // функция обновления
-    public void updatePlan(PlanToSub pl, String name_sub) {
-        ArrayList<PlanToDay> pld = pl.getFuturePlan();
-        pld.addAll(pl.getLastPlan());
-
-        // всю строку обновить кроме названия
-        ContentValues cv = new ContentValues();
-        String query_pl = "SELECT " + MyConstants.KEY_ID_PLAN + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_DATE_PLAN + ", " + MyConstants.KEY_NUM_QUE_PLAN  + ", " + MyConstants.KEY_BOOL_DATE + " FROM " + MyConstants.TABLE_PLAN;
-
-        Cursor cursor1 = db.rawQuery(query_pl, null);
-        int count_plan=0;
-        cursor1.moveToFirst();
-        do {
-            count_plan++;
-        } while (cursor1.moveToNext());
-        cursor1.moveToFirst();
-
-        ArrayList<String> Arr_sub_plan = new ArrayList<>();
-        int col_idx_name_sub_plan = cursor1.getColumnIndex("subject_name");
-        for (int i = 0; i < count_plan; i++) {
-            Arr_sub_plan.add(cursor1.getString(col_idx_name_sub_plan));
-            cursor1.moveToNext();
-        }
-        cursor1.moveToFirst();
-
-
-        for(int i = 0; i < count_plan; i++) {
-            if(name_sub == Arr_sub_plan.get(i)) {
-                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_ID_PLAN + "= ?",new String[] {pld.get(i).getId().toString()});
-                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_DATE_PLAN + "= ?",new String[] {pld.get(i).dateToString()});
-                db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_NUM_QUE_PLAN + "= ?",new String[] {""+pld.get(i).getSizeOfQuetion()});
-                    if (pld.get(i) == pl.getFuturePlan().get(0)) {
-                        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_BOOL_DATE + "= ?",new String[] {"1"});
-                    } else {
-                        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_BOOL_DATE + "= ?",new String[] {"0"});
-                    }
+    // функция обновления плана (изменение) кнопка AddPlan в SettingPlanFragment
+    public void updatePlan(PlanToSub pl) {
+        Subject s = pl.getSub();
+        ArrayList<PlanToDay> pld = pl.getLastPlan();
+        pld.addAll(pl.getFuturePlan());
+        db.delete(MyConstants.TABLE_PLAN, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{s.getNameOfSubme()});
+        int bool_plan;
+        if (pl.getFuturePlan().isEmpty()) {
+            for (int i = 0; i < pld.size(); i++) {
+                bool_plan = 0;
+                insert_TABLE_PLAN(pl, pld.get(i), bool_plan);
+            }
+        } else {
+            for (int i = 0; i < pld.size(); i++) {
+                if ((pld.get(i) == pl.getFuturePlan().get(0))) {
+                    bool_plan = 1;
+                } else {
+                    bool_plan = 0;
                 }
-
-
+                insert_TABLE_PLAN(pl, pld.get(i), bool_plan);
+            }
         }
     }
+
+    public void updateQuestionsToSubject(PlanToSub pl) {
+        Subject s = pl.getSub();
+        db.delete(MyConstants.TABLE_QUESTION, MyConstants.KEY_SUBJECT_NAME + " = ?", new String[]{s.getNameOfSubme()});
+        for (int i = 0; i < s.getSizeAllQuest(); i++) {
+            insert_TABLE_QUESTION(pl, i);
+        }
+    }
+
+    public void updateNameSubAndDateExams(PlanToSub pl, String name_sub_new) {
+        ContentValues cv = new ContentValues();
+        ContentValues cv1 = new ContentValues();
+
+        cv.put(MyConstants.KEY_SUBJECT_NAME, name_sub_new);
+        cv1.put(MyConstants.KEY_SUBJECT_DATE, pl.dateToString());
+        db.update(MyConstants.TABLE_SUBJECT, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+        db.update(MyConstants.TABLE_PLAN, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+        db.update(MyConstants.TABLE_QUESTION, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+        db.update(MyConstants.TABLE_SUBJECT, cv1, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+    }
+
+
 }
