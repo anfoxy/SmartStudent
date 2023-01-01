@@ -9,6 +9,15 @@ public class Question {
     private LocalDate lastDate; //Дата, когда попадался этот вопрос последний раз
     private Integer sizeOfView; //сколько раз попадался этот вопрос //так же это показатель был вопрос или нет.
     private Double percentKnow; //Процент знаний
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Question() {
         question = "";
@@ -16,6 +25,16 @@ public class Question {
         lastDate = LocalDate.now();
         sizeOfView = 0;
         percentKnow=0.0;
+    }
+
+    public Question(String quest, String answer, Integer id) {
+        this.question = quest;
+        this.answer = answer;
+        lastDate = LocalDate.now();
+        sizeOfView = 0;
+        percentKnow=0.0;
+        this.id= id;
+        //?? Забиваем question,  answer, last_date, size_of_view, know
     }
 
     public Question(String quest, String answer) {
@@ -91,6 +110,23 @@ public class Question {
         lastDate=LocalDate.now();
         sizeOfView = 0;
         percentKnow=0.0;
+    }
+    public String dateToString() {
+        String dateStr;
+        if (lastDate.getMonthValue() >=10){
+            if (lastDate.getDayOfMonth()>=10){
+                dateStr = lastDate.getYear()+"-"+(lastDate.getMonthValue())+"-"+lastDate.getDayOfMonth();
+            }else {
+                dateStr = lastDate.getYear()+"-"+lastDate.getMonthValue()+"-0"+lastDate.getDayOfMonth();
+            }
+        } else {
+            if (lastDate.getDayOfMonth()>=10){
+                dateStr = lastDate.getYear()+"-0"+lastDate.getMonthValue()+"-"+lastDate.getDayOfMonth();
+            }else {
+                dateStr = lastDate.getYear()+"-0"+lastDate.getMonthValue()+"-0"+lastDate.getDayOfMonth();
+            }
+        }
+        return dateStr;
     }
 
 }
