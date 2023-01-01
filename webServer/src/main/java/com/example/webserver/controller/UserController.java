@@ -38,25 +38,25 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-        return userService.findById(id);
+    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User user){
-        return  userService.save(user);
+    public ResponseEntity<User> createUser(@RequestBody User user){
+        return  ResponseEntity.ok(userService.save(user));
     }
     @Transactional
     @DeleteMapping("/user/{id}")
-    public User deleteUser(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+    public ResponseEntity<User> deleteUser(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         User u = userService.findById(id);
         deleteSercice.deleteUser(id);
-        return u;
+        return ResponseEntity.ok(u);
     }
 
     @PutMapping("/user/{id}")
-    public User putUser(@PathVariable Long id,@RequestBody User req) throws ResourceNotFoundException {
-        return userService.putMet(id,req);
+    public ResponseEntity<User> putUser(@PathVariable Long id,@RequestBody User req) throws ResourceNotFoundException {
+        return ResponseEntity.ok(userService.putMet(id,req));
     }
 }
 
