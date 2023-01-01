@@ -43,7 +43,7 @@ public class AuthActivity extends AppCompatActivity {
                 authUser.enqueue(new Callback<Users>() {
                     @Override
                     public void onResponse(Call<Users> call, Response<Users> response) {
-                        if (response.body()!= null){
+                        if (response.isSuccessful()){
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             Users.writeUser(response.body());

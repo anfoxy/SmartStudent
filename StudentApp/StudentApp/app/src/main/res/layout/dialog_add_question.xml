@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,21 +33,23 @@
         tools:layout_editor_absoluteX="20dp" />
 
     <LinearLayout
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_answer">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add_question"
+            android:id="@+id/cancel_window"
             android:layout_width="120dp"
             android:layout_height="42dp"
             android:layout_margin="5dp"
-            android:background="#51B2FF"
-            android:text="Добавить" />
+            android:background="#FF837A"
+            android:text="Закрыть" />
 
         <ImageButton
             android:id="@+id/camera_btn"
@@ -59,12 +62,23 @@
             tools:ignore="VectorDrawableCompat" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancel_window"
-            android:layout_width="120dp"
-            android:layout_height="42dp"
-            android:layout_margin="5dp"
-            android:background="#FF837A"
-            android:text="Закрыть" />
+        android:id="@+id/add_question"
+        android:layout_width="120dp"
+        android:layout_height="42dp"
+        android:layout_margin="5dp"
+        android:background="#51B2FF"
+        android:text="Добавить" />
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#FF837A"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        />
+
+</LinearLayout>

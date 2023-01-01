@@ -1,5 +1,6 @@
 package com.example.studentapp.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -161,16 +162,21 @@ public class FriendsProfileFragment extends Fragment {
                 });
             }
         });
-
+        binding.inSub1.setBackgroundColor(Color.BLUE);
+        binding.isSub1.setBackgroundColor(Color.GRAY);
         binding.isSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.isSub1.setBackgroundColor(Color.BLUE);
+                binding.inSub1.setBackgroundColor(Color.GRAY);
                 setIsSub();
             }
         });
         binding.inSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.inSub1.setBackgroundColor(Color.BLUE);
+                binding.isSub1.setBackgroundColor(Color.GRAY);
                 setInSub();
             }
         });

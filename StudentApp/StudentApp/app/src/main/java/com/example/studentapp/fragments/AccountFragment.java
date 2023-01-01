@@ -52,7 +52,7 @@ public class AccountFragment extends Fragment {
                 binding.section2.setTextColor(getResources().getColor(R.color.normal_text_color));
                 binding.underline.setBackgroundColor(Color.BLUE);
                 binding.underline3.setBackgroundColor(Color.GRAY);
-                binding.editpng.setVisibility(View.VISIBLE);
+                //binding.editpng.setVisibility(View.VISIBLE);
                 binding.password.setVisibility(View.VISIBLE);
                 binding.layProfile.setVisibility(View.VISIBLE);
             }
@@ -64,7 +64,7 @@ public class AccountFragment extends Fragment {
                 binding.section1.setTextColor(getResources().getColor(R.color.normal_text_color));
                 binding.underline.setBackgroundColor(Color.GRAY);
                 binding.underline3.setBackgroundColor(Color.BLUE);
-                binding.editpng.setVisibility(View.INVISIBLE);
+               // binding.editpng.setVisibility(View.INVISIBLE);
                 binding.password.setVisibility(View.INVISIBLE);
                 binding.layProfile.setVisibility(View.INVISIBLE);
 

@@ -174,22 +174,33 @@ public class FriendsFragment extends Fragment {
                 }
             }
         });
-
+        binding.underline.setBackgroundColor(Color.BLUE);
+        binding.underline2.setBackgroundColor(Color.GRAY);
+        binding.underline3.setBackgroundColor(Color.GRAY);
         binding.friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.underline.setBackgroundColor(Color.BLUE);
+                binding.underline2.setBackgroundColor(Color.GRAY);
+                binding.underline3.setBackgroundColor(Color.GRAY);
                 setFriends();
             }
         });
         binding.isFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.underline.setBackgroundColor(Color.GRAY);
+                binding.underline2.setBackgroundColor(Color.GRAY);
+                binding.underline3.setBackgroundColor(Color.BLUE);
                 setIsFriends();
             }
         });
         binding.inFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.underline.setBackgroundColor(Color.GRAY);
+                binding.underline2.setBackgroundColor(Color.BLUE);
+                binding.underline3.setBackgroundColor(Color.GRAY);
                 setInFriends();
             }
         });
