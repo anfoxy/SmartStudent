@@ -13,8 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.PlanAddRecycler;
+import com.example.studentapp.al.PlanToDay;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentSettingPlanBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Plan;
@@ -33,25 +37,28 @@ public class SettingPlanFragment extends Fragment {
     private FragmentSettingPlanBinding binding;
     private ApiInterface apiInterface;
     private StatisticFragmentArgs args;
-    private Subjects subj;
+    private PlanToSub subj;
     private int ind = 1;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("Запускаю поиск1  =  ", "");
+
         setPlan();
         binding.AddPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 boolean p [] = adapter.getPlanArray();
-                ArrayList<Plan> plans = new ArrayList<>();
+                ArrayList<PlanToDay> plans = new ArrayList<>();
 
-                for (int i=0;i<subj.getPlans().size();i++)
-                    if (p[i]) plans.add(subj.getPlans().get(i));
 
-                Log.d("Запускаю поиск gkfyf  =  ", ""+plans);
-                Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(args.getId(),plans);
+                for (int i=0;i<subj.getFuturePlan().size();i++)
+                    if (p[i]) plans.add(subj.getFuturePlan().get(i));
+
+                subj.setFuture(plans);
+                MainActivity.myDBManager.updatePlan(subj);
+
+               /* Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(args.getId(),plans);
                 updatePlan.enqueue(new Callback<ArrayList<Plan>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
@@ -59,7 +66,7 @@ public class SettingPlanFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<Plan>> call, Throwable t) {
                     }
-                });
+                });*/
                 NavDirections action = SettingPlanFragmentDirections.actionSettingPlanFragmentToListFragment2();
                 Navigation.findNavController(getView()).navigate(action);
 
@@ -69,9 +76,9 @@ public class SettingPlanFragment extends Fragment {
         binding.all1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("План предмета =  ", ""+ subj);
+
                 ind = ind == 0 ? 1 : 0;
-                editPlan(subj.getPlans(),ind);
+                editPlan(subj.getFuturePlan(),ind);
             }
         });
 
@@ -89,7 +96,15 @@ public class SettingPlanFragment extends Fragment {
 
     private void setPlan(){
 
-        Call<Subjects> getSubj = apiInterface.getSubjectById(args.getId());
+        subj = MainActivity.myDBManager.set().get(args.getId()-1);
+
+        binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listPlan.setHasFixedSize(true);
+        adapter = new PlanAddRecycler(getActivity(),subj.getFuturePlan(),1);
+        binding.listPlan.setAdapter(adapter);
+
+
+       /* Call<Subjects> getSubj = apiInterface.getSubjectById(args.getId());
         getSubj.enqueue(new Callback<Subjects>() {
             @Override
             public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -107,9 +122,9 @@ public class SettingPlanFragment extends Fragment {
             public void onFailure(Call<Subjects> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
-    private  void editPlan(ArrayList<Plan> p , int check){
+    private  void editPlan(ArrayList<PlanToDay> p , int check){
         binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listPlan.setHasFixedSize(true);
         adapter = new PlanAddRecycler(getActivity(),p,check);

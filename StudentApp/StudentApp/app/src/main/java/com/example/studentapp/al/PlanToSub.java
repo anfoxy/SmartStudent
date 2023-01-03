@@ -126,6 +126,11 @@ public class PlanToSub {
 
     //----------------Вспомогательные функции------------------
 
+    public void setFuture(ArrayList<PlanToDay> sFuturePlan){
+        futurePlan=sFuturePlan;
+        newSizeQuestionOnFuture();
+    }
+
     private boolean isHavePlan(LocalDate date) {
         for (int i = 0; i < futurePlan.size(); i++) {
             if (futurePlan.get(i).getDate().isEqual(date))
@@ -172,9 +177,15 @@ public class PlanToSub {
 
     //--------------Функци Set и Get
 
+
     public LocalDate getDateOfExams() {
         return dateOfExams;
     }
+
+    public void setDateOfExams(LocalDate dateOfExams) {
+        this.dateOfExams = dateOfExams;
+    }
+
     public ArrayList<PlanToDay> getLastPlan(){
         ArrayList<PlanToDay> res=new ArrayList<>(lastPlan);
         return res;

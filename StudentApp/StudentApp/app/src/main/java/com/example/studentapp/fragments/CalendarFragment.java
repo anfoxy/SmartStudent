@@ -19,8 +19,10 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.SubjectPlanAdapter;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentCalendarBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
@@ -54,7 +56,7 @@ public class CalendarFragment extends Fragment {
 
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
-            public void onClickPlanItem(Subjects subject, int position) {
+            public void onClickPlanItem(PlanToSub subject, int position) {
                 CalendarFragmentDirections.ActionCalendarFragmentToAnswerQuestionFragment action = CalendarFragmentDirections.actionCalendarFragmentToAnswerQuestionFragment(subject.getId());
                 Navigation.findNavController(getView()).navigate(action);
 
@@ -77,13 +79,9 @@ public class CalendarFragment extends Fragment {
                         dateStr = i+"-0"+(i1+1)+"-0"+i2;
                     }
                 }
-
                 getSubjs();
             }
         });
-
-
-
     }
 
     private boolean isNetworkWorking(){
@@ -101,7 +99,26 @@ public class CalendarFragment extends Fragment {
 
     private void getSubjs(){
         Users user = Users.getUser();
-        Call<ArrayList<Subjects>> getSubs = apiInterface.getSubjectsByUser(user.getId());
+
+        ArrayList<PlanToSub> subjs =  MainActivity.myDBManager.set();
+        for (int i = 0; i < subjs.size();i++){
+            LocalDate date = LocalDate.parse(subjs.get(i).dateToString().split("T")[0]);
+            LocalDate datePicked = LocalDate.parse(dateStr);
+            if (LocalDate.now().compareTo(datePicked) * datePicked.compareTo(date) < 0) {
+                subjs.remove(subjs.get(i));
+                i--;
+            }
+        }
+        binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listSub.setHasFixedSize(true);
+        binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subjs, itemClick));
+        if(subjs.size() == 0) {
+            binding.textPlanNull.setVisibility(View.VISIBLE);
+        } else {
+            binding.textPlanNull.setVisibility(View.INVISIBLE);
+        }
+
+        /*Call<ArrayList<Subjects>> getSubs = apiInterface.getSubjectsByUser(user.getId());
         getSubs.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
@@ -130,7 +147,7 @@ public class CalendarFragment extends Fragment {
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 
 

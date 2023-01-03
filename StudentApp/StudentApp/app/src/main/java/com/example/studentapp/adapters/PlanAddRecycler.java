@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToDay;
 import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.Questions;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class PlanAddRecycler extends RecyclerView.Adapter<PlanAddRecycler.ViewHolder> {
 
     private final LayoutInflater inflater;
-    private final ArrayList<Plan> planToDay;
+    private final ArrayList<PlanToDay> planToDay;
     private int ind;
     private boolean p [];
 
@@ -31,13 +32,13 @@ public class PlanAddRecycler extends RecyclerView.Adapter<PlanAddRecycler.ViewHo
         return p;
     }
 
-    public PlanAddRecycler(Context context, ArrayList<Plan> states , int ind) {
+    public PlanAddRecycler(Context context, ArrayList<PlanToDay> states , int ind) {
         this.planToDay = states;
         this.ind = ind;
         p = new boolean[states.size()];
         this.inflater = LayoutInflater.from(context);
     }
-    public PlanAddRecycler(Context context, ArrayList<Plan> states , int ind,boolean pl []) {
+    public PlanAddRecycler(Context context, ArrayList<PlanToDay> states , int ind,boolean pl []) {
         this.planToDay = states;
         this.ind = ind;
         this.p= pl;
@@ -51,8 +52,8 @@ public class PlanAddRecycler extends RecyclerView.Adapter<PlanAddRecycler.ViewHo
 
     @Override
     public void onBindViewHolder(PlanAddRecycler.ViewHolder holder, int position) {
-        Plan state3 = planToDay.get(position);
-        holder.nameView.setText(state3.getDate());
+        PlanToDay state3 = planToDay.get(position);
+        holder.nameView.setText(state3.dateToString());
         switch (ind) {
             case 1:
                 holder.box.setChecked(true);

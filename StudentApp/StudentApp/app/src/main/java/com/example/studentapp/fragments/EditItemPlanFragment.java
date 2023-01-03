@@ -17,8 +17,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.PlanAddRecycler;
+import com.example.studentapp.al.PlanToDay;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentEditItemPlanBinding;
 import com.example.studentapp.databinding.FragmentSettingPlanBinding;
 import com.example.studentapp.db.ApiInterface;
@@ -33,6 +36,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -46,7 +50,7 @@ public class EditItemPlanFragment extends Fragment {
     private FragmentEditItemPlanBinding binding;
     private ApiInterface apiInterface;
     private EditItemPlanFragmentArgs args;
-    private Subjects subj;
+    private PlanToSub subject;
     private int ind = 1;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -57,12 +61,18 @@ public class EditItemPlanFragment extends Fragment {
             public void onClick(View view) {
 
                 boolean p [] = adapter.getPlanArray();
-                ArrayList<Plan> plans = new ArrayList<Plan>();
+                ArrayList<PlanToDay> plans = new ArrayList<>();
 
-                for (int i=0;i<subj.getPlans().size();i++)
-                    if (p[i]) plans.add(subj.getPlans().get(i));
 
-                Call<ArrayList<Plan>> updatePlans = apiInterface.addPlans(args.getId(),plans);
+                for (int i=0;i<subject.getFuturePlan().size();i++)
+                    if (p[i]) plans.add(subject.getFuturePlan().get(i));
+
+                subject.setFuture(plans);
+                MainActivity.myDBManager.updatePlan(subject);
+
+
+
+              /*  Call<ArrayList<Plan>> updatePlans = apiInterface.addPlans(args.getId(),plans);
                 updatePlans.enqueue(new Callback<ArrayList<Plan>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
@@ -70,7 +80,7 @@ public class EditItemPlanFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<Plan>> call, Throwable t) {
                     }
-                });
+                });*/
                 NavDirections action = EditItemPlanFragmentDirections.actionEditItemPlanFragmentToEditPlanFragment(args.getId());
                 Navigation.findNavController(getView()).navigate(action);
 
@@ -81,17 +91,26 @@ public class EditItemPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ind = ind == 0 ? 1 : 0;
-                editPlan(subj.getPlans(),ind);
+                editPlan(subject.getFuturePlan(),ind);
             }
         });
 
     }
 
 
-
     private void setPlan(){
 
-        Call<Subjects> getSubj = apiInterface.getSubjectByIdNotQuestion(args.getId());
+        subject = MainActivity.myDBManager.set().stream()
+                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+        boolean []b = setNewPlan(subject.getFuturePlan());
+        binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listPlan.setHasFixedSize(true);
+        adapter = new PlanAddRecycler(getActivity(),subject.getFuturePlan(),3,b);
+        binding.listPlan.setAdapter(adapter);
+
+
+
+       /* Call<Subjects> getSubj = apiInterface.getSubjectByIdNotQuestion(args.getId());
         getSubj.enqueue(new Callback<Subjects>() {
             @Override
             public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -113,9 +132,9 @@ public class EditItemPlanFragment extends Fragment {
             public void onFailure(Call<Subjects> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
-    private  void editPlan(ArrayList<Plan> p , int check){
+    private  void editPlan(ArrayList<PlanToDay> p , int check){
         binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listPlan.setHasFixedSize(true);
         adapter = new PlanAddRecycler(getActivity(),p,check);
@@ -124,11 +143,20 @@ public class EditItemPlanFragment extends Fragment {
     }
 
 
-    private boolean[] setNewPlan(ArrayList<Plan> dates){
-        LocalDate date = LocalDate.parse(subj.getDaysString().split("T")[0]);
-
+    private boolean[] setNewPlan(ArrayList<PlanToDay> dates){
+        LocalDate date = LocalDate.parse(subject.dateToString().split("T")[0]);
         long days = DAYS.between(LocalDate.now(), date);
-        Calendar cal = new GregorianCalendar();
+        boolean [] p = new boolean[Math.toIntExact(days)];
+
+
+        for(int i=0; i<days; i++){
+            p[i] = checkDate(LocalDate.now().plusDays(i));
+            subject.plusDayToPlan(LocalDate.now().plusDays(i));
+        }
+
+
+
+/*        Calendar cal = new GregorianCalendar();
 
         boolean [] p = new boolean[Math.toIntExact(days)];
         ArrayList<Plan> newPlan = new ArrayList<>();
@@ -143,18 +171,18 @@ public class EditItemPlanFragment extends Fragment {
             newPlan.add(plan);
             cal.add(Calendar.DATE, 1);
         }
-        subj.setPlans(newPlan);
+        subj.setPlans(newPlan);*/
 
         return p;
     }
 
-    private boolean checkDate(String str){
-        for (Plan plan : subj.getPlans())
+    private boolean checkDate(LocalDate str){
+        for (PlanToDay plan : subject.getFuturePlan())
             if(plan.getDate().equals(str)) return true;
         return false;
     }
 
-    private ArrayList<Plan> removeDatesAfterToday() {
+/*    private ArrayList<Plan> removeDatesAfterToday() {
         ArrayList<Plan> dates = new ArrayList<>(subj.getPlans());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -173,7 +201,7 @@ public class EditItemPlanFragment extends Fragment {
             return  (year == todayYear && month == todayMonth && day <= todayDay);
         });
         return dates;
-    }
+    }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

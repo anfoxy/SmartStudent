@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.Subjects;
 
@@ -22,14 +23,14 @@ import java.util.Iterator;
 public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.SubjectViewHolder> {
 
     public interface OnItemClick{
-        void onClickPlanItem(Subjects subject, int position);
+        void onClickPlanItem(PlanToSub subject, int position);
     }
 
     private Context context;
-    private ArrayList<Subjects> subjects;
+    private ArrayList<PlanToSub> subjects;
     private OnItemClick onItemClick;
 
-    public SubjectPlanAdapter(Context context, ArrayList<Subjects> subjects, OnItemClick onItemClick) {
+    public SubjectPlanAdapter(Context context, ArrayList<PlanToSub> subjects, OnItemClick onItemClick) {
         this.context = context;
         this.subjects = subjects;
         this.onItemClick = onItemClick;
@@ -44,11 +45,10 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Subjects subject = subjects.get(position);
-        holder.subjName.setText(subject.getName());
-        int allQuestions = subject.getQuestions().size();
-        int comQues = 0;
-
+        PlanToSub subject = subjects.get(position);
+        holder.subjName.setText(subject.getSub().getNameOfSubme());
+        int allQuestions = subject.getSub().getSizeAllQuest();
+        int comQues = subject.getSub().getSizeKnow();
    /*     Iterator<Questions> iterator = subject.getQuestions().iterator();
         while (iterator.hasNext()){
             if (iterator.next().isCompleted()) comQues++;
@@ -58,7 +58,6 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Subject ", "SSS1= "+ subject.toString());
                 onItemClick.onClickPlanItem(subject, position);
             }
         });

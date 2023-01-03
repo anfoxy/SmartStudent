@@ -20,8 +20,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.SubjectAddRecycler;
+import com.example.studentapp.al.PlanToSub;
+import com.example.studentapp.al.Question;
 import com.example.studentapp.databinding.FragmentEditPlanBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Questions;
@@ -29,7 +32,10 @@ import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -44,16 +50,19 @@ public class EditPlanFragment extends Fragment {
     EditPlanFragmentArgs args;
     SubjectAddRecycler.OnItemClickListener itemClick;
     final Calendar myCalendar = Calendar.getInstance();
-    Subjects subject;
-
+    PlanToSub subject;
+    LocalDate localDate;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        subject = MainActivity.myDBManager.set().stream()
+                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+
         itemClick = new SubjectAddRecycler.OnItemClickListener() {
             @Override
-            public void onClickQuestion(Questions ques, int position) {
-                showItemDialog(view, ques);
+            public void onClickQuestion(Question ques, int position) {
+                showItemDialog(view, ques,position);
             }
         };
 
@@ -86,7 +95,12 @@ public class EditPlanFragment extends Fragment {
         binding.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<Subjects> deleteSubj = apiInterface.deleteSubject(args.getId());
+
+                MainActivity.myDBManager.delete_SUB(subject.getSub().getNameOfSubme());
+                NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
+                Navigation.findNavController(getView()).navigate(action);
+
+               /* Call<Subjects> deleteSubj = apiInterface.deleteSubject(args.getId());
                 deleteSubj.enqueue(new Callback<Subjects>() {
                     @Override
                     public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -100,13 +114,13 @@ public class EditPlanFragment extends Fragment {
                     public void onFailure(Call<Subjects> call, Throwable t) {
 
                     }
-                });
+                });*/
             }
         });
         binding.editPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save();
+              //  save();
                 NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToEditItemPlanFragment2(args.getId());
                 Navigation.findNavController(getView()).navigate(action);
             }
@@ -123,9 +137,15 @@ public class EditPlanFragment extends Fragment {
     }
 
     private void save(){
-        subject.setDaysString(binding.editTextDate.getText().toString());
-        subject.setName(binding.Text1.getText().toString());
-        Call<Subjects> subjectsCall = apiInterface.updateSubject(subject.getId(), subject);
+
+        subject.setDateOfExams(localDate);
+        MainActivity.myDBManager.updateNameSubAndDateExams(subject,binding.Text1.getText().toString());
+        subject.getSub().setNameOfSub(binding.Text1.getText().toString());
+        MainActivity.myDBManager.updateQuestionsToSubject(subject);
+        MainActivity.myDBManager.updatePlan(subject);
+
+
+       /* Call<Subjects> subjectsCall = apiInterface.updateSubject(subject.getId(), subject);
         subjectsCall.enqueue(new Callback<Subjects>() {
             @Override
             public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -136,16 +156,24 @@ public class EditPlanFragment extends Fragment {
             public void onFailure(Call<Subjects> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
     private void updateLabel(){
         String myFormat="yyyy-MM-dd";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat);
+        localDate =  myCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         binding.editTextDate.setText(dateFormat.format(myCalendar.getTime()));
     }
 
     private void setQuestions(){
-        Call<Subjects> subjectsCall = apiInterface.getSubjectById(args.getId());
+        binding.Text1.setText(subject.getSub().getNameOfSubme());
+        binding.editTextDate.setText(subject.dateToString().split("T")[0]);
+        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listVop.setHasFixedSize(true);
+        binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), subject.getSub().getQuestion(), itemClick));
+
+
+      /*  Call<Subjects> subjectsCall = apiInterface.getSubjectById(args.getId());
         subjectsCall.enqueue(new Callback<Subjects>() {
             @Override
             public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -163,7 +191,7 @@ public class EditPlanFragment extends Fragment {
             public void onFailure(Call<Subjects> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -177,7 +205,7 @@ public class EditPlanFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void showItemDialog(View view, Questions questions) {
+    private void showItemDialog(View view, Question questions, int pos) {
         // Create an alert builder
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(getContext());
@@ -212,7 +240,12 @@ public class EditPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-                    questions.setQuestion(tvQ.getText().toString());
+                    subject.getSub().getQuestion().get(pos).setAnswer(tvAnswer.getText().toString());
+                    subject.getSub().getQuestion().get(pos).setQuestion(tvQ.getText().toString());
+                    setQuestions();
+                    dialog.dismiss();
+
+                   /* questions.setQuestion(tvQ.getText().toString());
                     questions.setAnswer(tvAnswer.getText().toString());
                     Call<Questions> updateQuestion = apiInterface.updateQuestion(questions.getId(), questions);
                     updateQuestion.enqueue(new Callback<Questions>() {
@@ -227,7 +260,7 @@ public class EditPlanFragment extends Fragment {
                         public void onFailure(Call<Questions> call, Throwable t) {
 
                         }
-                    });
+                    });*/
                 }
             }
         });
@@ -235,7 +268,11 @@ public class EditPlanFragment extends Fragment {
         clsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<Questions> deleteQuestion = apiInterface.deleteQuestion(questions.getId());
+
+                subject.getSub().getQuestion().remove(pos);
+                setQuestions();
+                dialog.dismiss();
+               /* Call<Questions> deleteQuestion = apiInterface.deleteQuestion(questions.getId());
                 deleteQuestion.enqueue(new Callback<Questions>() {
                     @Override
                     public void onResponse(Call<Questions> call, Response<Questions> response) {
@@ -249,7 +286,7 @@ public class EditPlanFragment extends Fragment {
                     public void onFailure(Call<Questions> call, Throwable t) {
 
                     }
-                });
+                });*/
             }
         });
 
@@ -287,7 +324,13 @@ public class EditPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-                    Questions newQuestion = new Questions(null,tvQ.getText().toString(),tvAnswer.getText().toString(),"",0,0,subject);//Тут было args.getId()
+
+                    subject.getSub().addQuestion(
+                            new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
+                    setQuestions();
+                    dialog.dismiss();
+
+                   /* Questions newQuestion = new Questions(null,tvQ.getText().toString(),tvAnswer.getText().toString(),"",0,0,subject);//Тут было args.getId()
 
                     Call<Questions> questionsCall = apiInterface.addQuestion(newQuestion);
                     questionsCall.enqueue(new Callback<Questions>() {
@@ -303,7 +346,7 @@ public class EditPlanFragment extends Fragment {
                         public void onFailure(Call<Questions> call, Throwable t) {
 
                         }
-                    });
+                    });*/
                 }
             }
         });

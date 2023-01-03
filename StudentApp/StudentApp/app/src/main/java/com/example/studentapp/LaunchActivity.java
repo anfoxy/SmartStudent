@@ -18,13 +18,13 @@ import io.paperdb.Paper;
 public class LaunchActivity extends AppCompatActivity {
 
     ActivityLaunchBinding binding;
-    public static MyDBManager myDBManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        myDBManager = new MyDBManager(this);
+
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_launch);
 
@@ -39,7 +39,6 @@ public class LaunchActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                myDBManager.openDB();
                 Users user = Users.getUser();
                 if (user == null){
                     Intent intent = new Intent(getApplicationContext(), AuthActivity.class);

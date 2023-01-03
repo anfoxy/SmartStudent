@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.db.Subjects;
 
 import java.util.ArrayList;
@@ -20,14 +21,14 @@ import retrofit2.Call;
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
 
     public interface OnItemClickListener{
-        void onClickSubject(Subjects subject, int position);
+        void onClickSubject(PlanToSub subject, int position);
     }
 
     private Context context;
-    private ArrayList<Subjects> subjects;
+    private ArrayList<PlanToSub> subjects;
     private OnItemClickListener onItemClickListener;
 
-    public SubjectAdapter(Context context, ArrayList<Subjects> subjects, OnItemClickListener onItemClickListener) {
+    public SubjectAdapter(Context context, ArrayList<PlanToSub> subjects, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.subjects = subjects;
         this.onItemClickListener = onItemClickListener;
@@ -42,8 +43,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Subjects subj = subjects.get(position);
-        holder.subTv.setText(subj.getName());
+        PlanToSub subj = subjects.get(position);
+        holder.subTv.setText(subj.getSub().getNameOfSubme());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

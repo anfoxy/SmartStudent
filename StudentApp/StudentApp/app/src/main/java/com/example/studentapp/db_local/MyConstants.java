@@ -6,7 +6,7 @@ import com.example.studentapp.db.Subjects;
 
 public class MyConstants {
     // При изменении в бд +1
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
 
     // Название бд
     public static final String DB_NAME = "smart_student";

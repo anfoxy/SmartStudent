@@ -24,8 +24,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.SubjectAddRecycler;
+import com.example.studentapp.al.PlanToSub;
+import com.example.studentapp.al.Question;
 import com.example.studentapp.databinding.FragmentAddPlanBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Plan;
@@ -36,6 +39,7 @@ import com.example.studentapp.db.Users;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -53,18 +57,21 @@ public class AddPlanFragment extends Fragment {
     final Calendar myCalendar = Calendar.getInstance();
     int idSub;
     SubjectAddRecycler.OnItemClickListener itemClick;
+    PlanToSub planToSub;
+    LocalDate localDate;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Paper.book("questions").destroy();
-        Paper.book("plan").destroy();
+        planToSub = new PlanToSub();
+ /*       Paper.book("questions").destroy();
+        Paper.book("plan").destroy();*/
 
         itemClick = new SubjectAddRecycler.OnItemClickListener() {
 
             @Override
-            public void onClickQuestion(Questions ques, int position) {
+            public void onClickQuestion(Question ques, int position) {
                 Toast.makeText(getActivity(), "Что-то нажали", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder
                         = new AlertDialog.Builder(getContext());
@@ -76,7 +83,6 @@ public class AddPlanFragment extends Fragment {
                                 R.layout.dialog_add_question,
                                 null);
                 builder.setView(customLayout);
-
 
 
                 AlertDialog dialog
@@ -95,8 +101,13 @@ public class AddPlanFragment extends Fragment {
                 addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Questions.updateQuestion(position, tvQ.getText().toString(),tvAnswer.getText().toString());
-                        setQuestions(Questions.getQuestions());
+
+                        planToSub.getSub().getQuestion().get(position).setQuestion(tvQ.getText().toString());
+                        planToSub.getSub().getQuestion().get(position).setAnswer(tvAnswer.getText().toString());
+
+                    /*Questions.updateQuestion(position, tvQ.getText().toString(),tvAnswer.getText().toString());
+                      setQuestions(Questions.getQuestions());*/
+                        setQuestions(planToSub.getSub().getQuestion());
                         dialog.dismiss();
                     }
                 });
@@ -104,8 +115,10 @@ public class AddPlanFragment extends Fragment {
                 clsBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Questions.deleteQuestion(position);
-                        setQuestions(Questions.getQuestions());
+                        planToSub.getSub().getQuestion().remove(position);
+                       /* Questions.deleteQuestion(position);
+                        setQuestions(Questions.getQuestions());*/
+                        setQuestions(planToSub.getSub().getQuestion());
                         dialog.dismiss();
                     }
                 });
@@ -113,7 +126,7 @@ public class AddPlanFragment extends Fragment {
                 dialog.show();
             }
         };
-        setQuestions(Questions.getQuestions());
+        setQuestions(planToSub.getSub().getQuestion());
 
         DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -135,9 +148,23 @@ public class AddPlanFragment extends Fragment {
         binding.AddPlan1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Questions.getQuestions().isEmpty()){
+                if (planToSub.getSub().getQuestion().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
+                }if(localDate.equals(LocalDate.now())){
+                    Toast.makeText(getContext(), "Добавьте дату экзамена", Toast.LENGTH_SHORT).show();
+                }if(binding.Text1.getText().toString().trim().isEmpty()){
+                    Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
                 }else{
+                    planToSub.setId((MainActivity.myDBManager.set().size()+1)*(-1));
+                    planToSub.setDateOfExams(localDate);
+                    planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
+                    setNewPlan();
+                    MainActivity.myDBManager.setFromDB(planToSub);
+                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(MainActivity.myDBManager.set().size());
+                    Navigation.findNavController(getView()).navigate(action);
+
+                    /*
+
                     Subjects sub = new Subjects(0, binding.Text1.getText().toString(), binding.editTextDate.getText().toString(), 0, Users.getUser(), new ArrayList<Questions>(),new ArrayList<Plan>());
                     Call<Subjects> addSub = apiInterface.addSubject(sub);
 
@@ -210,7 +237,7 @@ public class AddPlanFragment extends Fragment {
                         public void onFailure(Call<Subjects> call, Throwable t) {
                             Log.d("not ok", t.getMessage());
                         }
-                    });
+                    });*/
 
                 }
             }
@@ -224,34 +251,22 @@ public class AddPlanFragment extends Fragment {
         });
     }
 
-    private ArrayList<Plan> setNewPlan(Subjects subj){
-        LocalDate date = LocalDate.parse(subj.getDaysString().split("T")[0]);
+    private void setNewPlan(){
+        LocalDate date = LocalDate.parse(planToSub.dateToString().split("T")[0]);
         long days = DAYS.between(LocalDate.now(), date);
-
-        Calendar cal = new GregorianCalendar();
-        ArrayList<Plan> p = new ArrayList<Plan>();
-
         for(int i=0; i<days; i++){
-            Plan plan = new Plan(null,
-                    "" + cal.get(Calendar.YEAR)+
-                            "-" + cal.get(Calendar.MONTH)+
-                            "-" + cal.get(Calendar.DATE),
-                    0,subj);
-            p.add(plan);
-            Plan.addPlan(plan);
-            cal.add(Calendar.DATE, 1);
+            planToSub.plusDayToPlan(LocalDate.now().plusDays(i));
         }
-
-        return p;
     }
 
     private void updateLabel(){
         String myFormat="yyyy-MM-dd";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat);
+        localDate =  myCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         binding.editTextDate.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    private void setQuestions(ArrayList<Questions> questions){
+    private void setQuestions(ArrayList<Question> questions){
         binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listVop.setHasFixedSize(true);
         binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), questions, itemClick));
@@ -286,9 +301,13 @@ public class AddPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-                    Questions question = new Questions(0, tvQ.getText().toString(), tvAnswer.getText().toString(), "",0,0, null);
+
+                    planToSub.getSub().addQuestion(
+                            new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
+                 /*   Questions question = new Questions(0, , , "",0,0, null);
                     Questions.addQuestion(question);
-                    setQuestions(Questions.getQuestions());
+               */
+                    setQuestions(planToSub.getSub().getQuestion());
                     dialog.dismiss();
                 }
             }

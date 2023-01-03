@@ -14,13 +14,16 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentStatisticBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -33,6 +36,7 @@ public class StatisticFragment extends Fragment {
     FragmentStatisticBinding binding;
     ApiInterface apiInterface;
     StatisticFragmentArgs args;
+    PlanToSub planToSub;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -45,8 +49,18 @@ public class StatisticFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(action);
             }
         });
+        planToSub =  MainActivity.myDBManager.set().stream()
+                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+        binding.kolvop.setText("Количество вопросов: "+planToSub.getSub().getSizeAllQuest());
+        binding.kolzap.setText("Колличество запомненых вопросов: "+planToSub.getSub().getSizeKnow());
+        binding.dateob.setText("Количество невыученных вопросов:" +planToSub.getSub().getSizeNoKnow());
+        binding.dateex.setText("Дата экзамена: "+ planToSub.dateToString().split("T")[0]);
+        LocalDate date = LocalDate.parse(planToSub.dateToString().split("T")[0]);
+        long days = DAYS.between(LocalDate.now(), date);
+        binding.kold.setText("Количество дней до экзамена: "+days);
 
-        Call<Subjects> getSubj = apiInterface.getSubjectById(args.getId());
+
+      /*  Call<Subjects> getSubj = apiInterface.getSubjectById(args.getId());
         getSubj.enqueue(new Callback<Subjects>() {
             @Override
             public void onResponse(Call<Subjects> call, Response<Subjects> response) {
@@ -76,7 +90,7 @@ public class StatisticFragment extends Fragment {
             public void onFailure(Call<Subjects> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
     }
 

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentapp.R;
+import com.example.studentapp.al.Question;
 import com.example.studentapp.db.Questions;
 
 import java.util.ArrayList;
@@ -18,14 +19,14 @@ import java.util.ArrayList;
 public class SubjectAddRecycler extends RecyclerView.Adapter<SubjectAddRecycler.ViewHolder> {
 
     public interface OnItemClickListener{
-        void onClickQuestion(Questions ques, int position);
+        void onClickQuestion(Question ques, int position);
     }
 
     private Context context;
-    private ArrayList<Questions> questions;
+    private ArrayList<Question> questions;
     private OnItemClickListener onItemClickListener;
 
-    public SubjectAddRecycler(Context context, ArrayList<Questions> questions, OnItemClickListener onItemClickListener) {
+    public SubjectAddRecycler(Context context, ArrayList<Question> questions, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.questions = questions;
         this.onItemClickListener = onItemClickListener;

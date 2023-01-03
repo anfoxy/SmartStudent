@@ -10,16 +10,18 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.studentapp.databinding.ActivityMainBinding;
 import com.example.studentapp.db.ApiInterface;
+import com.example.studentapp.db_local.MyDBManager;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     ApiInterface apiInterface;
-
+    public static MyDBManager myDBManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        myDBManager = new MyDBManager(this);
+        myDBManager.openDB();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

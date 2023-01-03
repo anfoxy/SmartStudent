@@ -85,7 +85,6 @@ public class AnswerQuestionFragment extends Fragment {
                     binding.nextBtn.setVisibility(View.VISIBLE);
                     binding.textYesNo.setVisibility(View.VISIBLE);
                     binding.textYesNo.setText("Нажмите на те предложения, на котрые вы вероятно ответили, перед тем, как нажать 'Посмотреть ответ'");
-
                 }
             }
         });

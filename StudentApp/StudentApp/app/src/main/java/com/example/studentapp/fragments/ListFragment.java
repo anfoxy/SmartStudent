@@ -13,8 +13,10 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.SubjectAdapter;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentListBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
@@ -40,14 +42,24 @@ public class ListFragment extends Fragment {
 
         SubjectAdapter.OnItemClickListener itemClickListener =new SubjectAdapter.OnItemClickListener() {
             @Override
-            public void onClickSubject(Subjects subject, int position) {
+            public void onClickSubject(PlanToSub subject, int position) {
                 ListFragmentDirections.ActionListFragmentToStatisticFragment action = ListFragmentDirections.actionListFragmentToStatisticFragment(subject.getId());
-
                 Navigation.findNavController(getView()).navigate(action);
             }
         };
+        ArrayList<PlanToSub> subjs = MainActivity.myDBManager.set();
+        binding.listSubView.setHasFixedSize(true);
+        binding.listSubView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listSubView.setAdapter(new SubjectAdapter(getContext(), subjs, itemClickListener));
+        if(subjs.size() == 0) {
+            binding.predmNullPng.setVisibility(View.VISIBLE);
+            binding.textList.setVisibility(View.VISIBLE);
+        } else {
+            binding.textList.setVisibility(View.INVISIBLE);
+            binding.predmNullPng.setVisibility(View.INVISIBLE);
+        }
 
-        Call<ArrayList<Subjects>> getSubjs = apiInterface.getSubjectsByUser(Users.getUser().getId());
+       /* Call<ArrayList<Subjects>> getSubjs = apiInterface.getSubjectsByUser(Users.getUser().getId());
         getSubjs.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
@@ -72,7 +84,7 @@ public class ListFragment extends Fragment {
 
             }
 
-        });
+        });*/
 
         binding.AddPlan.setOnClickListener(new View.OnClickListener() {
             @Override
