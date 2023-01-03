@@ -1,10 +1,8 @@
 package com.example.studentapp.db_local;
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-
 
 import androidx.annotation.Nullable;
 
@@ -28,6 +26,4 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(MyConstants.DROP_TABLE_SUBJECT);
         onCreate(db);
     }
-
-
 }
