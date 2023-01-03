@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.studentapp.databinding.ActivityAuthBinding;
-
 import com.example.studentapp.db.Users;
 
 import com.example.studentapp.al.PlanToDay;
@@ -17,10 +15,6 @@ import com.example.studentapp.al.Subject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Objects;
 
 public class MyDBManager {
     private Context context;
@@ -35,7 +29,7 @@ public class MyDBManager {
     public void deleteDatabase (Context context) {
         context.deleteDatabase(MyConstants.DB_NAME);
     }
-    
+
     public void openDB() {
         db = myDBHelper.getWritableDatabase();
     }
@@ -111,7 +105,7 @@ public class MyDBManager {
         return data;
     }
 
-    public ArrayList<PlanToSub> set() {
+    public ArrayList<PlanToSub> getFromDB() {
         String query_que = "SELECT " + MyConstants.KEY_ID_QUESTION + ", " + MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_TEXT_QUESTION + ", " + MyConstants.KEY_TEXT_ANSWER + ", " + MyConstants.KEY_PERCENT_KNOW + ", " + MyConstants.KEY_DATE_QUESTION + ", " + MyConstants.KEY_SIZE_OF_VIEW + " FROM " + MyConstants.TABLE_QUESTION;
         String query_sub = "SELECT " + MyConstants.KEY_ID_SUBJECT + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_SUBJECT_DATE + ", " + MyConstants.KEY_TODAY_LEARNED + " FROM " + MyConstants.TABLE_SUBJECT;
         String query_pl = "SELECT " + MyConstants.KEY_ID_PLAN + ", " +MyConstants.KEY_SUBJECT_NAME + ", " + MyConstants.KEY_DATE_PLAN + ", " + MyConstants.KEY_NUM_QUE_PLAN  + ", " + MyConstants.KEY_BOOL_DATE + " FROM " + MyConstants.TABLE_PLAN;
@@ -160,6 +154,7 @@ public class MyDBManager {
             ArrayList<Integer> todaylearned = new ArrayList<Integer>(); //
             ArrayList<Integer> Arr_num_que_plan = new ArrayList<Integer>();
             ArrayList<Integer> sizeOfView = new ArrayList<>();
+            ArrayList<Integer> Arr_id_sub = new ArrayList<>();
 
             ArrayList<LocalDate> Local_Date_que = new ArrayList<>();
             ArrayList<Double> percentKnow = new ArrayList<>();
@@ -195,8 +190,10 @@ public class MyDBManager {
             cursor3.moveToFirst();
 
             int col_idx_name_sub_question = cursor2.getColumnIndex("subject_name");
+            int col_idx_id_sub = cursor2.getColumnIndex("subject_name");
             for (int i = 0; i < count_que; i++) {
                 name_sub_question.add(cursor2.getString(col_idx_name_sub_question));
+                Arr_id_sub.add(cursor2.getInt(col_idx_id_sub));
                 cursor2.moveToNext();
             }
             cursor2.moveToFirst();
@@ -291,7 +288,9 @@ public class MyDBManager {
                     }
                 }
                 sub.add(new Subject(name_sub_subject.get(i), Arr_que));
+
                 GlSub.add(new PlanToSub(sub.get(i), todaylearned.get(i), date_local.get(i), futurePlan, lastPlan));
+                GlSub.get(GlSub.size()-1).setId(Arr_id_sub.get(i));
             }
         }
         return GlSub;
