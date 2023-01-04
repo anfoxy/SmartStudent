@@ -2,6 +2,7 @@ package com.example.webserver.controller;
 
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.model.Msg;
+import com.example.webserver.model.Subject;
 import com.example.webserver.model.User;
 import com.example.webserver.service.DeleteSercice;
 import com.example.webserver.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,12 +25,16 @@ public class UserController {
     DeleteSercice deleteSercice;
 
     @PostMapping("/users/update")
-    public ResponseEntity<User> update(@Valid @RequestBody User  user) throws ResourceNotFoundException {
+    public ResponseEntity<ArrayList<Subject>> update(@Valid @RequestBody ArrayList<Subject> subjects) throws ResourceNotFoundException {
 
-        User user1 = userService.findById(user.getId());
-        userService.updateDBTime(user,user1);
+        if(subjects.isEmpty()) return ResponseEntity.ok(subjects);
 
-        return ResponseEntity.ok(userService.login(user.getEmail(),user.getPassword()));
+        User user1 = userService.findById(subjects.get(0).getUserId().getId());
+        User user2 = subjects.get(0).getUserId();
+        subjects.remove(0);
+        ArrayList<Subject> t = userService.updateDBTime(user2,user1,subjects);
+        System.out.println(t);
+        return ResponseEntity.ok(t);
     }
     @PostMapping("/users/auth")
     public ResponseEntity<User> login(@Valid @RequestBody User  user){

@@ -1,5 +1,7 @@
 package com.example.studentapp.db;
 
+import com.example.studentapp.MainActivity;
+import com.example.studentapp.al.PlanToSub;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -16,10 +18,15 @@ public class Subjects {
     private int todayLearned;
     @SerializedName("userId")
     private Users userId;
+
     @SerializedName("questions")
     private ArrayList<Questions> questions;
     @SerializedName("plans")
     private ArrayList<Plan> plans;
+
+    public Subjects(Users userId) {
+        this.userId = userId;
+    }
 
     public Subjects(int id, String name, String days, int todayLearned, Users userId, ArrayList<Questions> questions, ArrayList<Plan> plans) {
         this.id = id;
@@ -30,6 +37,14 @@ public class Subjects {
         this.questions = questions;
         this.plans = plans;
     }
+
+    public Subjects(int id, String name, String days, int todayLearned, Users userId) {
+        this.id = id;
+        this.name = name;
+        this.days = days;
+        this.todayLearned = todayLearned;
+        this.userId = userId;
+    }
     public Subjects(Subjects subjects) {
         this.id = subjects.id;
         this.name =  subjects.name;
@@ -39,6 +54,7 @@ public class Subjects {
         this.questions =  subjects.questions;
         this.plans =  subjects.plans;
     }
+
 
 
     public ArrayList<Questions> getQuestions() {

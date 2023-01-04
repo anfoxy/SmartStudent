@@ -2,6 +2,9 @@ package com.example.studentapp.db;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import io.paperdb.Paper;
 
 public class Users {
@@ -28,6 +31,26 @@ public class Users {
         this.login = login;
         this.email = email;
         this.password = password;
+    }
+
+    public String getUpdateDbTime() {
+        return updateDbTime;
+    }
+
+    public void setUpdateDbTime(String updateDbTime) {
+        this.updateDbTime = updateDbTime;
+    }
+    public void currentUpdateDbTime() {
+        Calendar cal = new GregorianCalendar();
+        String time = "" + cal.get(Calendar.YEAR)+
+                "-" +  checkDateFor0(cal.get(Calendar.MONTH)+1)+
+                "-" +  checkDateFor0(cal.get(Calendar.DATE))+
+                "-" +  checkDateFor0(cal.get(Calendar.HOUR_OF_DAY))+
+                "-" +  checkDateFor0(cal.get(Calendar.MINUTE));
+        this.updateDbTime = time;
+    }
+    private String checkDateFor0(int figure){
+        return figure < 10 ? "0" + figure : "" + figure;
     }
 
     public Users(Integer id, String login, String email, String password, String matchingPassword) {

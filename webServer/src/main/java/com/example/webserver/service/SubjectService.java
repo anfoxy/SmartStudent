@@ -3,6 +3,7 @@ package com.example.webserver.service;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.dto.SubjectDTO;
 import com.example.webserver.mapper.CustomerMapper;
+import com.example.webserver.model.Question;
 import com.example.webserver.model.Subject;
 import com.example.webserver.model.User;
 import com.example.webserver.repository.PlanRepository;
@@ -21,18 +22,22 @@ public class SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
 
-
     @Autowired
     CustomerMapper mapper;
 
     public Subject putMet(Long id, Subject s) throws ResourceNotFoundException {
         Subject subject = findById(id);
-        subject.setName(s.getName());
-        subject.setUserId(s.getUserId());
-        subject.setTodayLearned(s.getTodayLearned());
-        subject.setDays(s.getDays());
-        subjectRepository.save(subject);
-        return subject;
+        if(subject != null) {
+            subject.setId(s.getId());
+            subject.setName(s.getName());
+            subject.setUserId(s.getUserId());
+            subject.setTodayLearned(s.getTodayLearned());
+            subject.setDays(s.getDays());
+            return subjectRepository.save(subject);
+        }else {
+            s.setId(null);
+           return subjectRepository.save(s);
+        }
     }
 /*
 
@@ -49,6 +54,8 @@ public class SubjectService {
     public ArrayList<Subject> findAllByUserId(User user){
         return subjectRepository.findAllByUserId(user);
     }
+
+
 
     public boolean deleteUser(Long subjectId) {
         if (subjectRepository.findById(subjectId).isPresent()) {
@@ -94,8 +101,7 @@ public class SubjectService {
         return subjectRepository.save(subject);
     }
     public Subject findById(Long id) throws ResourceNotFoundException {
-        return subjectRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Subject not found for id:" + id + ""));
+        return subjectRepository.findById(id).orElse(null);
     }
     public List<Subject> findAll() {
         return subjectRepository.findAll();

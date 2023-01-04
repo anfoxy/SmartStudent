@@ -8,6 +8,7 @@ import com.example.webserver.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class PlanService {
         plan.setDate(res.getDate());
         plan.setSubId(res.getSubId());
         plan.setNumberOfQuestions(res.getNumberOfQuestions());
+        plan.setBoolDate(res.isBoolDate());
         planRepository.save(plan);
         return plan;
     }
@@ -92,6 +94,7 @@ public class PlanService {
    }
 
 
+
     public void delete(Long id) throws ResourceNotFoundException {
         Plan plan = findById(id);
         planRepository.delete(plan);
@@ -106,5 +109,8 @@ public class PlanService {
     public List<Plan> findAll() {
         return planRepository.findAll();
     }
-
+    @Transactional
+    public void deleteAllBySubId(Subject subject) {
+        if(!findAllBySubId(subject).isEmpty())  planRepository.deleteAllBySubId(subject);
+    }
 }

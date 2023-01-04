@@ -3,6 +3,8 @@ package com.example.webserver.service;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.dto.UserDTO;
 import com.example.webserver.mapper.CustomerMapper;
+import com.example.webserver.model.Plan;
+import com.example.webserver.model.Question;
 import com.example.webserver.model.Subject;
 import com.example.webserver.model.User;
 import com.example.webserver.repository.UserRepository;
@@ -10,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -20,6 +20,10 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     SubjectService subjectService;
+    @Autowired
+    PlanService planService ;
+    @Autowired
+    QuestionService questionService;
     @Autowired
     CustomerMapper mapper;
 
@@ -85,16 +89,70 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ArrayList<Subject> updateDBTime(User userLoc, User userSer) {
-        if(checkTime(userLoc,userSer)){
-            return subjectService.findAllByUserId(userSer);
-        } else {
-
-
-            return null;
+    public ArrayList<Subject> updateDBTime(User userLoc, User userSer,ArrayList<Subject> subjects) throws ResourceNotFoundException {
+        if(!checkTime(userLoc,userSer)) {
+            for (Subject s : subjects) {
+                System.out.println(s);
+                subjectService.putMet(s.getId(), s);
+                deleteAllSubId(s);
+                addAllQueSubId( s.getQuestions(),s);
+                addAllPlanSubId(s.getPlans(),s);
+            }
+            userSer.setUpdateDbTime(currentUpdateDbTime());
+            save(userSer);
+            return findAllByUserIdPlusQuestionAndPlan(userSer);
         }
+        return findAllByUserIdPlusQuestionAndPlan(userSer);
     }
 
+    private ArrayList<Subject> findAllByUserIdPlusQuestionAndPlan(User user){
+        ArrayList<Subject> s = subjectService.findAllByUserId(user);
+
+        for (Subject sub: s) {
+            sub.setQuestions(questionService.findAllBySubId(sub));
+            for (Question q: sub.getQuestions()) {
+                q.setSubId(null);
+            }
+            sub.setPlans(planService.findAllBySubId(sub));
+            for (Plan p: sub.getPlans()) {
+                p.setSubId(null);
+            }
+        }
+        System.out.println(s);
+        return s;
+    }
+
+
+    private String currentUpdateDbTime() {
+        Calendar cal = new GregorianCalendar();
+        String time = "" + cal.get(Calendar.YEAR)+
+                "-" +  checkDateFor0(cal.get(Calendar.MONTH)+1)+
+                "-" +  checkDateFor0(cal.get(Calendar.DATE))+
+                "-" +  checkDateFor0(cal.get(Calendar.HOUR_OF_DAY))+
+                "-" +  checkDateFor0(cal.get(Calendar.MINUTE));
+       return time;
+    }
+    private String checkDateFor0(int figure){
+        return figure < 10 ? "0" + figure : "" + figure;
+    }
+    private void deleteAllSubId(Subject subject) throws ResourceNotFoundException {
+        questionService.deleteAllBySubId(subject);
+        planService.deleteAllBySubId(subject);
+    }
+    private void addAllQueSubId(List<Question> questions,Subject subject) throws ResourceNotFoundException {
+        for (Question q: questions) {
+            q.setSubId(subject);
+            questionService.save(q);
+        }
+
+    }
+
+    private void addAllPlanSubId(List<Plan> plans,Subject subject) throws ResourceNotFoundException {
+        for (Plan p: plans) {
+            p.setSubId(subject);
+            planService.save(p);
+        }
+    }
     private boolean checkTime(User userLoc, User userSer){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         try {

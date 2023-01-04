@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Table(name = "plan", schema = "public")
 @Getter
 @Setter
-@ToString
 public class Plan {
 
     @Id
@@ -28,6 +27,9 @@ public class Plan {
     @JoinColumn(name = "id_sub")
     private Subject subId;
 
+    @Column(name = "bool_date",nullable = false)
+    private boolean boolDate;
+
     public Plan() {
     }
 
@@ -36,5 +38,15 @@ public class Plan {
         this.date = date;
         this.numberOfQuestions = numberOfQuestions;
         this.subId = subId;
+    }
+
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", numberOfQuestions=" + numberOfQuestions +
+                ", boolDate=" + boolDate +
+                '}';
     }
 }

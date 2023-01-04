@@ -9,6 +9,7 @@ import com.example.webserver.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,5 +59,9 @@ public class QuestionService {
     public List<Question> findAll() {
         return questionRepository.findAll();
     }
-
+    @Transactional
+    public void deleteAllBySubId(Subject subject) {
+        System.out.println("qqqqq== "+findAllBySubId(subject));
+        if(!findAllBySubId(subject).isEmpty()) questionRepository.deleteAllBySubId(subject);
+    }
 }

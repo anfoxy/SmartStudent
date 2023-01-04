@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "subject", schema = "public")
 @Getter
 @Setter
-@ToString
+
 public class Subject {
 
     @Id
@@ -53,5 +53,18 @@ public class Subject {
         this.days = subject.days;
         this.todayLearned = subject.todayLearned;
         this.userId = subject.userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", days='" + days + '\'' +
+                ", todayLearned=" + todayLearned +
+                ", userId=" + userId +
+                ", questions=" + questions +
+                ", plans=" + plans +
+                '}';
     }
 }

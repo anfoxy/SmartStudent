@@ -135,7 +135,7 @@ public class Questions {
                 ", date='" + date + '\'' +
                 ", percentKnow='" + percentKnow + '\'' +
                 ", sizeOfView='" + sizeOfView + '\'' +
-                ", subId=" + subId +
+            //    ", subId=" + subId +
                 '}';
     }
 }

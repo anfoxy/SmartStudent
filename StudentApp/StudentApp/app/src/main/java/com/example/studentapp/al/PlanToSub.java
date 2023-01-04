@@ -1,6 +1,8 @@
 package com.example.studentapp.al;
 
 
+import com.example.studentapp.db.Plan;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -211,17 +213,20 @@ public class PlanToSub {
         }
     }
 
-//    public  ArrayList<Plan> getPlans(){
-//        ArrayList<Plan> res=new ArrayList<>();
-//
-//        for(PlanToDay planToDay:lastPlan){
-//            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null));
-//        }
-//        for(PlanToDay planToDay:futurePlan){
-//            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null));
-//        }
-//        return res;
-//    }
+    public  ArrayList<Plan> getPlans(){
+        ArrayList<Plan> res=new ArrayList<>();
+
+        for(PlanToDay planToDay:lastPlan){
+            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null,false));
+        }
+        if(futurePlan.size()>0) res.add(new Plan(futurePlan.get(0).getId(), futurePlan.get(0).dateToString(), futurePlan.get(0).getSizeOfQuetion(), null,true));
+
+        for( int i = 1 ; i < futurePlan.size(); i++){
+            res.add(new Plan(futurePlan.get(i).getId(), futurePlan.get(i).dateToString(), futurePlan.get(i).getSizeOfQuetion(), null,false));
+        }
+
+        return res;
+    }
 
     public String dateToString() {
         String dateStr;

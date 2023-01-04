@@ -16,12 +16,15 @@ public class Plan {
     private int numberOfQuestions;
     @SerializedName("subId")
     private Subjects subId;
+    @SerializedName("boolDate")
+    private boolean boolDate;
 
-    public Plan(Integer id, String date, int numberOfQuestions, Subjects subId) {
+    public Plan(Integer id, String date, int numberOfQuestions, Subjects subId,boolean boolDate) {
         this.id = id;
         this.date = date;
         this.numberOfQuestions = numberOfQuestions;
         this.subId = subId;
+        this.boolDate = boolDate;
     }
 
     public String getDate() {
@@ -56,6 +59,17 @@ public class Plan {
         this.id = id;
     }
 
+    public int getNumberOfQuestions() {
+        return numberOfQuestions;
+    }
+
+    public boolean isBoolDate() {
+        return boolDate;
+    }
+
+    public void setBoolDate(boolean boolDate) {
+        this.boolDate = boolDate;
+    }
 
     public static void saveListQuestions(ArrayList<Plan> plans){
         Paper.book("plan").write("plan", plans);
@@ -84,7 +98,7 @@ public class Plan {
 
     public static void updatePlan(int position, String date, int count){
         ArrayList<Plan> questions = getPlans();
-        Plan questions1  = new Plan(0, date, count,  null);
+        Plan questions1  = new Plan(0, date, count,  null,false);
         questions.remove(questions.get(position));
         questions.add(questions1);
         saveListQuestions(questions);
@@ -96,7 +110,7 @@ public class Plan {
                 "id=" + id +
                 ", date='" + date + '\'' +
                 ", NumberOfQuestions=" + numberOfQuestions +
-                ", subId=" + subId +
+            //    ", subId=" + subId +
                 '}';
     }
 }

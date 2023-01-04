@@ -42,7 +42,7 @@ public class Question {
         lastDate = quest.lastDate;
         sizeOfView = quest.sizeOfView;
         percentKnow=quest.percentKnow;
-        this.id= id;
+        this.id= quest.id;
     }
 
     public Question(String quest, String answer) {

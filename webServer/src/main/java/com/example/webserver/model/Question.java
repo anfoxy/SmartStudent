@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "question", schema = "public")
 @Getter
 @Setter
-@ToString
+
 public class Question {
 
     @Id
@@ -63,4 +63,15 @@ public class Question {
         this.subId = q.subId;
     }
 
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", date='" + date + '\'' +
+                ", percentKnow=" + percentKnow +
+                ", sizeOfView=" + sizeOfView +
+                '}';
+    }
 }

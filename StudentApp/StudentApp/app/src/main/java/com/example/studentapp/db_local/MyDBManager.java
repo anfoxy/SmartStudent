@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.Users;
 
 import com.example.studentapp.al.PlanToDay;
@@ -36,9 +37,9 @@ public class MyDBManager {
 
     public void setFromDB(PlanToSub pl) {
         Subject s = pl.getSub();
-        ArrayList<PlanToDay> Date_Plan = pl.getLastPlan();
+     /* ArrayList<PlanToDay> Date_Plan = pl.getLastPlan();
         ArrayList<PlanToDay> futurePlan = pl.getFuturePlan();
-        int bool_plan;
+        int bool_plan;*/
 
         Users user = Users.getUser();
 
@@ -47,19 +48,32 @@ public class MyDBManager {
             insert_TABLE_QUESTION(pl, i);
         }
 
-        Date_Plan.addAll(futurePlan);
+       // Date_Plan.addAll(futurePlan);
 
 
-        for (int i = 0; i < Date_Plan.size(); i++) {
+
+        for(PlanToDay planToDay:pl.getLastPlan()){
+            insert_TABLE_PLAN(pl, planToDay, 0);
+        }
+        if(pl.getFuturePlan().size()>0) insert_TABLE_PLAN(pl, pl.getFuturePlan().get(0), 1);
+
+        for( int i = 1 ; i < pl.getFuturePlan().size(); i++)insert_TABLE_PLAN(pl, pl.getFuturePlan().get(i), 0);
+
+        /*for (int i = 0; i < Date_Plan.size(); i++) {
             if (Date_Plan.get(i) == futurePlan.get(0)) {
                 bool_plan = 1;
             } else {
                 bool_plan = 0;
             }
             insert_TABLE_PLAN(pl, Date_Plan.get(i), bool_plan);
-        }
+        }*/
     }
 
+    public void deleteAllSub() {
+        db.execSQL("DELETE FROM table_plan");
+        db.execSQL("DELETE FROM table_question");
+        db.execSQL("DELETE FROM table_subject");
+    }
 
 
     public void insert_TABLE_PLAN(PlanToSub pl, PlanToDay pld, int bool_plan) {
