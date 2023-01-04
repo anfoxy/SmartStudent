@@ -3,17 +3,23 @@ package com.example.webserver.service;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.dto.UserDTO;
 import com.example.webserver.mapper.CustomerMapper;
+import com.example.webserver.model.Subject;
 import com.example.webserver.model.User;
 import com.example.webserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    SubjectService subjectService;
     @Autowired
     CustomerMapper mapper;
 
@@ -22,6 +28,7 @@ public class UserService {
         user.setLogin(s.getLogin());
         user.setPassword(s.getPassword());
         user.setMatchingPassword(s.getMatchingPassword());
+        user.setUpdateDbTime(s.getUpdateDbTime());
         userRepository.save(user);
         return user;
     }
@@ -78,4 +85,31 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public ArrayList<Subject> updateDBTime(User userLoc, User userSer) {
+        if(checkTime(userLoc,userSer)){
+            return subjectService.findAllByUserId(userSer);
+        } else {
+
+
+            return null;
+        }
+    }
+
+    private boolean checkTime(User userLoc, User userSer){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        try {
+            // Парсим строки с временем в объекты Date
+            Date date1 = format.parse(userLoc.getUpdateDbTime());
+            Date date2 = format.parse(userSer.getUpdateDbTime());
+            // Сравниваем объекты Date
+            return date1.before(date2);
+        } catch (Exception e) {
+            // Обрабатываем ошибки
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }
+
+

@@ -21,12 +21,20 @@ public class UserController {
     UserService userService;
     @Autowired
     DeleteSercice deleteSercice;
+
+    @PostMapping("/users/update")
+    public ResponseEntity<User> update(@Valid @RequestBody User  user) throws ResourceNotFoundException {
+
+        User user1 = userService.findById(user.getId());
+        userService.updateDBTime(user,user1);
+
+        return ResponseEntity.ok(userService.login(user.getEmail(),user.getPassword()));
+    }
     @PostMapping("/users/auth")
     public ResponseEntity<User> login(@Valid @RequestBody User  user){
 
         return ResponseEntity.ok(userService.login(user.getEmail(),user.getPassword()));
     }
-
     @PostMapping("/users/register")
     public ResponseEntity<String> register(@Valid @RequestBody User  user){
       return ResponseEntity.ok(userService.register(user));

@@ -28,7 +28,8 @@ public class User implements Serializable {
     private String email;
     @Column(name = "user_password",nullable = false)
     private String password;
-
+    @Column(name = "update_db_time",nullable = false)
+    private String updateDbTime;
     transient private String matchingPassword;
 
     public User(Long id, String userName, String password, String matchingPassword) {
