@@ -9,7 +9,6 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,28 +20,31 @@ import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.fragment.app.Fragment;
+
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToSub;
+import com.example.studentapp.al.Question;
+import com.example.studentapp.al.Study;
 import com.example.studentapp.databinding.FragmentAnswerQuestionBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
-import com.example.studentapp.db.Subjects;
 
 import java.io.IOException;
 import java.text.BreakIterator;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class AnswerQuestionFragment extends Fragment {
@@ -56,21 +58,29 @@ public class AnswerQuestionFragment extends Fragment {
     private int selectedCount = 0;
     private int totalCount = 0;
     private int CountAnswerText = 0;
+    private double textKnowGet; //процент
     OkHttpClient client = new OkHttpClient();
     okhttp3.Response response;
+    Study study;
+    Question nowQuest;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setData();
-
+        //setData();
+        PlanToSub plan= MainActivity.myDBManager.getFromDB().stream()
+                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+        plan.plusDayToPlan(LocalDate.now());
+        study=new Study(plan.getSub(),
+                plan.getFuturePlan().get(0).getSizeOfQuetion(), plan.getTodayLearned());
+        setQuestions();
+        //кнопка нажатия на посмотреть ответ
         binding.lookAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 binding.lookAnswerButton.setVisibility(View.INVISIBLE);
                 CountAnswerText = CountSpen();
-
-                if(CountAnswerText <5) {
+                if(CountAnswerText <5) { //5 предложений
                     binding.textAnswer.setVisibility(View.VISIBLE);
                     binding.yesAnswerButton.setVisibility(View.VISIBLE);
                     binding.noAnswerButton.setVisibility(View.VISIBLE);
@@ -101,32 +111,68 @@ public class AnswerQuestionFragment extends Fragment {
             }
         });
 
+        //не знаю
         binding.noAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 number++;
-                setQuestions();
+                study.clickReady(textKnowGet);
+                MainActivity.myDBManager.updateQuestionsToSubject(plan);
+                plan.progress();
+                MainActivity.myDBManager.updateSubTodayLearned(plan);
+
+                if(study.isEndOfPlan()){
+                    Toast.makeText(getContext(),
+                            "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
+                    NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+                else{
+                    nowQuest.Copy(study.GetNewQuestion());
+
+                }
             }
         });
+        //знаю
         binding.yesAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Questions question = questions.get(number-1);
-                Call<Questions> questionsCall = apiInterface.updateQuestion(question.getId(), question);
-                questionsCall.enqueue(new Callback<Questions>() {
-                    @Override
-                    public void onResponse(Call<Questions> call, Response<Questions> response) {
-                        if (response.isSuccessful()){
-                            number++;
-                            setQuestions();
-                        }
-                    }
+                number++;
+                study.clickReady(textKnowGet);
+                MainActivity.myDBManager.updateQuestionsToSubject(plan);
+                plan.progress();
+                MainActivity.myDBManager.updateSubTodayLearned(plan);
+                if(study.isEndOfPlan()){
+                    Toast.makeText(getContext(),
+                            "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
+                    NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+                else{
+                    nowQuest.Copy(study.GetNewQuestion());
+                }
 
-                    @Override
-                    public void onFailure(Call<Questions> call, Throwable t) {
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            }
+        });
+        binding.nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // после выделения текста который мы знаем
+                number++;
+                study.clickReady(textKnowGet);
+                MainActivity.myDBManager.updateQuestionsToSubject(plan);
+                plan.progress();
+                MainActivity.myDBManager.updateSubTodayLearned(plan);
+                if(study.isEndOfPlan()){
+                    Toast.makeText(getContext(),
+                            "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
+                    NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+                else{
+                    nowQuest.Copy(study.GetNewQuestion());
+                }
+
             }
         });
 
@@ -134,7 +180,7 @@ public class AnswerQuestionFragment extends Fragment {
 
 
     private void setQuestions() {
-        if (number < questions.size()+1){
+        if (number < questions.size()+1){ //проверка на конец тестирования
             binding.textYesNo.setText("Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите 'Посмотреть ответ' и сделайте вердикт.");
             binding.lookAnswerButton.setVisibility(View.VISIBLE);
             binding.textAnswer.setVisibility(View.INVISIBLE);
@@ -143,8 +189,8 @@ public class AnswerQuestionFragment extends Fragment {
             binding.speakButton.setVisibility(View.INVISIBLE);
             binding.nextBtn.setVisibility(View.INVISIBLE);
             binding.textNumber.setText("Вопрос "+number);
-            binding.textQuestion.setText(questions.get(number-1).getQuestion());
-            binding.textAnswer.setText(questions.get(number-1).getAnswer());
+            binding.textQuestion.setText(nowQuest.getQuestion());
+            binding.textAnswer.setText(nowQuest.getAnswer());
         } else {
             Toast.makeText(getContext(), "Вопросы по данному предмету закончились", Toast.LENGTH_SHORT).show();
             @NonNull NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
@@ -152,21 +198,21 @@ public class AnswerQuestionFragment extends Fragment {
         }
     }
 
-    private void setData(){
-        Call<Subjects> subjectsCall = apiInterface.getSubjectById(args.getId());
-        subjectsCall.enqueue(new Callback<Subjects>() {
-            @Override
-            public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-                questions = response.body().getQuestions();
-                setQuestions();
-            }
-
-            @Override
-            public void onFailure(Call<Subjects> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void setData(){
+//        Call<Subjects> subjectsCall = apiInterface.getSubjectById(args.getId());
+//        subjectsCall.enqueue(new Callback<Subjects>() {
+//            @Override
+//            public void onResponse(Call<Subjects> call, Response<Subjects> response) {
+//                questions = response.body().getQuestions();
+//                setQuestions();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Subjects> call, Throwable t) {
+//                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     private void TextSpen() {
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
@@ -255,9 +301,10 @@ public class AnswerQuestionFragment extends Fragment {
                 selectedCount++;
             }
             // Обновляем текст с процентом выделенных предложений
-            String selectedPercentage = String.format(Locale.US, "Выделено: %d/%d (%.1f%%)", selectedCount, totalCount, (float) selectedCount / totalCount * 100);
+//            String selectedPercentage = String.format(Locale.US, "Выделено: %d/%d (%.1f%%)", selectedCount, totalCount, (double) selectedCount / totalCount * 100);
+            textKnowGet=(double) selectedCount / totalCount * 100;
             binding.textAnswer.setText(spannable);
-            binding.textAnswer.append("\n" + selectedPercentage);
+//            binding.textAnswer.append("\n" + selectedPercentage);
         }
         @Override
         public void updateDrawState(TextPaint ds) {

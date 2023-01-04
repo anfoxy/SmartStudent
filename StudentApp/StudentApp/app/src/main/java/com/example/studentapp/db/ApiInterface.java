@@ -15,6 +15,9 @@ public interface ApiInterface {
     @POST("users/auth")
     Call<Users> authUsers(@Body Users user);
 
+    @POST("users/update")
+    Call<ArrayList<Subjects>> update(@Body ArrayList<Subjects> sub);
+
     @POST("users/register")
     Call<String> regUsers(@Body Users user);
 

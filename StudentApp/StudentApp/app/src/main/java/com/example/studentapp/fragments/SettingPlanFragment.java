@@ -26,6 +26,8 @@ import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -95,8 +97,8 @@ public class SettingPlanFragment extends Fragment {
     }
 
     private void setPlan(){
-
-        subj = MainActivity.myDBManager.set().get(args.getId()-1);
+        subj = MainActivity.myDBManager.getFromDB().stream()
+                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
 
         binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listPlan.setHasFixedSize(true);

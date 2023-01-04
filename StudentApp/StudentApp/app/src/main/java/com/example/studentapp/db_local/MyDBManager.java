@@ -182,18 +182,20 @@ public class MyDBManager {
             }
             cursor1.moveToFirst();
 
+
             int col_idx_name_sub_subject = cursor3.getColumnIndex("subject_name");
+            int col_idx_id_sub = cursor3.getColumnIndex("subject_id");
             for (int i = 0; i < count_sub; i++) {
                 name_sub_subject.add(cursor3.getString(col_idx_name_sub_subject));
+                Arr_id_sub.add(cursor3.getInt(col_idx_id_sub));
                 cursor3.moveToNext();
             }
             cursor3.moveToFirst();
 
             int col_idx_name_sub_question = cursor2.getColumnIndex("subject_name");
-            int col_idx_id_sub = cursor2.getColumnIndex("subject_name");
+
             for (int i = 0; i < count_que; i++) {
                 name_sub_question.add(cursor2.getString(col_idx_name_sub_question));
-                Arr_id_sub.add(cursor2.getInt(col_idx_id_sub));
                 cursor2.moveToNext();
             }
             cursor2.moveToFirst();
@@ -284,7 +286,7 @@ public class MyDBManager {
 
                         LocalDate date_local1 = LocalDate.of(year, month, day);
                         Local_Date_que.add(date_local1);
-                        Arr_que.add(new Question(quest.get(m), answer.get(m), Local_Date_que.get(m), sizeOfView.get(m), percentKnow.get(m))); // Local date функцию for преобразование
+                        Arr_que.add(new Question(quest.get(m), answer.get(m), Local_Date_que.get(0), sizeOfView.get(m), percentKnow.get(m))); // Local date функцию for преобразование
                     }
                 }
                 sub.add(new Subject(name_sub_subject.get(i), Arr_que));
@@ -346,5 +348,14 @@ public class MyDBManager {
         db.update(MyConstants.TABLE_SUBJECT, cv1, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
     }
 
-
+    public void updateSubTodayLearned(PlanToSub pl) {
+        ContentValues cv = new ContentValues();
+        cv.put(MyConstants.KEY_TODAY_LEARNED, pl.getTodayLearned());
+        db.update(MyConstants.TABLE_SUBJECT, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+    }
+    public void updateSubId(PlanToSub pl) {
+        ContentValues cv = new ContentValues();
+        cv.put(MyConstants.KEY_ID_SUBJECT, pl.getId());
+        db.update(MyConstants.TABLE_SUBJECT, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+    }
 }

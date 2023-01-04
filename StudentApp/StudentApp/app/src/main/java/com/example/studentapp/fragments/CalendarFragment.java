@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.adapters.SubjectAdapter;
 import com.example.studentapp.adapters.SubjectPlanAdapter;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentCalendarBinding;
@@ -49,10 +50,8 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        getSubjs();
-
         dateStr = LocalDate.now().toString();
+
 
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
@@ -62,6 +61,8 @@ public class CalendarFragment extends Fragment {
 
             }
         };
+        getSubjs();
+
 
         binding.chooseDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -100,7 +101,7 @@ public class CalendarFragment extends Fragment {
     private void getSubjs(){
         Users user = Users.getUser();
 
-        ArrayList<PlanToSub> subjs =  MainActivity.myDBManager.set();
+        ArrayList<PlanToSub> subjs =  MainActivity.myDBManager.getFromDB();
         for (int i = 0; i < subjs.size();i++){
             LocalDate date = LocalDate.parse(subjs.get(i).dateToString().split("T")[0]);
             LocalDate datePicked = LocalDate.parse(dateStr);

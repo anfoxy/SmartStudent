@@ -16,7 +16,8 @@ public class Users {
     private String password;
     @SerializedName("matchingPassword")
     private String matchingPassword;
-
+    @SerializedName("updateDbTime")
+    private String updateDbTime;
     public Users(Integer id, String login) {
         this.id = id;
         this.login = login;

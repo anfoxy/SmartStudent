@@ -49,7 +49,7 @@ public class StatisticFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(action);
             }
         });
-        planToSub =  MainActivity.myDBManager.set().stream()
+        planToSub =  MainActivity.myDBManager.getFromDB().stream()
                 .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
         binding.kolvop.setText("Количество вопросов: "+planToSub.getSub().getSizeAllQuest());
         binding.kolzap.setText("Колличество запомненых вопросов: "+planToSub.getSub().getSizeKnow());

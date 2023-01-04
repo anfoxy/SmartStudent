@@ -155,12 +155,13 @@ public class AddPlanFragment extends Fragment {
                 }if(binding.Text1.getText().toString().trim().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
                 }else{
-                    planToSub.setId((MainActivity.myDBManager.set().size()+1)*(-1));
+                    int id =(MainActivity.myDBManager.getFromDB().size()+1)*(-1);
+                    planToSub.setId(id);
                     planToSub.setDateOfExams(localDate);
                     planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
                     setNewPlan();
                     MainActivity.myDBManager.setFromDB(planToSub);
-                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(MainActivity.myDBManager.set().size());
+                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(id);
                     Navigation.findNavController(getView()).navigate(action);
 
                     /*

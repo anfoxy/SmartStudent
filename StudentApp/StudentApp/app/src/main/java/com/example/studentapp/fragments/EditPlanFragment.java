@@ -56,9 +56,9 @@ public class EditPlanFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        subject = MainActivity.myDBManager.set().stream()
+        subject = MainActivity.myDBManager.getFromDB().stream()
                 .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
-
+        localDate = subject.getDateOfExams();
         itemClick = new SubjectAddRecycler.OnItemClickListener() {
             @Override
             public void onClickQuestion(Question ques, int position) {

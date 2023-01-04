@@ -47,7 +47,7 @@ public class ListFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(action);
             }
         };
-        ArrayList<PlanToSub> subjs = MainActivity.myDBManager.set();
+        ArrayList<PlanToSub> subjs = MainActivity.myDBManager.getFromDB();
         binding.listSubView.setHasFixedSize(true);
         binding.listSubView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listSubView.setAdapter(new SubjectAdapter(getContext(), subjs, itemClickListener));
