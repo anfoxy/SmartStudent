@@ -34,7 +34,15 @@ public class Question {
         sizeOfView = 0;
         percentKnow=0.0;
         this.id= id;
-        //?? Забиваем question,  answer, last_date, size_of_view, know
+    }
+
+    public void Copy(Question quest) {
+        this.answer = quest.answer;
+        this.question = quest.question;
+        lastDate = quest.lastDate;
+        sizeOfView = quest.sizeOfView;
+        percentKnow=quest.percentKnow;
+        this.id= id;
     }
 
     public Question(String quest, String answer) {
@@ -43,7 +51,6 @@ public class Question {
         lastDate = LocalDate.now();
         sizeOfView = 0;
         percentKnow=0.0;
-        //?? Забиваем question,  answer, last_date, size_of_view, know
     }
 
     public Question(String quest, String answer,  LocalDate lastDate, Integer sizeOfView, Double percentKnow) {
@@ -62,7 +69,7 @@ public class Question {
         if(lastDate.isAfter(LocalDate.now()))
             throw new ArithmeticException
                     ("Сегодня- "+LocalDate.now().toString()+", а дата повторения-"+lastDate.toString()+
-                    "/n Каким образом мы могли повторить вопрос в будущем?");
+                            "/n Каким образом мы могли повторить вопрос в будущем?");
         //?? Забиваем question,  answer, last_date, size_of_view, know
     }
 

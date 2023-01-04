@@ -112,15 +112,15 @@ public class Subject {
         return r;
     }
 
-public  ArrayList<Questions> getQuestions(){
-    ArrayList<Questions> res=new ArrayList<>();
-        for(int i=0; i<question.size(); i++){
-            res.add(new Questions(question.get(i).getId(), question.get(i).getQuestion(),
-                    question.get(i).getAnswer(), question.get(i).dateToString(), question.get(i).getPercentKnow(),
-                    question.get(i).getSizeOfView(), null));
-        }
-    return res;
-    }
+//    public  ArrayList<Questions> getQuestions(){
+//        ArrayList<Questions> res=new ArrayList<>();
+//        for(int i=0; i<question.size(); i++){
+//            res.add(new Questions(question.get(i).getId(), question.get(i).getQuestion(),
+//                    question.get(i).getAnswer(), question.get(i).dateToString(), question.get(i).getPercentKnow(),
+//                    question.get(i).getSizeOfView(), null));
+//        }
+//        return res;
+//    }
 
     public int getPositionNoKnowNoViev(){
         for (int i = 0; i < question.size(); i++) {
@@ -132,7 +132,7 @@ public  ArrayList<Questions> getQuestions(){
         ArrayList<Integer> res=new ArrayList<>();
         for (int i = 0; i < question.size(); i++) {
             if(question.get(i).getSizeOfView()>0
-            && question.get(i).getPercentKnow()<1.0){
+                    && question.get(i).getPercentKnow()<1.0){
                 res.add(i);
             }
         }
@@ -149,7 +149,7 @@ public  ArrayList<Questions> getQuestions(){
         if(res.size()>0){
             int i1=0;
             Double hard=
-            question.get(res.get(0)).getPercentKnow();
+                    question.get(res.get(0)).getPercentKnow();
             for(int i=0; i<res.size()-1; i++){
                 for(int j=i+1; j<res.size(); j++){
                     double a=question.get(res.get(i)).getPercentKnow();

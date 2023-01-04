@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PlanToSub {
-    private  Subject sub; //предмет
+    private Subject sub; //предмет
     private  ArrayList<PlanToDay> lastPlan; //прошлое
     private  ArrayList<PlanToDay> futurePlan; //планы на будущие дни
     private  int learnedBefore;
