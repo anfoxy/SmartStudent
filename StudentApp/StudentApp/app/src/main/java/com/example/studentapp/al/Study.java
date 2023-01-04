@@ -36,56 +36,58 @@ public class Study {
                 nom=0;
                 return sub.getQuestion(n); //новый
             } else
-                //если нет новых, то забиваем повтором.
-                {
-                    nom=0;
-                    if(flagRepeat){
-                        n=sub.getPositionHardQuestionAndNotToDay();
-                        if(n!=-1) {
-                            nomQuestNow=n;
-                            flagRepeat=false;
-                            return sub.getQuestion(n);
-                        }//самый сложный
-                        //если за сегодня нет и мы все самые сложные повторили
+            //если нет новых, то забиваем повтором.
+            {
+                nom=0;
+                if(flagRepeat){
+                    n=sub.getPositionHardQuestionAndNotToDay();
+                    if(n!=-1) {
+                        nomQuestNow=n;
+                        flagRepeat=false;
+                        return sub.getQuestion(n);
+                    }//самый сложный
+                    //если за сегодня нет и мы все самые сложные повторили
+                    else{
+                        n=sub.getPositionOldestDay();
+                        if(n!=-1) return sub.getQuestion(n); //повторяем самый старый
                         else{
-                            n=sub.getPositionOldestDay();
-                            if(n!=-1) return sub.getQuestion(n); //повторяем самый старый
-                            else{
-                                // Вот тут начинается рандом...
-                                n = 0 + (int) ( Math.random() * sub.getSizeAllQuest());
-                                nomQuestNow=n;
-                                return sub.getQuestion(n);
-                            }
-                        }
-                    } else {
-                        n = sub.getPositionOldestDay();
-                        if (n != -1) {
+                            // Вот тут начинается рандом...
+                            n = 0 + (int) ( Math.random() * sub.getSizeAllQuest());
                             nomQuestNow=n;
-                            flagRepeat=false;
-                            return sub.getQuestion(n); //самый сложный
+                            return sub.getQuestion(n);
                         }
-                            //если за сегодня нет и мы все самые сложные повторили
+                    }
+                } else {
+                    n = sub.getPositionOldestDay();
+                    if (n != -1) {
+                        nomQuestNow=n;
+                        flagRepeat=false;
+                        return sub.getQuestion(n); //самый сложный
+                    }
+                    //если за сегодня нет и мы все самые сложные повторили
+                    else {
+                        n = sub.getPositionHardQuestionAndNotToDay();
+                        if (n != -1){
+                            nomQuestNow=n;
+                            return sub.getQuestion(n); //повторяем самый старый
+                        }
                         else {
-                            n = sub.getPositionHardQuestionAndNotToDay();
-                            if (n != -1){
-                                nomQuestNow=n;
-                                return sub.getQuestion(n); //повторяем самый старый
-                            }
-                            else {
-                                // Вот тут начинается рандом...
-                                n = 0 + (int) (Math.random() * sub.getSizeAllQuest());
-                                nomQuestNow=n;
-                                return sub.getQuestion(n);
-                            }
+                            // Вот тут начинается рандом...
+                            n = 0 + (int) (Math.random() * sub.getSizeAllQuest());
+                            nomQuestNow=n;
+                            return sub.getQuestion(n);
                         }
                     }
                 }
             }
+        }
     }
 
     public void clickReady(Double res){
         if(res==1.0&&sub.getQuestion(nomQuestNow).getPercentKnow()!=1.0)
             nowLearned++;
+        if(res!=1.0&&sub.getQuestion(nomQuestNow).getPercentKnow()==1.0)
+            nowLearned--;
         if(nomQuestNow!=-1) sub.getQuestion(nomQuestNow).сhangePrcentAndSize(res);
     }
 

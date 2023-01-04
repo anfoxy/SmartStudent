@@ -347,5 +347,10 @@ public class MyDBManager {
         db.update(MyConstants.TABLE_SUBJECT, cv1, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
     }
 
+    public void updateSub_todaylearned(PlanToSub pl) {
+        ContentValues cv = new ContentValues();
+        cv.put(MyConstants.KEY_TODAY_LEARNED, pl.getTodayLearned());
+        db.update(MyConstants.TABLE_SUBJECT, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
+    }
 
 }
