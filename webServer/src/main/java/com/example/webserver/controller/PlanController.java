@@ -40,7 +40,7 @@ public class PlanController {
 
     @PostMapping("/plan")
     public  ArrayList<Plan> createPlans(@RequestBody ArrayList<Plan> plan){
-        return planService.createPlans(plan);
+        return !plan.isEmpty() ? planService.createPlans(plan, plan.get(0).getSubId()) : null;
     }
 
     @PostMapping("/plans/{id}")

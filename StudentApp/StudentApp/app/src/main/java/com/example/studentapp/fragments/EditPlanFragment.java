@@ -30,6 +30,7 @@ import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
+import com.example.studentapp.db.Users;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -97,6 +98,7 @@ public class EditPlanFragment extends Fragment {
             public void onClick(View view) {
 
                 MainActivity.myDBManager.delete_SUB(subject.getSub().getNameOfSubme());
+                Users.getUser().currentUpdateDbTime();
                 NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
                 Navigation.findNavController(getView()).navigate(action);
 
@@ -130,6 +132,7 @@ public class EditPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
              save();
+             Users.getUser().currentUpdateDbTime();
              NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
              Navigation.findNavController(getView()).navigate(action);
             }

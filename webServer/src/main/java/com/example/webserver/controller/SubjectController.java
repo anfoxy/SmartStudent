@@ -8,9 +8,7 @@ import com.example.webserver.model.SubjectQuestion;
 import com.example.webserver.repository.PlanRepository;
 import com.example.webserver.repository.QuestionRepository;
 import com.example.webserver.repository.SubjectRepository;
-import com.example.webserver.service.DeleteSercice;
-import com.example.webserver.service.SubjectService;
-import com.example.webserver.service.UserService;
+import com.example.webserver.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +23,10 @@ public class SubjectController {
     SubjectService subjectService;
     @Autowired
     SubjectRepository subjectRepository;
+    @Autowired
+    QuestionService questionService;
+    @Autowired
+    PlanService planService;
     @Autowired
     QuestionRepository questionRepository;
     @Autowired
@@ -68,10 +70,10 @@ public class SubjectController {
 
     @PostMapping("/subjects")
     public Subject createSubject(@RequestBody Subject subject){
-
-        System.out.println("Предмет" + subject);
-
-        return  subjectService.save(subject);
+       Subject s = subjectService.save(subject);
+       planService.createPlans((ArrayList<Plan>) s.getPlans(),s);
+       questionService.createQuestion((ArrayList<Question>) s.getQuestions(),s);
+       return s;
     }
     @Transactional
     @DeleteMapping("/subjects/{id}")

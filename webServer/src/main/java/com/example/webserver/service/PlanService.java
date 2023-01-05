@@ -72,8 +72,11 @@ public class PlanService {
         }
     }
 
-    public ArrayList<Plan> createPlans(ArrayList<Plan> plan){
-        for (Plan p : plan) save(p);
+    public ArrayList<Plan> createPlans(ArrayList<Plan> plan, Subject subject) {
+        for (Plan p : plan) {
+            p.setSubId(subject);
+            save(p);
+        }
         return plan;
     }
 

@@ -3,6 +3,7 @@ package com.example.webserver.service;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.dto.QuestionDTO;
 import com.example.webserver.mapper.CustomerMapper;
+import com.example.webserver.model.Plan;
 import com.example.webserver.model.Question;
 import com.example.webserver.model.Subject;
 import com.example.webserver.repository.QuestionRepository;
@@ -48,6 +49,13 @@ public class QuestionService {
     public void delete(Long id) throws ResourceNotFoundException {
         Question question = findById(id);
         questionRepository.delete(question);
+    }
+    public ArrayList<Question> createQuestion(ArrayList<Question> question, Subject subject){
+        for (Question q : question) {
+            q.setSubId(subject);
+            save(q);
+        }
+        return question;
     }
     public Question save(Question question){
         return questionRepository.save(question);

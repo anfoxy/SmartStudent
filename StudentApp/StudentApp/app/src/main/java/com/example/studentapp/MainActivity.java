@@ -42,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         myDBManager = new MyDBManager(this);
         myDBManager.openDB();
-        Users users = Users.getUser();
-        users.currentUpdateDbTime();
-        Users.writeUser(users);
-        updateDBTime();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -75,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 if(response.body() != null) {
                     myDBManager.deleteAllSub();
                     for (PlanToSub pl: getAllPlanToSub(response.body())) {
-
                         MainActivity.myDBManager.setFromDB(pl);
                     }
                 }
@@ -114,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(pl.toString());
         ArrayList<PlanToSub> res = new ArrayList<>();
         for(Subjects p : pl){
-
-            ArrayList<PlanToDay> f = new ArrayList<>();
+            /*ArrayList<PlanToDay> f = new ArrayList<>();
             ArrayList<PlanToDay> l = new ArrayList<>();
             ArrayList<Question> question= new ArrayList<>();
             boolean flag = true;
@@ -152,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
             LocalDate date_of_exams1 = LocalDate.of(year, month, day);
             PlanToSub planToSub = new PlanToSub(sub_, p.getTodayLearned(), date_of_exams1, f, l);
             planToSub.setId(p.getId());
-            res.add(planToSub);
+            res.add(planToSub);*/
+            res.add(p.getPlanToSub());
         }
         return  res;
     }

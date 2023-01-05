@@ -55,7 +55,6 @@ public class FriendsProfileFragment extends Fragment {
         getFriends();
 
         itemClickListenerIn =new FriendsInSubjectsAdapter.OnItemClickListenerIn() {
-
             @Override
             public void onClickFriendsCheck(ArrayList<Subjects> subjectsArrayList, int position) {
                 Subjects subj = subjectsArrayList.get(position);

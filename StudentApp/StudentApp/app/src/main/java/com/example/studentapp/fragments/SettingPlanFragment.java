@@ -25,6 +25,8 @@ import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
+import com.example.studentapp.db.Users;
+
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -59,7 +61,7 @@ public class SettingPlanFragment extends Fragment {
 
                 subj.setFuture(plans);
                 MainActivity.myDBManager.updatePlan(subj);
-
+                Users.getUser().currentUpdateDbTime();
                /* Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(args.getId(),plans);
                 updatePlan.enqueue(new Callback<ArrayList<Plan>>() {
                     @Override

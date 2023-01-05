@@ -1,9 +1,13 @@
 package com.example.studentapp.db;
 
 import com.example.studentapp.MainActivity;
+import com.example.studentapp.al.PlanToDay;
 import com.example.studentapp.al.PlanToSub;
+import com.example.studentapp.al.Question;
+import com.example.studentapp.al.Subject;
 import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Subjects {
@@ -18,7 +22,6 @@ public class Subjects {
     private int todayLearned;
     @SerializedName("userId")
     private Users userId;
-
     @SerializedName("questions")
     private ArrayList<Questions> questions;
     @SerializedName("plans")
@@ -56,6 +59,46 @@ public class Subjects {
     }
 
 
+    public PlanToSub getPlanToSub(){
+        ArrayList<PlanToDay> f = new ArrayList<>();
+        ArrayList<PlanToDay> l = new ArrayList<>();
+        ArrayList<Question> question= new ArrayList<>();
+        boolean flag = true;
+        for (int i = 0 ; i < getPlans().size();i++){
+            if(getPlans().get(i).isBoolDate()) flag = false;
+
+            String[] parts = getPlans().get(i).getDate().split("-");
+            int year = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+            int  day = Integer.parseInt(parts[2]);
+            LocalDate date_local1 = LocalDate.of(year, month, day);
+            PlanToDay plan = new PlanToDay(date_local1, getPlans().get(i).getNumberOfQuestions());
+            plan.setId(getPlans().get(i).getId());
+
+            if(flag) l.add(plan);
+            else f.add(plan);
+
+        }
+        for(Questions q : getQuestions()){
+            String[] parts = q.getDate().split("-");
+            int year = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+            int day = Integer.parseInt(parts[2]);
+            LocalDate date_local1 = LocalDate.of(year, month, day);
+            question.add(new Question(q.getQuestion(), q.getAnswer(),  date_local1, q.getSizeOfView(), q.getPercentKnow()));
+
+        }
+        Subject sub_ = new Subject(getName(),question);
+
+        String[] parts = getDays().split("-");
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int  day = Integer.parseInt(parts[2]);
+        LocalDate date_of_exams1 = LocalDate.of(year, month, day);
+        PlanToSub planToSub = new PlanToSub(sub_, getTodayLearned(), date_of_exams1, f, l);
+        planToSub.setId(getId());
+       return planToSub;
+    }
 
     public ArrayList<Questions> getQuestions() {
         return questions;

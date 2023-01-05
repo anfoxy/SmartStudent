@@ -29,6 +29,7 @@ import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
+import com.example.studentapp.db.Users;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class EditItemPlanFragment extends Fragment {
 
                 subject.setFuture(plans);
                 MainActivity.myDBManager.updatePlan(subject);
-
+                Users.getUser().currentUpdateDbTime();
 
 
               /*  Call<ArrayList<Plan>> updatePlans = apiInterface.addPlans(args.getId(),plans);

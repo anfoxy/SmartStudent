@@ -41,6 +41,7 @@ public class Users {
         this.updateDbTime = updateDbTime;
     }
     public void currentUpdateDbTime() {
+
         Calendar cal = new GregorianCalendar();
         String time = "" + cal.get(Calendar.YEAR)+
                 "-" +  checkDateFor0(cal.get(Calendar.MONTH)+1)+
@@ -48,6 +49,7 @@ public class Users {
                 "-" +  checkDateFor0(cal.get(Calendar.HOUR_OF_DAY))+
                 "-" +  checkDateFor0(cal.get(Calendar.MINUTE));
         this.updateDbTime = time;
+        writeUser(this);
     }
     private String checkDateFor0(int figure){
         return figure < 10 ? "0" + figure : "" + figure;

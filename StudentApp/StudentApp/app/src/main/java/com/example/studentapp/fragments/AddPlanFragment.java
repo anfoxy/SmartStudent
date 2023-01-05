@@ -161,84 +161,32 @@ public class AddPlanFragment extends Fragment {
                     planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
                     setNewPlan();
                     MainActivity.myDBManager.setFromDB(planToSub);
-                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(id);
-                    Navigation.findNavController(getView()).navigate(action);
+                    Users.getUser().currentUpdateDbTime();
 
-                    /*
+                    /*Subjects sub = new Subjects(0, binding.Text1.getText().toString(),
+                            binding.editTextDate.getText().toString(), 0,
+                            Users.getUser(), planToSub.getSub().getQuestions(),
+                            planToSub.getPlans());
 
-                    Subjects sub = new Subjects(0, binding.Text1.getText().toString(), binding.editTextDate.getText().toString(), 0, Users.getUser(), new ArrayList<Questions>(),new ArrayList<Plan>());
                     Call<Subjects> addSub = apiInterface.addSubject(sub);
-
                     addSub.enqueue(new Callback<Subjects>() {
                         @Override
                         public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-
                             if (response.body()!= null){
                                 Subjects newSubject = response.body();
-
-                                idSub=response.body().getId();
-                                sub.setId(response.body().getId());
-                                //Log.d("id предметаfff =", ""+idSub);
-
-                                ArrayList<Plan> plans = setNewPlan(newSubject);
-
-                                ArrayList<Questions> questions = Questions.getQuestions();
-                                for (int i = 0; i < questions.size(); i++){
-                                    Questions ques = questions.get(i);
-                                    ques.setId(null);
-                                    ques.setSubId(newSubject);
-                                   // Log.d("Вопрос ", ques.toString());
-                                    Call<Questions> questionsCall = apiInterface.addQuestion(ques);
-                                    questionsCall.enqueue(new Callback<Questions>() {
-                                        @Override
-                                        public void onResponse(Call<Questions> call, Response<Questions> response) {
-                                            if (response.body()!= null){
-                                                Log.d("ok", response.message());
-                                            }else{
-                                                Log.d("not ok", response.message());
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Questions> call, Throwable t) {
-                                            Log.d("not ok", t.getMessage());
-                                        }
-                                    });
-
-                                }
-
-                                    Call<ArrayList<Plan>> planCall = apiInterface.addPlan(plans);
-                                    planCall.enqueue(new Callback<ArrayList<Plan>>() {
-                                        @Override
-                                        public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
-                                            if (response.body()!= null){
-                                                // Поправить данный момент, когда появится локальная бд. Т.к из-за того,
-                                                // что я жду пока отправится план на сервер и сохранится все приложение работает медленно!
-                                                // потом надо сделать переходы именно по локальным данным, а на сервер со временем все придет.
-                                                NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(idSub);
-                                                Navigation.findNavController(getView()).navigate(action);
-                                                Log.d("ok", response.message());
-                                            }else{
-                                                Log.d("not ok", response.message());
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<ArrayList<Plan>> call, Throwable t) {
-                                            Log.d("not ok", t.getMessage());
-                                        }
-                                    });
+                                MainActivity.myDBManager.updateSubId(newSubject.getPlanToSub());
                             }else {
                                 Toast.makeText(getActivity(), "Не получилось", Toast.LENGTH_SHORT).show();
                             }
-
                         }
-
                         @Override
                         public void onFailure(Call<Subjects> call, Throwable t) {
                             Log.d("not ok", t.getMessage());
                         }
                     });*/
+
+                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(id);
+                    Navigation.findNavController(getView()).navigate(action);
 
                 }
             }

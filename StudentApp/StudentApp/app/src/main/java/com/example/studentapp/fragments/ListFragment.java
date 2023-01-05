@@ -39,7 +39,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        MainActivity.updateDBTime();
         SubjectAdapter.OnItemClickListener itemClickListener =new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onClickSubject(PlanToSub subject, int position) {
@@ -63,7 +63,6 @@ public class ListFragment extends Fragment {
         getSubjs.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
-
                 if (response.isSuccessful()){
                     binding.listSubView.setHasFixedSize(true);
                     binding.listSubView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -78,7 +77,6 @@ public class ListFragment extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
 

@@ -39,17 +39,7 @@ public class SubjectService {
            return subjectRepository.save(s);
         }
     }
-/*
 
-    public Subject updateSubject(Subject s, Long id) throws ResourceNotFoundException {
-        SubjectDTO dto = new SubjectDTO(s);
-        dto.setId(id);
-        Subject subject = findById(id);
-        mapper.updateSubjectFromDto(dto, subject);
-        subjectRepository.save(subject);
-        return subject;
-    }
-*/
 
     public ArrayList<Subject> findAllByUserId(User user){
         return subjectRepository.findAllByUserId(user);
@@ -75,30 +65,15 @@ public class SubjectService {
                 count++;
             }
         }
-       /* if (count > 0) {
-            subject.setName(""+subject.getName()+String.format(" (%d)", count));
-        }*/
 
         return count;
     }
 
 
-    /*public void delete(Long id) throws ResourceNotFoundException {
-        Subject subject = findById(id);
-        questionRepository.deleteAllBySubId(subject);
-        planRepository.deleteAllBySubId(subject);
-        subjectRepository.delete(subject);
-    }
-    public void deleteAll(ArrayList<Subject> subjects) throws ResourceNotFoundException {
-        for (Subject subject: subjects) {
-            questionRepository.deleteAllBySubId(subject);
-            planRepository.deleteAllBySubId(subject);
-            subjectRepository.delete(subject);
-        }
-    }*/
+
 
     public Subject save(Subject subject){
-        return subjectRepository.save(subject);
+        return  subjectRepository.save(subject);
     }
     public Subject findById(Long id) throws ResourceNotFoundException {
         return subjectRepository.findById(id).orElse(null);
