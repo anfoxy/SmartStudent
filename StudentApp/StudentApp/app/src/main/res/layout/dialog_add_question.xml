@@ -10,7 +10,8 @@
         android:id="@+id/tv_question"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
         android:background="#E0F2FF"
         android:gravity="clip_horizontal"
         android:hint="Вопрос"
@@ -21,7 +22,7 @@
     <EditText
         android:id="@+id/tv_answer"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_margin="20dp"
         android:layout_marginTop="16dp"
         android:background="#E0F2FF"
