@@ -12,10 +12,15 @@
         tools:layout="@layout/fragment_calendar" >
         <action
             android:id="@+id/action_calendarFragment_to_answerQuestionFragment"
-            app:destination="@id/answerQuestionFragment" />
+            app:destination="@id/answerQuestionFragment"
+            app:popUpTo="@+id/calendarFragment"
+            app:popUpToInclusive="true"
+           />
         <action
             android:id="@+id/action_calendarFragment_to_addPlanFragment"
-            app:destination="@id/addPlanFragment" />
+            app:destination="@id/addPlanFragment"
+            app:popUpTo="@+id/calendarFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -24,10 +29,14 @@
         tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_listFragment_to_addPlanFragment"
-            app:destination="@id/addPlanFragment" />
+            app:destination="@id/addPlanFragment"
+            app:popUpTo="@+id/listFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_listFragment_to_statisticFragment"
-            app:destination="@id/statisticFragment" />
+            app:destination="@id/statisticFragment"
+            app:popUpTo="@+id/listFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/anotherFragment"
@@ -40,28 +49,36 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/anotherFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_anotherFragment_to_contactFragment"
             app:destination="@id/contactFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/anotherFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_anotherFragment_to_accountFragment"
             app:destination="@id/accountFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/anotherFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_anotherFragment_to_friendsFragment"
             app:destination="@id/friendsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/anotherFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
