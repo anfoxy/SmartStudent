@@ -12,15 +12,21 @@ import com.example.webserver.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
+    @Autowired
+    PlanRepository planRepository;
+    @Autowired
+    QuestionRepository questionRepository;
 
     @Autowired
     CustomerMapper mapper;
@@ -69,7 +75,9 @@ public class SubjectService {
         return count;
     }
 
-
+    public void delete(Subject subject) throws ResourceNotFoundException {
+        if(findById(subject.getId()) != null)  subjectRepository.delete(subject);
+    }
 
 
     public Subject save(Subject subject){
@@ -81,5 +89,12 @@ public class SubjectService {
     public List<Subject> findAll() {
         return subjectRepository.findAll();
     }
-
+/*    @Transactional
+    public void deleteAllByIdNotIn(ArrayList<Subject> subjects) {
+        List<Long> ids = subjects.stream()
+                .map(Subject::getId)
+                .collect(Collectors.toList());
+        questionRepository
+        if(!ids.isEmpty()) subjectRepository.deleteAllByIdNotInAndUserId(ids,subjects.get(0).getUserId());
+    }*/
 }

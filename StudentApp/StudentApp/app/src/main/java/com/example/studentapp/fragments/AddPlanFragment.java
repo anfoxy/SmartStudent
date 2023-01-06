@@ -185,7 +185,7 @@ public class AddPlanFragment extends Fragment {
                         }
                     });*/
 
-                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(id);
+                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(planToSub.getSub().getNameOfSubme());
                     Navigation.findNavController(getView()).navigate(action);
 
                 }

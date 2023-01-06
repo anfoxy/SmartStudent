@@ -39,6 +39,7 @@ public class Users {
 
     public void setUpdateDbTime(String updateDbTime) {
         this.updateDbTime = updateDbTime;
+        writeUser(this);
     }
     public void currentUpdateDbTime() {
 
@@ -47,7 +48,8 @@ public class Users {
                 "-" +  checkDateFor0(cal.get(Calendar.MONTH)+1)+
                 "-" +  checkDateFor0(cal.get(Calendar.DATE))+
                 "-" +  checkDateFor0(cal.get(Calendar.HOUR_OF_DAY))+
-                "-" +  checkDateFor0(cal.get(Calendar.MINUTE));
+                "-" +  checkDateFor0(cal.get(Calendar.MINUTE))+
+                "-" +  checkDateFor0(cal.get(Calendar.SECOND));
         this.updateDbTime = time;
         writeUser(this);
     }

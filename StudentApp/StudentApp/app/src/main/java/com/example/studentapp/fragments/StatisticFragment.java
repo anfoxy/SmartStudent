@@ -49,8 +49,9 @@ public class StatisticFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(action);
             }
         });
+        System.out.println("id равно  "+args.getId());
         planToSub =  MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
         binding.kolvop.setText("Количество вопросов: "+planToSub.getSub().getSizeAllQuest());
         binding.kolzap.setText("Колличество запомненых вопросов: "+planToSub.getSub().getSizeKnow());
         binding.dateob.setText("Количество невыученных вопросов:" +planToSub.getSub().getSizeNoKnow());

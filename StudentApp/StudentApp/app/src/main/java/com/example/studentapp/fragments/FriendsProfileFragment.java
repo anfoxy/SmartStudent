@@ -1,5 +1,7 @@
 package com.example.studentapp.fragments;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.FriendsAdapter;
 import com.example.studentapp.adapters.FriendsInAdapter;
@@ -22,15 +25,18 @@ import com.example.studentapp.adapters.FriendsInSubjectsAdapter;
 import com.example.studentapp.adapters.FriendsIsAdapter;
 import com.example.studentapp.adapters.FriendsIsSubjectsAdapter;
 import com.example.studentapp.adapters.SubjectAddRecycler;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentFriendsBinding;
 import com.example.studentapp.databinding.FragmentProfileFriendsBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Friends;
 import com.example.studentapp.db.FriendsSubjects;
+import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import io.paperdb.Paper;
@@ -60,19 +66,27 @@ public class FriendsProfileFragment extends Fragment {
                 Subjects subj = subjectsArrayList.get(position);
                 subjectsArrayList.remove(position);
 
-                Call<FriendsSubjects> planCall = apiInterface.friendsSubjectsAccept(new FriendsSubjects(null,null,friends,user,subj));
-                planCall.enqueue(new Callback<FriendsSubjects>() {
+                Call<Subjects> planCall = apiInterface.friendsSubjectsAccept(new FriendsSubjects(null,null,friends,user,subj));
+                planCall.enqueue(new Callback<Subjects>() {
                     @Override
-                    public void onResponse(Call<FriendsSubjects> call, Response<FriendsSubjects> response) {
-                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
-                        binding.listVop.setHasFixedSize(true);
-                        binding.listVop.setAdapter(new FriendsInSubjectsAdapter(getContext(), subjectsArrayList, itemClickListenerIn));
-                        // тут сохраняем также в локальной !!!
+                    public void onResponse(Call<Subjects> call, Response<Subjects> response) {
+                        if( response.body() != null) {
+                            int id =(MainActivity.myDBManager.getFromDB().size()+1)*(-1);
+                            PlanToSub planToSub = response.body().getPlanToSubNotPlans();
+                            planToSub.setId(id);
+                            MainActivity.myDBManager.setFromDB(setNewPlan(planToSub));
+                            Users.getUser().currentUpdateDbTime();
+
+                            binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.listVop.setHasFixedSize(true);
+                            binding.listVop.setAdapter(new FriendsInSubjectsAdapter(getContext(), subjectsArrayList, itemClickListenerIn));
+                            // тут сохраняем также в локальной !!!
 
 
+                        }
                     }
                     @Override
-                    public void onFailure(Call<FriendsSubjects> call, Throwable t) {
+                    public void onFailure(Call<Subjects> call, Throwable t) {
                         Log.d("not ok", t.getMessage());
                     }
                 });
@@ -110,11 +124,9 @@ public class FriendsProfileFragment extends Fragment {
                 planCall.enqueue(new Callback<FriendsSubjects>() {
                     @Override
                     public void onResponse(Call<FriendsSubjects> call, Response<FriendsSubjects> response) {
-
                         binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                         binding.listVop.setHasFixedSize(true);
                         binding.listVop.setAdapter(new FriendsIsSubjectsAdapter(getContext(),subjectsArrayList, itemClickListenerIs));
-
                     }
                     @Override
                     public void onFailure(Call<FriendsSubjects> call, Throwable t) {
@@ -181,7 +193,14 @@ public class FriendsProfileFragment extends Fragment {
         });
 
     }
-
+    private PlanToSub setNewPlan(PlanToSub planToSub){
+        LocalDate date = LocalDate.parse(planToSub.dateToString().split("T")[0]);
+        long days = DAYS.between(LocalDate.now(), date);
+        for(int i=0; i<days; i++){
+            planToSub.plusDayToPlan(LocalDate.now().plusDays(i));
+        }
+        return  planToSub;
+    }
 
     private void getFriends(){
         Call<Users> getUser = apiInterface.getUsers(args.getId());
@@ -208,9 +227,7 @@ public class FriendsProfileFragment extends Fragment {
         getSubs.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
-
                 ArrayList<Subjects> friends = response.body();
-
                 binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.listVop.setHasFixedSize(true);
                 binding.listVop.setAdapter(new FriendsInSubjectsAdapter(getContext(), friends, itemClickListenerIn));
@@ -230,14 +247,10 @@ public class FriendsProfileFragment extends Fragment {
         getSubs.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
-
                 ArrayList<Subjects> friends = response.body();
-
                 binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.listVop.setHasFixedSize(true);
                 binding.listVop.setAdapter(new FriendsIsSubjectsAdapter(getContext(),friends, itemClickListenerIs));
-
-
             }
 
             @Override
@@ -245,7 +258,6 @@ public class FriendsProfileFragment extends Fragment {
                 System.out.println("не работает1!!!");
             }
         });
-
     }
 
 

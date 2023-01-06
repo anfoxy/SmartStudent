@@ -23,6 +23,7 @@ import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.SubjectAdapter;
 import com.example.studentapp.adapters.SubjectPlanAdapter;
+import com.example.studentapp.al.PlanToDay;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentCalendarBinding;
 import com.example.studentapp.db.ApiInterface;
@@ -31,7 +32,9 @@ import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -43,21 +46,19 @@ public class CalendarFragment extends Fragment {
 
     FragmentCalendarBinding binding;
     ApiInterface apiInterface;
-    String dateStr;
-
+    LocalDate localDate;
     SubjectPlanAdapter.OnItemClick itemClick;
+    final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MainActivity.updateDBTime();
-        dateStr = LocalDate.now().toString();
-
-
+        localDate = LocalDate.now();
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
             public void onClickPlanItem(PlanToSub subject, int position) {
-                CalendarFragmentDirections.ActionCalendarFragmentToAnswerQuestionFragment action = CalendarFragmentDirections.actionCalendarFragmentToAnswerQuestionFragment(subject.getId());
+                CalendarFragmentDirections.ActionCalendarFragmentToAnswerQuestionFragment action = CalendarFragmentDirections.actionCalendarFragmentToAnswerQuestionFragment(subject.getSub().getNameOfSubme());
                 Navigation.findNavController(getView()).navigate(action);
 
             }
@@ -67,20 +68,11 @@ public class CalendarFragment extends Fragment {
 
         binding.chooseDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                if (i1 >=10){
-                    if (i2>=10){
-                        dateStr = i+"-"+(i1+1)+"-"+i2;
-                    }else {
-                        dateStr = i+"-"+(i1+1)+"-0"+i2;
-                    }
-                }else {
-                    if (i2>=10){
-                        dateStr = i+"-0"+(i1+1)+"-"+i2;
-                    }else {
-                        dateStr = i+"-0"+(i1+1)+"-0"+i2;
-                    }
-                }
+            public void onSelectedDayChange(@NonNull CalendarView calendarView,  int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH,month);
+                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                localDate =  myCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 getSubjs();
             }
         });
@@ -100,58 +92,28 @@ public class CalendarFragment extends Fragment {
     }
 
     private void getSubjs(){
-        Users user = Users.getUser();
-
         ArrayList<PlanToSub> subjs =  MainActivity.myDBManager.getFromDB();
+
+        ArrayList<PlanToSub> subToDayCalendar = new ArrayList<>();
+
         for (int i = 0; i < subjs.size();i++){
-            LocalDate date = LocalDate.parse(subjs.get(i).dateToString().split("T")[0]);
-            LocalDate datePicked = LocalDate.parse(dateStr);
-            if (LocalDate.now().compareTo(datePicked) * datePicked.compareTo(date) < 0) {
-                subjs.remove(subjs.get(i));
-                i--;
+            for (PlanToDay p: subjs.get(i).getFuturePlan()) {
+                if(p.getDate().isEqual(localDate)) subToDayCalendar.add(subjs.get(i));
             }
+            for (PlanToDay p: subjs.get(i).getLastPlan()) {
+                if(p.getDate().isEqual(localDate)) subToDayCalendar.add(subjs.get(i));
+            }
+            if(subjs.get(i).getDateOfExams().isEqual(localDate))  subToDayCalendar.add(subjs.get(i));
         }
         binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listSub.setHasFixedSize(true);
-        binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subjs, itemClick));
+        binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subToDayCalendar, localDate, itemClick));
         if(subjs.size() == 0) {
             binding.textPlanNull.setVisibility(View.VISIBLE);
         } else {
             binding.textPlanNull.setVisibility(View.INVISIBLE);
         }
-
-        /*Call<ArrayList<Subjects>> getSubs = apiInterface.getSubjectsByUser(user.getId());
-        getSubs.enqueue(new Callback<ArrayList<Subjects>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
-                if (response.body()!= null){
-                    ArrayList<Subjects> subjs = response.body();
-                    for (int i = 0; i < subjs.size();i++){
-                        LocalDate date = LocalDate.parse(subjs.get(i).getDaysString().split("T")[0]);
-                        LocalDate datePicked = LocalDate.parse(dateStr);
-                        if (LocalDate.now().compareTo(datePicked) * datePicked.compareTo(date) < 0) {
-                            subjs.remove(subjs.get(i));
-                            i--;
-                        }
-                    }
-                    binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
-                    binding.listSub.setHasFixedSize(true);
-                    binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subjs, itemClick));
-                    if(subjs.size() == 0) {
-                        binding.textPlanNull.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.textPlanNull.setVisibility(View.INVISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
-
-            }
-        });*/
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -24,7 +24,8 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-
+        MainActivity.myDBManager = new MyDBManager(this);
+        MainActivity.myDBManager.openDB();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_launch);
 
@@ -47,6 +48,7 @@ public class LaunchActivity extends AppCompatActivity {
                     finish();
                 }else {
                     Intent intentMain = new Intent(getApplicationContext(), MainActivity.class);
+                    MainActivity.updateDBTime();
                     startActivity(intentMain);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();

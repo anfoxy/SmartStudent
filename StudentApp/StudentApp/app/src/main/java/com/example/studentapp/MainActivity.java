@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myDBManager = new MyDBManager(this);
-        myDBManager.openDB();
+/*        myDBManager = new MyDBManager(this);
+        myDBManager.openDB();*/
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -74,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.myDBManager.setFromDB(pl);
                     }
                 }
-
             }
-
             @Override
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
 
@@ -93,12 +91,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Plan> plans= p.getPlans();
             ArrayList<Questions> questions= p.getSub().getQuestions();
             Subjects s = new Subjects(p.getId(),p.getSub().getNameOfSubme(),p.dateToString(), p.getTodayLearned(), Users.getUser());
-        /*    for(Plan plan : plans){
-                plan.setSubId(s);
-            }
-            for(Questions questions1 : questions){
-                questions1.setSubId(s);
-            }*/
+
             s.setPlans(plans);
             s.setQuestions(questions);
             res.add(s);
@@ -109,44 +102,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(pl.toString());
         ArrayList<PlanToSub> res = new ArrayList<>();
         for(Subjects p : pl){
-            /*ArrayList<PlanToDay> f = new ArrayList<>();
-            ArrayList<PlanToDay> l = new ArrayList<>();
-            ArrayList<Question> question= new ArrayList<>();
-            boolean flag = true;
-            for (int i = 0 ; i < p.getPlans().size();i++){
-                if(p.getPlans().get(i).isBoolDate()) flag = false;
 
-                String[] parts = p.getPlans().get(i).getDate().split("-");
-                int year = Integer.parseInt(parts[0]);
-                int month = Integer.parseInt(parts[1]);
-                int  day = Integer.parseInt(parts[2]);
-                LocalDate date_local1 = LocalDate.of(year, month, day);
-                PlanToDay plan = new PlanToDay(date_local1, p.getPlans().get(i).getNumberOfQuestions());
-                plan.setId(p.getPlans().get(i).getId());
-
-                if(flag) l.add(plan);
-                else f.add(plan);
-
-            }
-            for(Questions q : p.getQuestions()){
-                String[] parts = q.getDate().split("-");
-                int year = Integer.parseInt(parts[0]);
-                int month = Integer.parseInt(parts[1]);
-                int day = Integer.parseInt(parts[2]);
-                LocalDate date_local1 = LocalDate.of(year, month, day);
-                question.add(new Question(q.getQuestion(), q.getAnswer(),  date_local1, q.getSizeOfView(), q.getPercentKnow()));
-
-            }
-            Subject sub_ = new Subject(p.getName(),question);
-
-            String[] parts = p.getDays().split("-");
-            int year = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            int  day = Integer.parseInt(parts[2]);
-            LocalDate date_of_exams1 = LocalDate.of(year, month, day);
-            PlanToSub planToSub = new PlanToSub(sub_, p.getTodayLearned(), date_of_exams1, f, l);
-            planToSub.setId(p.getId());
-            res.add(planToSub);*/
             res.add(p.getPlanToSub());
         }
         return  res;

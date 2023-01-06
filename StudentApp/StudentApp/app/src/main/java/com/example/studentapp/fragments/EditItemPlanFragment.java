@@ -102,7 +102,7 @@ public class EditItemPlanFragment extends Fragment {
     private void setPlan(){
 
         subject = MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId()) ).collect(Collectors.toList()).get(0);
         boolean []b = setNewPlan(subject.getFuturePlan());
         binding.listPlan.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listPlan.setHasFixedSize(true);

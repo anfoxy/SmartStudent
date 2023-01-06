@@ -33,9 +33,8 @@ public class FriendsSubjectsController {
     }
 
     @PostMapping("/friends_subjects_accept")
-    public FriendsSubjects getFriendsAccept(@RequestBody FriendsSubjects friends) throws ResourceNotFoundException {
-        friendSubjectsService.acceptFriendsSubjects(friends);
-        return friends;
+    public Subject getFriendsAccept(@RequestBody FriendsSubjects friends) throws ResourceNotFoundException {
+        return friendSubjectsService.acceptFriendsSubjects(friends);
     }
 
     @PostMapping("/friends_subjects_refuse")

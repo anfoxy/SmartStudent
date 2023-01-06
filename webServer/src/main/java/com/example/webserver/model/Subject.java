@@ -16,7 +16,7 @@ public class Subject {
 
     @Id
     @Column(name = "id_subject",nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Column(name = "subject_name",nullable = false)
     private String name;

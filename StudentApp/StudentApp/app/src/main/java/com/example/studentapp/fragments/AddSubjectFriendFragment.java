@@ -63,6 +63,7 @@ public class AddSubjectFriendFragment extends Fragment {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
+
                     }
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {

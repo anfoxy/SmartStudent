@@ -30,6 +30,7 @@ import com.example.studentapp.databinding.FragmentAnswerQuestionBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
+import com.example.studentapp.db.Users;
 
 import java.io.IOException;
 import java.text.BreakIterator;
@@ -52,7 +53,7 @@ public class AnswerQuestionFragment extends Fragment {
     FragmentAnswerQuestionBinding binding;
     ApiInterface apiInterface;
     AnswerQuestionFragmentArgs args;
-    ArrayList<Questions> questions;
+    //ArrayList<Questions> questions;
     int number = 1;
     private Spannable spannable;
     private int selectedCount = 0;
@@ -69,11 +70,13 @@ public class AnswerQuestionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //setData();
         PlanToSub plan= MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
         plan.plusDayToPlan(LocalDate.now());
         study=new Study(plan.getSub(),
                 plan.getFuturePlan().get(0).getSizeOfQuetion(), plan.getTodayLearned());
+        nowQuest=study.GetNewQuestion();
         setQuestions();
+
         //кнопка нажатия на посмотреть ответ
         binding.lookAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,11 +119,11 @@ public class AnswerQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 number++;
-                study.clickReady(textKnowGet);
+                study.clickReady(0.0);
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
                 plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
-
+                Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
                     Toast.makeText(getContext(),
                             "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
@@ -128,8 +131,8 @@ public class AnswerQuestionFragment extends Fragment {
                     Navigation.findNavController(getView()).navigate(action);
                 }
                 else{
-                    nowQuest.Copy(study.GetNewQuestion());
-
+                    nowQuest=study.GetNewQuestion();
+                    setQuestions();
                 }
             }
         });
@@ -138,10 +141,11 @@ public class AnswerQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 number++;
-                study.clickReady(textKnowGet);
+                study.clickReady(1.0);
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
                 plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
+                Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
                     Toast.makeText(getContext(),
                             "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
@@ -149,7 +153,8 @@ public class AnswerQuestionFragment extends Fragment {
                     Navigation.findNavController(getView()).navigate(action);
                 }
                 else{
-                    nowQuest.Copy(study.GetNewQuestion());
+                    nowQuest=study.GetNewQuestion();
+                    setQuestions();
                 }
 
             }
@@ -163,6 +168,7 @@ public class AnswerQuestionFragment extends Fragment {
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
                 plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
+                Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
                     Toast.makeText(getContext(),
                             "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
@@ -170,7 +176,8 @@ public class AnswerQuestionFragment extends Fragment {
                     Navigation.findNavController(getView()).navigate(action);
                 }
                 else{
-                    nowQuest.Copy(study.GetNewQuestion());
+                    nowQuest=study.GetNewQuestion();
+                    setQuestions();
                 }
 
             }
@@ -180,7 +187,7 @@ public class AnswerQuestionFragment extends Fragment {
 
 
     private void setQuestions() {
-        if (number < questions.size()+1){ //проверка на конец тестирования
+        if (!study.isEndOfPlan()){ //проверка на конец тестирования
             binding.textYesNo.setText("Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите 'Посмотреть ответ' и сделайте вердикт.");
             binding.lookAnswerButton.setVisibility(View.VISIBLE);
             binding.textAnswer.setVisibility(View.INVISIBLE);
@@ -189,8 +196,8 @@ public class AnswerQuestionFragment extends Fragment {
             binding.speakButton.setVisibility(View.INVISIBLE);
             binding.nextBtn.setVisibility(View.INVISIBLE);
             binding.textNumber.setText("Вопрос "+number);
-            binding.textQuestion.setText(nowQuest.getQuestion());
-            binding.textAnswer.setText(nowQuest.getAnswer());
+            binding.textQuestion.setText(nowQuest.getQuestion().toString());
+            binding.textAnswer.setText(nowQuest.getAnswer().toString());
         } else {
             Toast.makeText(getContext(), "Вопросы по данному предмету закончились", Toast.LENGTH_SHORT).show();
             @NonNull NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
@@ -216,13 +223,13 @@ public class AnswerQuestionFragment extends Fragment {
 
     private void TextSpen() {
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
-        iterator.setText(questions.get(number-1).getAnswer());
+        iterator.setText(nowQuest.getAnswer());
         int start = iterator.first();
         int end = iterator.next();
-        spannable = new SpannableString(questions.get(number-1).getAnswer());
+        spannable = new SpannableString(nowQuest.getAnswer());
         totalCount = 0;
         while (end != BreakIterator.DONE) {
-            final String sentence = questions.get(number-1).getAnswer().substring(start, end);
+            final String sentence = nowQuest.getAnswer().substring(start, end);
             ClickableSpan clickableSpan = new SentenceSpan();
             spannable.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             start = end;
@@ -236,7 +243,7 @@ public class AnswerQuestionFragment extends Fragment {
 
     private int CountSpen() {
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
-        iterator.setText(questions.get(number-1).getAnswer());
+        iterator.setText(nowQuest.getAnswer());
         int count = 0;
         int start = iterator.first();
         for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next()) {
@@ -248,7 +255,7 @@ public class AnswerQuestionFragment extends Fragment {
     private void apiRequest() {
 
         RequestBody formBody = new FormBody.Builder()
-                .add("text", questions.get(number-1).getAnswer())
+                .add("text", nowQuest.getAnswer())
                 .add("lang", "ru-RU")
                 .add("voice", "filipp")
                 .add("format", "mp3")

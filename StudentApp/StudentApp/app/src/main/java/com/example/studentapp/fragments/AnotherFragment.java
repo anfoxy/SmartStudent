@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.example.studentapp.AuthActivity;
 import com.example.studentapp.LaunchActivity;
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.Users;
@@ -109,6 +110,7 @@ public class AnotherFragment extends Fragment {
         out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity.myDBManager.deleteAllSub();
                 Users.deleteUser();
                 Intent intent = new Intent(getActivity(), LaunchActivity.class);
                 startActivity(intent);

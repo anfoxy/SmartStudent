@@ -58,48 +58,70 @@ public class Subjects {
         this.plans =  subjects.plans;
     }
 
-
-    public PlanToSub getPlanToSub(){
-        ArrayList<PlanToDay> f = new ArrayList<>();
-        ArrayList<PlanToDay> l = new ArrayList<>();
+    public ArrayList<Question> getQuestionPlanToSub(){
         ArrayList<Question> question= new ArrayList<>();
+        for(Questions q : getQuestions()){
+            //LocalDate date_local1 = getLocalDate(q.getDate());
+            question.add(new Question(q.getQuestion(), q.getAnswer(),  LocalDate.now(), q.getSizeOfView(), q.getPercentKnow()));
+        }
+        return question;
+    }
+
+    public ArrayList<PlanToDay> getPlanToDayFuturePlan(){
+
+        ArrayList<PlanToDay> f = new ArrayList<>();
+       // ArrayList<PlanToDay> l = new ArrayList<>();
+
         boolean flag = true;
         for (int i = 0 ; i < getPlans().size();i++){
             if(getPlans().get(i).isBoolDate()) flag = false;
-
-            String[] parts = getPlans().get(i).getDate().split("-");
-            int year = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            int  day = Integer.parseInt(parts[2]);
-            LocalDate date_local1 = LocalDate.of(year, month, day);
+            LocalDate date_local1 = getLocalDate(getPlans().get(i).getDate());
             PlanToDay plan = new PlanToDay(date_local1, getPlans().get(i).getNumberOfQuestions());
             plan.setId(getPlans().get(i).getId());
+            if(!flag) f.add(plan);
+        }
+        return f;
+    }
 
+    public ArrayList<PlanToDay> getPlanToDayLastPlan(){
+
+        ArrayList<PlanToDay> l = new ArrayList<>();
+
+        boolean flag = true;
+        for (int i = 0 ; i < getPlans().size();i++){
+            if(getPlans().get(i).isBoolDate()) flag = false;
+            LocalDate date_local1 = getLocalDate(getPlans().get(i).getDate());
+            PlanToDay plan = new PlanToDay(date_local1, getPlans().get(i).getNumberOfQuestions());
+            plan.setId(getPlans().get(i).getId());
             if(flag) l.add(plan);
-            else f.add(plan);
-
         }
-        for(Questions q : getQuestions()){
-            String[] parts = q.getDate().split("-");
-            int year = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            int day = Integer.parseInt(parts[2]);
-            LocalDate date_local1 = LocalDate.of(year, month, day);
-            question.add(new Question(q.getQuestion(), q.getAnswer(),  date_local1, q.getSizeOfView(), q.getPercentKnow()));
+        return l;
+    }
 
-        }
-        Subject sub_ = new Subject(getName(),question);
-
-        String[] parts = getDays().split("-");
+    private LocalDate getLocalDate(String str){
+        String[] parts = str.split("-");
         int year = Integer.parseInt(parts[0]);
         int month = Integer.parseInt(parts[1]);
         int  day = Integer.parseInt(parts[2]);
-        LocalDate date_of_exams1 = LocalDate.of(year, month, day);
-        PlanToSub planToSub = new PlanToSub(sub_, getTodayLearned(), date_of_exams1, f, l);
+        return  LocalDate.of(year, month, day);
+    }
+
+    public PlanToSub getPlanToSub(){
+        Subject sub_ = new Subject(getName(),getQuestionPlanToSub());
+        LocalDate date_of_exams1 = getLocalDate(getDays());
+        PlanToSub planToSub = new PlanToSub(sub_, getTodayLearned(), date_of_exams1,
+                getPlanToDayFuturePlan(), getPlanToDayLastPlan());
         planToSub.setId(getId());
        return planToSub;
     }
 
+    public PlanToSub getPlanToSubNotPlans(){
+        Subject sub_ = new Subject(getName(),getQuestionPlanToSub());
+        LocalDate date_of_exams1 = getLocalDate(getDays());
+        PlanToSub planToSub = new PlanToSub(sub_,date_of_exams1);
+        planToSub.setId(getId());
+        return planToSub;
+    }
     public ArrayList<Questions> getQuestions() {
         return questions;
     }

@@ -17,6 +17,7 @@ import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.Subjects;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -29,11 +30,13 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
     private Context context;
     private ArrayList<PlanToSub> subjects;
     private OnItemClick onItemClick;
+    private LocalDate date;
 
-    public SubjectPlanAdapter(Context context, ArrayList<PlanToSub> subjects, OnItemClick onItemClick) {
+    public SubjectPlanAdapter(Context context, ArrayList<PlanToSub> subjects, LocalDate date, OnItemClick onItemClick) {
         this.context = context;
         this.subjects = subjects;
         this.onItemClick = onItemClick;
+        this.date = date;
     }
 
     @NonNull
@@ -49,19 +52,24 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
         holder.subjName.setText(subject.getSub().getNameOfSubme());
         int allQuestions = subject.getSub().getSizeAllQuest();
         int comQues = subject.getSub().getSizeKnow();
-   /*     Iterator<Questions> iterator = subject.getQuestions().iterator();
-        while (iterator.hasNext()){
-            if (iterator.next().isCompleted()) comQues++;
-        }*/
-        holder.subjStat.setText("Выполнено "+comQues+" из "+allQuestions);
+        if(date.isEqual(subject.getDateOfExams())) {
+            holder.subjStat.setText("Экзамен");
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemClick.onClickPlanItem(subject, position);
-            }
-        });
+        } else if(date.isBefore(LocalDate.now())) {
+            holder.subjStat.setText("Выучено: " + comQues);
 
+        } else if(date.isAfter(LocalDate.now())) {
+            holder.subjStat.setText("Необходимо выучить " + allQuestions);
+
+        } else {
+            holder.subjStat.setText("Выполнено " + comQues + " из " + allQuestions);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClick.onClickPlanItem(subject, position);
+                }
+            });
+        }
     }
 
     @Override

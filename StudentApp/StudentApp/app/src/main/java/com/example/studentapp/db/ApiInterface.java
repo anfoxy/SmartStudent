@@ -94,7 +94,7 @@ public interface ApiInterface {
     Call<FriendsSubjects> friendsSubjectsDeleteIs(@Body FriendsSubjects friends);
 
     @POST("friends_subjects_accept")
-    Call<FriendsSubjects> friendsSubjectsAccept(@Body FriendsSubjects friends);
+    Call<Subjects> friendsSubjectsAccept(@Body FriendsSubjects friends);
 
     @POST("friends_subjects_refuse")
     Call<FriendsSubjects> friendsSubjectsRefuse(@Body FriendsSubjects friends);

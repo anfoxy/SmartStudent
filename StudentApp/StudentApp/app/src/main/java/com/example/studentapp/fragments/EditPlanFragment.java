@@ -57,9 +57,13 @@ public class EditPlanFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         subject = MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getId() == args.getId()).collect(Collectors.toList()).get(0);
+                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
         localDate = subject.getDateOfExams();
+
+        if(localDate.isBefore(LocalDate.now())) binding.editPlan.setVisibility(View.INVISIBLE);
+
         itemClick = new SubjectAddRecycler.OnItemClickListener() {
             @Override
             public void onClickQuestion(Question ques, int position) {
@@ -119,6 +123,7 @@ public class EditPlanFragment extends Fragment {
                 });*/
             }
         });
+
         binding.editPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

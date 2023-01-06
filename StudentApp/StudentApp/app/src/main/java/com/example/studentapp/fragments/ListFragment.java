@@ -43,7 +43,7 @@ public class ListFragment extends Fragment {
         SubjectAdapter.OnItemClickListener itemClickListener =new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onClickSubject(PlanToSub subject, int position) {
-                ListFragmentDirections.ActionListFragmentToStatisticFragment action = ListFragmentDirections.actionListFragmentToStatisticFragment(subject.getId());
+                ListFragmentDirections.ActionListFragmentToStatisticFragment action = ListFragmentDirections.actionListFragmentToStatisticFragment(subject.getSub().getNameOfSubme());
                 Navigation.findNavController(getView()).navigate(action);
             }
         };

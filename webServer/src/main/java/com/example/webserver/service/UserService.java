@@ -53,6 +53,7 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()) != null) return "email exists";
         if(!user.getPassword().equals(user.getMatchingPassword())) return "password doesn't match";
         if (userRepository.findByLogin(user.getLogin()) != null) return "login exists";
+        user.setUpdateDbTime("1900-01-01-01-01-01");
         userRepository.save(user);
         return "ok";
     }
@@ -91,10 +92,11 @@ public class UserService {
 
     public ArrayList<Subject> updateDBTime(User userLoc, User userSer,ArrayList<Subject> subjects) throws ResourceNotFoundException {
         if(!checkTime(userLoc,userSer)) {
+            System.out.println("обновляю сервер");
+            deleteAllSub(userSer);
+          //  subjectService.deleteAllByIdNotIn(subjects);
             for (Subject s : subjects) {
-                System.out.println(s);
                 subjectService.putMet(s.getId(), s);
-                deleteAllSubId(s);
                 addAllQueSubId( s.getQuestions(),s);
                 addAllPlanSubId(s.getPlans(),s);
             }
@@ -102,11 +104,20 @@ public class UserService {
             save(userSer);
             return findAllByUserIdPlusQuestionAndPlan(userSer);
         }
+        System.out.println("обновляю локальную.");
         return findAllByUserIdPlusQuestionAndPlan(userSer);
     }
-
+    public void deleteAllSub(User userSer) throws ResourceNotFoundException {
+      ArrayList<Subject >  subjects = subjectService.findAllByUserId(userSer);
+        for (Subject subject: subjects) {
+            questionService.deleteAllBySubId(subject);
+            planService.deleteAllBySubId(subject);
+            subjectService.delete(subject);
+        }
+    }
     private ArrayList<Subject> findAllByUserIdPlusQuestionAndPlan(User user){
         ArrayList<Subject> s = subjectService.findAllByUserId(user);
+
 
         for (Subject sub: s) {
             sub.setQuestions(questionService.findAllBySubId(sub));
@@ -129,7 +140,8 @@ public class UserService {
                 "-" +  checkDateFor0(cal.get(Calendar.MONTH)+1)+
                 "-" +  checkDateFor0(cal.get(Calendar.DATE))+
                 "-" +  checkDateFor0(cal.get(Calendar.HOUR_OF_DAY))+
-                "-" +  checkDateFor0(cal.get(Calendar.MINUTE));
+                "-" +  checkDateFor0(cal.get(Calendar.MINUTE))+
+                "-" +  checkDateFor0(cal.get(Calendar.SECOND));
        return time;
     }
     private String checkDateFor0(int figure){
@@ -154,7 +166,7 @@ public class UserService {
         }
     }
     private boolean checkTime(User userLoc, User userSer){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         try {
             // Парсим строки с временем в объекты Date
             Date date1 = format.parse(userLoc.getUpdateDbTime());

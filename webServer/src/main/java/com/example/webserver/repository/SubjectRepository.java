@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public interface SubjectRepository extends JpaRepository<Subject,Long> {
 
     ArrayList<Subject> findAllByUserId(User user);
 
-
+    void deleteAllByIdNotInAndUserId(List<Long> id,User user);
 
 }

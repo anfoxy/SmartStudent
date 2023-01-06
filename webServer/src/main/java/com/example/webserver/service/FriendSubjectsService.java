@@ -64,7 +64,7 @@ public class FriendSubjectsService {
     }
 
 
-    public void acceptFriendsSubjects(FriendsSubjects friends){
+    public Subject acceptFriendsSubjects(FriendsSubjects friends){
         FriendsSubjects friends1 = friendsSubjectsRepository.findByUserIdAndFriendIdAndSubId(friends.getUserId(),friends.getFriendId(),friends.getSubId());
         //friends1.setStatus("ACCEPTED");
         friendsSubjectsRepository.delete(friends1);
@@ -73,21 +73,25 @@ public class FriendSubjectsService {
         friendsSubjectsRepository.delete(friends2);
 
         Subject subject = new Subject(null,friends.getSubId().getName(),
-                friends.getSubId().getDays(),friends.getSubId().getTodayLearned(),friends.getUserId());
+                friends.getSubId().getDays(),0,friends.getUserId());
         int count = subjectService.numberOfDuplicateSubjects(subject);
         if (count > 0) {
             subject.setName(""+subject.getName()+String.format("(%d)", count));
         }
-        Subject s = subjectService.save(subject);
 
+        //Subject s = subjectService.save(subject);
+        subject.setQuestions(new ArrayList<>());
 
         for (Question q:questionService.findAllBySubId(friends.getSubId())) {
-            questionService.save(new Question(null,q.getQuestion(),q.getAnswer(),q.getDate(),0,0,s));
+           subject.getQuestions().add(new Question(null,q.getQuestion(),q.getAnswer(),q.getDate(),0,0,null));
+            //questionService.save();
         }
-        for (Plan p:planService.findAllBySubId(friends.getSubId())) {
+      /*  for (Plan p:planService.findAllBySubId(friends.getSubId())) {
             planService.save(new Plan(null,p.getDate(),0,s));
-        }
+        }*/
 
+
+        return subject;
 
     }
     public void refuseFriendsSubjects(FriendsSubjects friends){

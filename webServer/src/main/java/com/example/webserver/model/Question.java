@@ -17,7 +17,7 @@ public class Question {
 
     @Id
     @Column(name = "id_questions", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "question_text", nullable = false)
