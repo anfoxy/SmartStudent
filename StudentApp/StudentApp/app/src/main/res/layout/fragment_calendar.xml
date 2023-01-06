@@ -13,44 +13,52 @@
         android:background="#F1F1F1"
         tools:context=".fragments.CalendarFragment">
 
-        <CalendarView
-            android:id="@+id/choose_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_bg"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_sub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choose_date"
-            tools:listitem="@layout/subj_card" />
-
-        <ImageView
-            android:id="@+id/line_view"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#CFCFCF"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/list_sub"
-            app:layout_constraintTop_toBottomOf="@+id/choose_date"
-            app:srcCompat="@android:drawable/bottom_bar" />
-
         <TextView
             android:id="@+id/text_plan_null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
             android:text="@string/null_plan"
-            android:textSize="17sp"
             android:textColor="#5A5A5A"
+            android:textSize="17sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choose_date" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CalendarView
+                android:id="@+id/choose_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calendar_bg" />
+
+            <ImageView
+                android:id="@+id/line_view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#CFCFCF"
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/bottom_bar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/subj_card">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
