@@ -46,23 +46,23 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
         return new SubjectViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PlanToSub subject = subjects.get(position);
         holder.subjName.setText(subject.getSub().getNameOfSubme());
-        int allQuestions = subject.getSub().getSizeAllQuest();
         int comQues = subject.getSub().getSizeKnow();
         if(date.isEqual(subject.getDateOfExams())) {
             holder.subjStat.setText("Экзамен");
 
         } else if(date.isBefore(LocalDate.now())) {
-            holder.subjStat.setText("Выучено: " + comQues);
+            holder.subjStat.setText("Выучено: " +  subject.checkPlanToDay(date).getSizeOfQuetion());
 
         } else if(date.isAfter(LocalDate.now())) {
-            holder.subjStat.setText("Необходимо выучить " + allQuestions);
+            holder.subjStat.setText("Необходимо выучить " + subject.checkPlanToDay(date).getSizeOfQuetion());
 
         } else {
-            holder.subjStat.setText("Выполнено " + comQues + " из " + allQuestions);
+            holder.subjStat.setText("Выполнено " + comQues + " из " + subject.checkPlanToDay(date).getSizeOfQuetion());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

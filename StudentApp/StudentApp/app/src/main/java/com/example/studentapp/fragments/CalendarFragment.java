@@ -97,13 +97,12 @@ public class CalendarFragment extends Fragment {
         ArrayList<PlanToSub> subToDayCalendar = new ArrayList<>();
 
         for (int i = 0; i < subjs.size();i++){
-            for (PlanToDay p: subjs.get(i).getFuturePlan()) {
-                if(p.getDate().isEqual(localDate)) subToDayCalendar.add(subjs.get(i));
-            }
-            for (PlanToDay p: subjs.get(i).getLastPlan()) {
-                if(p.getDate().isEqual(localDate)) subToDayCalendar.add(subjs.get(i));
-            }
-            if(subjs.get(i).getDateOfExams().isEqual(localDate))  subToDayCalendar.add(subjs.get(i));
+
+          if (subjs.get(i).checkPlanToDay(localDate) != null
+                  || subjs.get(i).getDateOfExams().isEqual(localDate)) {
+              subToDayCalendar.add(subjs.get(i));
+          }
+
         }
         binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listSub.setHasFixedSize(true);
