@@ -137,7 +137,20 @@ public class AddPlanFragment extends Fragment {
         binding.editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+                Calendar minDate = Calendar.getInstance();
+
+// установите текущую дату в качестве минимально допустимой даты
+                minDate.set(Calendar.YEAR, myCalendar.get(Calendar.YEAR));
+                minDate.set(Calendar.MONTH, myCalendar.get(Calendar.MONTH));
+                minDate.set(Calendar.DAY_OF_MONTH, myCalendar.get(Calendar.DAY_OF_MONTH));
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+
+// установите минимальную дату
+                datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+
+                datePickerDialog.show();
             }
         });
 
