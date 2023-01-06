@@ -245,4 +245,15 @@ public class PlanToSub {
         }
         return dateStr;
     }
+
+
+    public PlanToDay checkPlanToDay(LocalDate localDate) {
+        for(int i=0; i<lastPlan.size(); i++){
+            if(lastPlan.get(i).getDate()==localDate) return lastPlan.get(i);
+        }
+        for(int i=0; i<futurePlan.size(); i++){
+            if(futurePlan.get(i).getDate()==localDate) return futurePlan.get(i);
+        }
+       return null;
+    }
 }
