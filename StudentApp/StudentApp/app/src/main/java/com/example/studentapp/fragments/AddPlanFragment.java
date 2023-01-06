@@ -105,8 +105,6 @@ public class AddPlanFragment extends Fragment {
                         planToSub.getSub().getQuestion().get(position).setQuestion(tvQ.getText().toString());
                         planToSub.getSub().getQuestion().get(position).setAnswer(tvAnswer.getText().toString());
 
-                    /*Questions.updateQuestion(position, tvQ.getText().toString(),tvAnswer.getText().toString());
-                      setQuestions(Questions.getQuestions());*/
                         setQuestions(planToSub.getSub().getQuestion());
                         dialog.dismiss();
                     }
@@ -116,8 +114,6 @@ public class AddPlanFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         planToSub.getSub().getQuestion().remove(position);
-                       /* Questions.deleteQuestion(position);
-                        setQuestions(Questions.getQuestions());*/
                         setQuestions(planToSub.getSub().getQuestion());
                         dialog.dismiss();
                     }
@@ -162,28 +158,6 @@ public class AddPlanFragment extends Fragment {
                     setNewPlan();
                     MainActivity.myDBManager.setFromDB(planToSub);
                     Users.getUser().currentUpdateDbTime();
-
-                    /*Subjects sub = new Subjects(0, binding.Text1.getText().toString(),
-                            binding.editTextDate.getText().toString(), 0,
-                            Users.getUser(), planToSub.getSub().getQuestions(),
-                            planToSub.getPlans());
-
-                    Call<Subjects> addSub = apiInterface.addSubject(sub);
-                    addSub.enqueue(new Callback<Subjects>() {
-                        @Override
-                        public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-                            if (response.body()!= null){
-                                Subjects newSubject = response.body();
-                                MainActivity.myDBManager.updateSubId(newSubject.getPlanToSub());
-                            }else {
-                                Toast.makeText(getActivity(), "Не получилось", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Subjects> call, Throwable t) {
-                            Log.d("not ok", t.getMessage());
-                        }
-                    });*/
 
                     NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(planToSub.getSub().getNameOfSubme());
                     Navigation.findNavController(getView()).navigate(action);
@@ -253,9 +227,6 @@ public class AddPlanFragment extends Fragment {
 
                     planToSub.getSub().addQuestion(
                             new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
-                 /*   Questions question = new Questions(0, , , "",0,0, null);
-                    Questions.addQuestion(question);
-               */
                     setQuestions(planToSub.getSub().getQuestion());
                     dialog.dismiss();
                 }

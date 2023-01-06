@@ -74,6 +74,11 @@ public class FriendsProfileFragment extends Fragment {
                             int id =(MainActivity.myDBManager.getFromDB().size()+1)*(-1);
                             PlanToSub planToSub = response.body().getPlanToSubNotPlans();
                             planToSub.setId(id);
+                            LocalDate date = planToSub.getDateOfExams();
+                            long days = DAYS.between(LocalDate.now(), date);
+                            for(int i=0; i<days; i++){
+                                planToSub.plusDayToPlan(LocalDate.now().plusDays(i));
+                            }
                             MainActivity.myDBManager.setFromDB(setNewPlan(planToSub));
                             Users.getUser().currentUpdateDbTime();
 

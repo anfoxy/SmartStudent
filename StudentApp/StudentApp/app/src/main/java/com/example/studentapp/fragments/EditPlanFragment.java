@@ -106,21 +106,6 @@ public class EditPlanFragment extends Fragment {
                 NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
                 Navigation.findNavController(getView()).navigate(action);
 
-               /* Call<Subjects> deleteSubj = apiInterface.deleteSubject(args.getId());
-                deleteSubj.enqueue(new Callback<Subjects>() {
-                    @Override
-                    public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-                        if (response.isSuccessful()){
-                            NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
-                            Navigation.findNavController(getView()).navigate(action);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Subjects> call, Throwable t) {
-
-                    }
-                });*/
             }
         });
 
@@ -152,19 +137,6 @@ public class EditPlanFragment extends Fragment {
         MainActivity.myDBManager.updateQuestionsToSubject(subject);
         MainActivity.myDBManager.updatePlan(subject);
 
-
-       /* Call<Subjects> subjectsCall = apiInterface.updateSubject(subject.getId(), subject);
-        subjectsCall.enqueue(new Callback<Subjects>() {
-            @Override
-            public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<Subjects> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
     private void updateLabel(){
         String myFormat="yyyy-MM-dd";
@@ -180,26 +152,6 @@ public class EditPlanFragment extends Fragment {
         binding.listVop.setHasFixedSize(true);
         binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), subject.getSub().getQuestion(), itemClick));
 
-
-      /*  Call<Subjects> subjectsCall = apiInterface.getSubjectById(args.getId());
-        subjectsCall.enqueue(new Callback<Subjects>() {
-            @Override
-            public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-                if (response.body()!=null){
-                    subject = response.body();
-                    binding.Text1.setText(response.body().getName());
-                    binding.editTextDate.setText(response.body().getDaysString().split("T")[0]);
-                    binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
-                    binding.listVop.setHasFixedSize(true);
-                    binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), response.body().getQuestions(), itemClick));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Subjects> call, Throwable t) {
-
-            }
-        });*/
     }
 
     @Override
@@ -248,27 +200,14 @@ public class EditPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-                    subject.getSub().getQuestion().get(pos).setAnswer(tvAnswer.getText().toString());
-                    subject.getSub().getQuestion().get(pos).setQuestion(tvQ.getText().toString());
+
+                    subject.changeQuestion(pos,tvQ.getText().toString(),tvAnswer.getText().toString());
+                    //subject.getSub().getQuestion().get(pos).setAnswer(tvAnswer.getText().toString());
+                    //subject.getSub().getQuestion().get(pos).setQuestion(tvQ.getText().toString());
                     setQuestions();
                     dialog.dismiss();
 
-                   /* questions.setQuestion(tvQ.getText().toString());
-                    questions.setAnswer(tvAnswer.getText().toString());
-                    Call<Questions> updateQuestion = apiInterface.updateQuestion(questions.getId(), questions);
-                    updateQuestion.enqueue(new Callback<Questions>() {
-                        @Override
-                        public void onResponse(Call<Questions> call, Response<Questions> response) {
-                            if (response.body()!=null){
-                                setQuestions();
-                                dialog.dismiss();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Questions> call, Throwable t) {
 
-                        }
-                    });*/
                 }
             }
         });
@@ -276,25 +215,11 @@ public class EditPlanFragment extends Fragment {
         clsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                subject.getSub().getQuestion().remove(pos);
+                subject.delQuestion(pos);
+              //  subject.getSub().getQuestion().remove(pos);
                 setQuestions();
                 dialog.dismiss();
-               /* Call<Questions> deleteQuestion = apiInterface.deleteQuestion(questions.getId());
-                deleteQuestion.enqueue(new Callback<Questions>() {
-                    @Override
-                    public void onResponse(Call<Questions> call, Response<Questions> response) {
-                        if (response.body()!= null){
-                            setQuestions();
-                            dialog.dismiss();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<Questions> call, Throwable t) {
-
-                    }
-                });*/
             }
         });
 
@@ -332,29 +257,12 @@ public class EditPlanFragment extends Fragment {
                 if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-
-                    subject.getSub().addQuestion(
-                            new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
+                    subject.setNewQuestion(new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
+                /*    subject.getSub().addQuestion(
+                            new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));*/
                     setQuestions();
                     dialog.dismiss();
 
-                   /* Questions newQuestion = new Questions(null,tvQ.getText().toString(),tvAnswer.getText().toString(),"",0,0,subject);//Тут было args.getId()
-
-                    Call<Questions> questionsCall = apiInterface.addQuestion(newQuestion);
-                    questionsCall.enqueue(new Callback<Questions>() {
-                        @Override
-                        public void onResponse(Call<Questions> call, Response<Questions> response) {
-                            if (response.body()!= null){
-                                setQuestions();
-                                dialog.dismiss();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Questions> call, Throwable t) {
-
-                        }
-                    });*/
                 }
             }
         });

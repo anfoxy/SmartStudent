@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Plan> plans= p.getPlans();
             ArrayList<Questions> questions= p.getSub().getQuestions();
             Subjects s = new Subjects(p.getId(),p.getSub().getNameOfSubme(),p.dateToString(), p.getTodayLearned(), Users.getUser());
-
             s.setPlans(plans);
             s.setQuestions(questions);
             res.add(s);
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(pl.toString());
         ArrayList<PlanToSub> res = new ArrayList<>();
         for(Subjects p : pl){
-
             res.add(p.getPlanToSub());
         }
         return  res;

@@ -177,12 +177,12 @@ public class PlanToSub {
                         i++;
                         sum=0;
                         for(int j=0; j<i; j++){
-                            sum=sum+futurePlan.get(i).getSizeOfQuetion();
+                            sum=sum+futurePlan.get(j).getSizeOfQuetion();
                         }
                     }
                     r=(v-sum)/(d-i);
                     for(int j=i; j<futurePlan.size(); j++){
-                        futurePlan.get(i).setSizeOfQuetion(r);
+                        futurePlan.get(j).setSizeOfQuetion(r);
                     }
                     //если вопросов меньше чем дней
                 }else{
@@ -281,10 +281,10 @@ public class PlanToSub {
 
     public PlanToDay checkPlanToDay(LocalDate localDate) {
         for(int i=0; i<lastPlan.size(); i++){
-            if(lastPlan.get(i).getDate()==localDate) return lastPlan.get(i);
+            if(lastPlan.get(i).getDate().isEqual(localDate)) return lastPlan.get(i);
         }
         for(int i=0; i<futurePlan.size(); i++){
-            if(futurePlan.get(i).getDate()==localDate) return futurePlan.get(i);
+            if(futurePlan.get(i).getDate().isEqual(localDate)) return futurePlan.get(i);
         }
        return null;
     }
