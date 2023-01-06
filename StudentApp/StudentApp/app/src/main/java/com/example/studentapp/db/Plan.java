@@ -12,7 +12,7 @@ public class Plan {
     private Integer id;
     @SerializedName("date")
     private String date;
-    @SerializedName("NumberOfQuestions")
+    @SerializedName("numberOfQuestions")
     private int numberOfQuestions;
     @SerializedName("subId")
     private Subjects subId;
