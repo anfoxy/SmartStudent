@@ -153,24 +153,44 @@ public class PlanToSub {
     private void newSizeQuestionOnFuture() {
         if(futurePlan.size()>0){
             sortFuturePlan();
-            int o = (sub.getSizeNoKnow() + todayLearned) / futurePlan.size();
-            int ch = o * futurePlan.size();
+            //всего нужно выучить
+            int v=sub.getSizeNoKnow();
+            int d=futurePlan.size();
 
-            if (sub.getSizeNoKnow() < ch) {
-                int d = ch - sub.getSizeNoKnow();
-                for (int i = 0; i < futurePlan.size(); i++) {
-                    if (i < d) futurePlan.get(i).changeSizeOfQuetion(o);
-                    else futurePlan.get(i).changeSizeOfQuetion(o - 1);
+            //если делится на цело
+            if(v%d==0){
+                int r=v/d;
+                for (int i=0; i<futurePlan.size(); i++){
+                    futurePlan.get(i).setSizeOfQuetion(r);
                 }
-            } else {
-                if (sub.getSizeNoKnow() < futurePlan.size()) {
-                    for (int i = 0; i < sub.getSizeNoKnow(); i++) futurePlan.get(i).changeSizeOfQuetion(1);
-                    for (int i = sub.getSizeNoKnow(); i < futurePlan.size(); i++)
-                        futurePlan.get(i).changeSizeOfQuetion(0);
-                } else {
-                    for (int i = 0; i < futurePlan.size(); i++) futurePlan.get(i).changeSizeOfQuetion(o);
+            }else {
+                //если вопросов больше чем дней
+                if(v>d){
+                    int i=0;
+                    int r=v/d+1;
+                    futurePlan.get(i).setSizeOfQuetion(r);
+                    i++;
+                    int sum=futurePlan.get(0).getSizeOfQuetion();
+                    while((v-sum)%(d-i)!=0){
+                        r=(v-sum)/(d-i);
+                        futurePlan.get(i).setSizeOfQuetion(r);
+                        i++;
+                        sum=0;
+                        for(int j=0; j<i; j++){
+                            sum=sum+futurePlan.get(i).getSizeOfQuetion();
+                        }
+                    }
+                    r=(v-sum)/(d-i);
+                    for(int j=i; j<futurePlan.size(); j++){
+                        futurePlan.get(i).setSizeOfQuetion(r);
+                    }
+                    //если вопросов меньше чем дней
+                }else{
+                    for(int i=0; i<futurePlan.size(); i++){
+                        if(i<v) futurePlan.get(i).setSizeOfQuetion(1);
+                        else futurePlan.get(i).setSizeOfQuetion(0);
+                    }
                 }
-
             }
 
         }
@@ -178,7 +198,19 @@ public class PlanToSub {
     }
 
     //--------------Функци Set и Get
-
+    public void setNewQuestion(Question question){
+        sub.addQuestion(question);
+        newSizeQuestionOnFuture();
+    }
+    public void delQuestion(Integer nom){
+        sub.deleteQuestion(nom);
+        newSizeQuestionOnFuture();
+    }
+    public void changeQuestion(Integer nom, String quest, String answer){
+        if(quest!=null) sub.changeQuestion(nom, quest, sub.getQuestion(nom).getAnswer());
+        if(answer!=null) sub.changeQuestion(nom,  sub.getQuestion(nom).getQuestion(), answer);
+        newSizeQuestionOnFuture();
+    }
 
     public LocalDate getDateOfExams() {
         return dateOfExams;
