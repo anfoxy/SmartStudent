@@ -43,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
 /*        myDBManager = new MyDBManager(this);
         myDBManager.openDB();*/
 
+        updateDBTime();
+        ArrayList <PlanToSub> pl=myDBManager.getFromDB();
+        for(PlanToSub p : pl) {
+            p.nextDay();
+            MainActivity.myDBManager.updatePlan(p);
+            MainActivity.myDBManager.updateQuestionsToSubject(p);
+            MainActivity.myDBManager.updateSubTodayLearned(p);
+            Users.getUser().currentUpdateDbTime();
+        }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -53,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.bottomNavMenu, navController);
-
-
     }
 
     @Override
