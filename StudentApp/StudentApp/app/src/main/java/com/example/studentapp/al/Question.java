@@ -76,14 +76,15 @@ public class Question {
     //--------------Для обработчика нажатия на кнопку----------------
     public void сhangePrcentAndSize(Double percentKnow)
     {
-        if(percentKnow>=0&&percentKnow<=1){
+        if(percentKnow>=0.0
+                &&percentKnow<=1.0){
             lastDate=LocalDate.now();
             //должен установить текущее время
             if(this.percentKnow<1.0) sizeOfView++;
             this.percentKnow=percentKnow;
         } else{
             throw new ArithmeticException
-                    ("Нельзя в вероятность засовывать отрицательное число либо больше 1.");
+                    ("Я ругаюсь на переменную Ильи, которая равна "+ percentKnow);
         }
     }
 

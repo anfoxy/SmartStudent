@@ -1,6 +1,7 @@
 package com.example.studentapp.fragments;
 
 import android.graphics.Color;
+import android.graphics.fonts.SystemFonts;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -82,6 +83,7 @@ public class AnswerQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 binding.lookAnswerButton.setVisibility(View.INVISIBLE);
+                binding.scrollView2.setVisibility(View.VISIBLE);
                 CountAnswerText = CountSpen();
                 if(CountAnswerText <5) { //5 предложений
                     binding.textAnswer.setVisibility(View.VISIBLE);
@@ -164,7 +166,8 @@ public class AnswerQuestionFragment extends Fragment {
             public void onClick(View v) {
                 // после выделения текста который мы знаем
                 number++;
-                study.clickReady(textKnowGet);
+                selectedCount = 0;
+                study.clickReady(textKnowGet*0.01);
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
                 plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
@@ -309,6 +312,7 @@ public class AnswerQuestionFragment extends Fragment {
             }
             // Обновляем текст с процентом выделенных предложений
 //            String selectedPercentage = String.format(Locale.US, "Выделено: %d/%d (%.1f%%)", selectedCount, totalCount, (double) selectedCount / totalCount * 100);
+
             textKnowGet=(double) selectedCount / totalCount * 100;
             binding.textAnswer.setText(spannable);
 //            binding.textAnswer.append("\n" + selectedPercentage);
