@@ -5,7 +5,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +25,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
-import com.example.studentapp.adapters.SubjectAddRecycler;
+import com.example.studentapp.adapters.QuestionAddRecycler;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.al.Question;
 import com.example.studentapp.databinding.FragmentAddPlanBinding;
 import com.example.studentapp.db.ApiInterface;
-import com.example.studentapp.db.Plan;
-import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
-import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 
 import java.text.SimpleDateFormat;
@@ -42,12 +38,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class AddPlanFragment extends Fragment {
@@ -56,7 +49,7 @@ public class AddPlanFragment extends Fragment {
     FragmentAddPlanBinding binding;
     final Calendar myCalendar = Calendar.getInstance();
     int idSub;
-    SubjectAddRecycler.OnItemClickListener itemClick;
+    QuestionAddRecycler.OnItemClickListener itemClick;
     PlanToSub planToSub;
     LocalDate localDate;
 
@@ -68,7 +61,7 @@ public class AddPlanFragment extends Fragment {
  /*       Paper.book("questions").destroy();
         Paper.book("plan").destroy();*/
 
-        itemClick = new SubjectAddRecycler.OnItemClickListener() {
+        itemClick = new QuestionAddRecycler.OnItemClickListener() {
 
             @Override
             public void onClickQuestion(Question ques, int position) {
@@ -157,7 +150,7 @@ public class AddPlanFragment extends Fragment {
                 }if(binding.Text1.getText().toString().trim().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
                 }else{
-                    int id =(MainActivity.myDBManager.getFromDB().size()+1)*(-1);
+                    int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
                     planToSub.setId(id);
                     planToSub.setDateOfExams(localDate);
                     planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
@@ -198,7 +191,7 @@ public class AddPlanFragment extends Fragment {
     private void setQuestions(ArrayList<Question> questions){
         binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listVop.setHasFixedSize(true);
-        binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), questions, itemClick));
+        binding.listVop.setAdapter(new QuestionAddRecycler(getContext(), questions, itemClick));
     }
 
     public void showAlertDialogButtonClicked(View view) {

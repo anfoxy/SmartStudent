@@ -71,7 +71,7 @@ public class FriendsProfileFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Subjects> call, Response<Subjects> response) {
                         if( response.body() != null) {
-                            int id =(MainActivity.myDBManager.getFromDB().size()+1)*(-1);
+                            int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
                             PlanToSub planToSub = response.body().getPlanToSubNotPlans();
                             planToSub.setId(id);
                             LocalDate date = planToSub.getDateOfExams();

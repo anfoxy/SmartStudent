@@ -84,6 +84,7 @@ public class AnswerQuestionFragment extends Fragment {
             public void onClick(View view) {
                 binding.lookAnswerButton.setVisibility(View.INVISIBLE);
                 binding.scrollView2.setVisibility(View.VISIBLE);
+                binding.imageView5.setVisibility(View.VISIBLE);
                 CountAnswerText = CountSpen();
                 if(CountAnswerText <5) { //5 предложений
                     binding.textAnswer.setVisibility(View.VISIBLE);
@@ -198,6 +199,8 @@ public class AnswerQuestionFragment extends Fragment {
             binding.noAnswerButton.setVisibility(View.INVISIBLE);
             binding.speakButton.setVisibility(View.INVISIBLE);
             binding.nextBtn.setVisibility(View.INVISIBLE);
+            binding.scrollView2.setVisibility(View.INVISIBLE);
+            binding.imageView5.setVisibility(View.INVISIBLE);
             binding.textNumber.setText("Вопрос "+number);
             binding.textQuestion.setText(nowQuest.getQuestion().toString());
             binding.textAnswer.setText(nowQuest.getAnswer().toString());
