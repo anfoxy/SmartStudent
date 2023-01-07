@@ -2,9 +2,16 @@ package com.example.studentapp.fragments;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +39,13 @@ import com.example.studentapp.databinding.FragmentAddPlanBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Users;
+import com.googlecode.tesseract.android.TessBaseAPI;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -52,6 +65,12 @@ public class AddPlanFragment extends Fragment {
     QuestionAddRecycler.OnItemClickListener itemClick;
     PlanToSub planToSub;
     LocalDate localDate;
+
+    private static final String TAG = "AddPlanFragment";
+    private static final int REQUEST_GALLERY = 1;
+
+    TessBaseAPI tessBaseAPI;
+    EditText tvAnswer;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -81,7 +100,7 @@ public class AddPlanFragment extends Fragment {
                 AlertDialog dialog
                         = builder.create();
 
-                EditText tvAnswer = customLayout.findViewById(R.id.tv_answer);
+                tvAnswer = customLayout.findViewById(R.id.tv_answer);
                 EditText tvQ = customLayout.findViewById(R.id.tv_question);
                 Button addBtn = customLayout.findViewById(R.id.add_question);
                 AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
@@ -204,7 +223,7 @@ public class AddPlanFragment extends Fragment {
 
         AlertDialog dialog = builder.create();
 
-        EditText tvAnswer = customLayout.findViewById(R.id.tv_answer);
+        tvAnswer = customLayout.findViewById(R.id.tv_answer);
         EditText tvQ = customLayout.findViewById(R.id.tv_question);
         Button addBtn = customLayout.findViewById(R.id.add_question);
         ImageButton addBtnCam = customLayout.findViewById(R.id.camera_btn);
@@ -214,6 +233,8 @@ public class AddPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // ДИАНА. При нажатии на кнопку, вызываем эту функцию с Tesseract
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_GALLERY);
             }
         });
 
@@ -246,10 +267,64 @@ public class AddPlanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tessBaseAPI = new TessBaseAPI();
+        String datapath = getContext().getFilesDir() + "/tesseract/";
+        File dir = new File(datapath + "tessdata/");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String lang = "rus";
+        String lang1 = "eng";
+        File file = new File(datapath + "tessdata/" + lang + lang1 + ".traineddata");
+        if (!file.exists()) {
+            try {
+                InputStream in = getContext().getAssets().open("tessdata/" + lang + ".traineddata");
+                OutputStream out = new FileOutputStream(file);
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                }
+                in.close();
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+            }
+        }
+        tessBaseAPI.init(datapath, lang+lang1);
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_plan, container, false);
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
         Paper.init(getContext());
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_GALLERY && resultCode == Activity.RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                tessBaseAPI.setImage(selectedImage);
+                String text = tessBaseAPI.getUTF8Text();
+                tvAnswer.setText(text);
+                //tessBaseAPI.end();
+
+                Log.d(TAG, "Text recognition success: " + text);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Освобождаем ресурсы Tesseract OCR
+        tessBaseAPI.end();
     }
 }
