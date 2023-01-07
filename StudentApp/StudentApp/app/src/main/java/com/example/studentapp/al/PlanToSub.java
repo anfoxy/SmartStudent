@@ -154,7 +154,7 @@ public class PlanToSub {
         if(futurePlan.size()>0){
             sortFuturePlan();
             //всего нужно выучить
-            int v=sub.getSizeNoKnow();
+            int v=sub.getSizeNoKnow()-todayLearned;
             int d=futurePlan.size();
 
             //если делится на цело
