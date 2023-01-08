@@ -18,53 +18,60 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="20dp"
+            android:layout_marginTop="50dp"
             android:layout_weight="1">
 
             <TextView
                 android:id="@+id/kolvop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Количество вопросов:      "
+                android:text="Количество вопросов:      \n"
                 android:paddingBottom="20dp"
-                android:textSize="18sp" />
+                android:gravity="center"
+                android:textSize="19sp" />
 
             <TextView
                 android:id="@+id/kolzap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="19sp"
+                android:gravity="center"
                 android:paddingBottom="20dp"
-                android:text="Колличество запомненых вопросов:  " />
+                android:text="Колличество запомненых вопросов:  \n" />
 
             <TextView
                 android:id="@+id/dateob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="19sp"
                 android:paddingBottom="20dp"
-                android:text="Количество невыученных вопросов:  " />
+                android:gravity="center"
+                android:text="Количество невыученных вопросов:  \n" />
 
             <TextView
                 android:id="@+id/dateex"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Дата экзамена:  "
+                android:text="Дата экзамена:  \n"
                 android:paddingBottom="20dp"
-                android:textSize="18sp" />
+                android:gravity="center"
+                android:textSize="19sp" />
 
             <TextView
                 android:id="@+id/kold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Количество дней до экзамена:  "
+                android:text="Количество дней до экзамена:  \n"
                 android:paddingBottom="20dp"
-                android:textSize="18sp" />
+                android:gravity="center"
+                android:textSize="19sp" />
 
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button1"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="10dp"
             android:layout_gravity="center"
             android:layout_height="54dp"
             android:layout_marginTop="5dp"

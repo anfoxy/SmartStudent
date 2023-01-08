@@ -109,8 +109,10 @@ public class CalendarFragment extends Fragment {
         binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subToDayCalendar, localDate, itemClick));
         if(subjs.size() == 0) {
             binding.textPlanNull.setVisibility(View.VISIBLE);
+            binding.predmNullPlan.setVisibility(View.VISIBLE);
         } else {
             binding.textPlanNull.setVisibility(View.INVISIBLE);
+            binding.predmNullPlan.setVisibility(View.INVISIBLE);
         }
     }
 

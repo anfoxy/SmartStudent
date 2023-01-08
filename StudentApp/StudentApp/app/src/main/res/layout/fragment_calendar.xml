@@ -12,12 +12,22 @@
         android:layout_height="match_parent"
         android:background="#F1F1F1"
         tools:context=".fragments.CalendarFragment">
-
+        <ImageView
+            android:id="@+id/predm_null_plan"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_margin="16dp"
+            android:src="@drawable/img_7"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/text_plan_null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
         <TextView
             android:id="@+id/text_plan_null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="320dp"
             android:text="@string/null_plan"
             android:textColor="#5A5A5A"
             android:textSize="17sp"
