@@ -59,8 +59,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/AddPlan"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
         android:layout_height="54dp"
         android:backgroundTint="#4E61C8"
         android:text="Сохранить план"

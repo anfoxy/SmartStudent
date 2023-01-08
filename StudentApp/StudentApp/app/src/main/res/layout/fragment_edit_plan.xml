@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
+                    android:gravity="center"
                     android:paddingRight="10dp"
                     android:textColor="@color/textcolor"
                     android:textCursorDrawable="@null"
@@ -80,10 +81,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/b"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="54dp"
             android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="10dp"
             android:backgroundTint="#4E61C8"
             android:text="Добавить вопрос"
             android:textColor="@color/textbutton"
@@ -114,8 +116,9 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editPlan"
-                android:layout_width="400dp"
+                android:layout_width="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
                 android:layout_height="54dp"
                 android:backgroundTint="#4E61C8"
                 android:text="Изменить даты подготовки"
@@ -128,8 +131,9 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save"
-                android:layout_width="400dp"
+                android:layout_width="match_parent"
                 android:layout_height="54dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
                 android:backgroundTint="#4E61C8"
                 android:text="Сохранить"
@@ -150,6 +154,7 @@
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:layout_height="45dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_weight="1"
                     android:layout_marginTop="5dp"
                     android:background="#FF5722"
