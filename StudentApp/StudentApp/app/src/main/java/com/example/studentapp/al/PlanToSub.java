@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class PlanToSub {
     private Subject sub; //предмет
     private  ArrayList<PlanToDay> lastPlan; //прошлое
@@ -16,14 +17,6 @@ public class PlanToSub {
     private LocalDate dateOfExams; //Дата, когда будет экзамен //Это из бд
     private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public PlanToSub(){
         sub=new Subject();
         futurePlan =new ArrayList<PlanToDay>();
@@ -31,7 +24,6 @@ public class PlanToSub {
         todayLearned =0;
         this.dateOfExams=LocalDate.now();
     }
-
     public PlanToSub(Subject sub_, LocalDate dateOfExams){
         sub=sub_;
         futurePlan =new ArrayList<PlanToDay>();
@@ -150,54 +142,33 @@ public class PlanToSub {
             }
         }
     }
-    private void newSizeQuestionOnFuture() {
-        if(futurePlan.size()>0){
+    public void newSizeQuestionOnFuture() {
+        if(futurePlan.size()>0) {
             sortFuturePlan();
             //всего нужно выучить
-            int v=sub.getSizeNoKnow()-todayLearned;
-            int d=futurePlan.size();
-
-            //если делится на цело
-            if(v%d==0){
-                int r=v/d;
-                for (int i=0; i<futurePlan.size(); i++){
-                    futurePlan.get(i).setSizeOfQuetion(r);
-                }
-            }else {
-                //если вопросов больше чем дней
-                if(v>d){
-                    int i=0;
-                    int r=v/d+1;
-                    futurePlan.get(i).setSizeOfQuetion(r);
-                    i++;
-                    int sum=futurePlan.get(0).getSizeOfQuetion();
-                    while((v-sum)%(d-i)!=0){
-                        r=(v-sum)/(d-i);
-                        futurePlan.get(i).setSizeOfQuetion(r);
-                        i++;
-                        sum=0;
-                        for(int j=0; j<i; j++){
-                            sum=sum+futurePlan.get(j).getSizeOfQuetion();
-                        }
-                    }
-                    r=(v-sum)/(d-i);
-                    for(int j=i; j<futurePlan.size(); j++){
-                        futurePlan.get(j).setSizeOfQuetion(r);
-                    }
-                    //если вопросов меньше чем дней
-                }else{
-                    for(int i=0; i<futurePlan.size(); i++){
-                        if(i<v) futurePlan.get(i).setSizeOfQuetion(1);
-                        else futurePlan.get(i).setSizeOfQuetion(0);
-                    }
+            int v = sub.getSizeNoKnow()+todayLearned;
+            int d = futurePlan.size();
+            for(int i=0; i<futurePlan.size(); i++){
+                futurePlan.get(i).setSizeOfQuetion(0);
+            }
+            while (v!=0){
+                for(int i=0; i<futurePlan.size(); i++){
+                    if(v==0) break;
+                    futurePlan.get(i).setSizeOfQuetion(futurePlan.get(i).getSizeOfQuetion()+1);
+                    v--;
                 }
             }
-
         }
-
     }
 
     //--------------Функци Set и Get
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setNewQuestion(Question question){
         sub.addQuestion(question);
         newSizeQuestionOnFuture();
@@ -241,24 +212,32 @@ public class PlanToSub {
         }else
         if(learnedBefore>sub.getSizeKnow()) {
             learnedBefore = sub.getSizeKnow();
-            todayLearned--;
+            if(todayLearned>0) todayLearned--;
+            newSizeQuestionOnFuture();
         }
     }
 
-    public  ArrayList<Plan> getPlans(){
-        ArrayList<Plan> res=new ArrayList<>();
-
-        for(PlanToDay planToDay:lastPlan){
-            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null,false));
+    public PlanToDay checkPlanToDay(LocalDate localDate) {
+        for(int i=0; i<lastPlan.size(); i++){
+            if(lastPlan.get(i).getDate().isEqual(localDate)) return lastPlan.get(i);
         }
-        if(futurePlan.size()>0) res.add(new Plan(futurePlan.get(0).getId(), futurePlan.get(0).dateToString(), futurePlan.get(0).getSizeOfQuetion(), null,true));
-
-        for( int i = 1 ; i < futurePlan.size(); i++){
-            res.add(new Plan(futurePlan.get(i).getId(), futurePlan.get(i).dateToString(), futurePlan.get(i).getSizeOfQuetion(), null,false));
+        for(int i=0; i<futurePlan.size(); i++){
+            if(futurePlan.get(i).getDate().isEqual(localDate)) return futurePlan.get(i);
         }
-
-        return res;
+        return null;
     }
+
+//    public  ArrayList<Plan> getPlans(){
+//        ArrayList<Plan> res=new ArrayList<>();
+//
+//        for(PlanToDay planToDay:lastPlan){
+//            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null));
+//        }
+//        for(PlanToDay planToDay:futurePlan){
+//            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null));
+//        }
+//        return res;
+//    }
 
     public String dateToString() {
         String dateStr;
@@ -277,15 +256,19 @@ public class PlanToSub {
         }
         return dateStr;
     }
+    public  ArrayList<Plan> getPlans(){
+        ArrayList<Plan> res=new ArrayList<>();
 
+        for(PlanToDay planToDay:lastPlan){
+            res.add(new Plan(planToDay.getId(), planToDay.dateToString(), planToDay.getSizeOfQuetion(), null,false));
+        }
+        if(futurePlan.size()>0) res.add(new Plan(futurePlan.get(0).getId(), futurePlan.get(0).dateToString(), futurePlan.get(0).getSizeOfQuetion(), null,true));
 
-    public PlanToDay checkPlanToDay(LocalDate localDate) {
-        for(int i=0; i<lastPlan.size(); i++){
-            if(lastPlan.get(i).getDate().isEqual(localDate)) return lastPlan.get(i);
+        for( int i = 1 ; i < futurePlan.size(); i++){
+            res.add(new Plan(futurePlan.get(i).getId(), futurePlan.get(i).dateToString(), futurePlan.get(i).getSizeOfQuetion(), null,false));
         }
-        for(int i=0; i<futurePlan.size(); i++){
-            if(futurePlan.get(i).getDate().isEqual(localDate)) return futurePlan.get(i);
-        }
-       return null;
+
+        return res;
     }
+
 }

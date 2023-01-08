@@ -108,9 +108,9 @@ public class EditPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
-                minDate.set(Calendar.YEAR, myCalendar.get(Calendar.YEAR));
-                minDate.set(Calendar.MONTH, myCalendar.get(Calendar.MONTH));
-                minDate.set(Calendar.DAY_OF_MONTH, myCalendar.get(Calendar.DAY_OF_MONTH));
+                minDate.set(Calendar.YEAR, LocalDate.now().getYear());
+                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue());
+                minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
                 datePickerDialog.show();
@@ -184,34 +184,6 @@ public class EditPlanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        tessBaseAPI = new TessBaseAPI();
-        String datapath = getContext().getFilesDir() + "/tesseract/";
-        File dir = new File(datapath + "tessdata/");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        String lang = "rus";
-        String lang1 = "eng";
-        File file = new File(datapath + "tessdata/" + lang + lang1 + ".traineddata");
-        if (!file.exists()) {
-            try {
-                InputStream in = getContext().getAssets().open("tessdata/" + lang + ".traineddata");
-                OutputStream out = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
-                int read;
-                while ((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
-                }
-                in.close();
-                out.flush();
-                out.close();
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-            }
-        }
-        tessBaseAPI.init(datapath, lang+lang1);
-
-
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_plan, container, false);
         Paper.init(getContext());
@@ -349,23 +321,40 @@ public class EditPlanFragment extends Fragment {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-
+                tessBaseAPI = new TessBaseAPI();
+                String datapath = getContext().getFilesDir() + "/tesseract/";
+                File dir = new File(datapath + "tessdata/");
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                String lang = "rus";
+                String lang1 = "eng";
+                File file = new File(datapath + "tessdata/" + lang + lang1 + ".traineddata");
+                if (!file.exists()) {
+                    try {
+                        InputStream in = getContext().getAssets().open("tessdata/" + lang + ".traineddata");
+                        OutputStream out = new FileOutputStream(file);
+                        byte[] buffer = new byte[1024];
+                        int read;
+                        while ((read = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, read);
+                        }
+                        in.close();
+                        out.flush();
+                        out.close();
+                    } catch (Exception e) {
+                        Log.e("Error", e.getMessage());
+                    }
+                }
+                tessBaseAPI.init(datapath, lang+lang1);
                 tessBaseAPI.setImage(selectedImage);
                 String text = tessBaseAPI.getUTF8Text();
-
                 tvAnswer.setText(text);
-                //tessBaseAPI.end();
-
+                tessBaseAPI.end();
                 Log.d(TAG, "Text recognition success: " + text);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Освобождаем ресурсы Tesseract OCR
-        tessBaseAPI.end();
     }
 }
