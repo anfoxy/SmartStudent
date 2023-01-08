@@ -50,6 +50,7 @@ public class SubjectPlanAdapter extends RecyclerView.Adapter<SubjectPlanAdapter.
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PlanToSub subject = subjects.get(position);
+        subject.newSizeQuestionOnFuture();
         holder.subjName.setText(subject.getSub().getNameOfSubme());
         int comQues = subject.getTodayLearned();
         if(date.isEqual(subject.getDateOfExams())) {

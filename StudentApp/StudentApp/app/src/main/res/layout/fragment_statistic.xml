@@ -84,7 +84,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:layout_height="54dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#4E61C8"
+            android:text="Взаимодействие с Google календарём"
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
     </LinearLayout>
 
 </layout>

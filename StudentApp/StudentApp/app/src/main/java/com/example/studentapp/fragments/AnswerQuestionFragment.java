@@ -65,16 +65,15 @@ public class AnswerQuestionFragment extends Fragment {
     okhttp3.Response response;
     Study study;
     Question nowQuest;
-
+    PlanToSub plan;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //setData();
-        PlanToSub plan= MainActivity.myDBManager.getFromDB().stream()
+        plan= MainActivity.myDBManager.getFromDB().stream()
                 .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
         plan.plusDayToPlan(LocalDate.now());
-        study=new Study(plan.getSub(),
-                plan.getFuturePlan().get(0).getSizeOfQuetion(), plan.getTodayLearned());
+        study=new Study(plan);
         nowQuest=study.GetNewQuestion();
         setQuestions();
 
@@ -122,8 +121,8 @@ public class AnswerQuestionFragment extends Fragment {
             public void onClick(View view) {
                 number++;
                 study.clickReady(0.0);
+                plan.newSizeQuestionOnFuture();
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
-                plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
                 Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
@@ -145,7 +144,6 @@ public class AnswerQuestionFragment extends Fragment {
                 number++;
                 study.clickReady(1.0);
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
-                plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
                 Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
@@ -168,8 +166,8 @@ public class AnswerQuestionFragment extends Fragment {
                 number++;
                 selectedCount = 0;
                 study.clickReady(textKnowGet*0.01);
+                plan.newSizeQuestionOnFuture();
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
-                plan.progress();
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
                 Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
