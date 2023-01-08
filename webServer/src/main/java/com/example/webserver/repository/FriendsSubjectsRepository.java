@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public interface FriendsSubjectsRepository extends JpaRepository<FriendsSubjects,Long> {
 
-ArrayList<FriendsSubjects> findAllByUserIdAndFriendId(User user, User friend);
+    ArrayList<FriendsSubjects> findAllByUserIdAndFriendId(User user, User friend);
 
-FriendsSubjects findByUserIdAndFriendIdAndSubId(User user, User friend, Subject subject);
+    FriendsSubjects findByUserIdAndFriendIdAndSubId(User user, User friend, Subject subject);
 
-    ArrayList<FriendsSubjects> findAllByUserIdOrFriendId(User userId1,User userId2);
+    ArrayList<FriendsSubjects> findAllByUserIdOrFriendId(User userId1, User userId2);
 }

@@ -13,7 +13,6 @@ public interface FriendsRepository extends JpaRepository<Friends,Long> {
 
     ArrayList<Friends> findAllByUserId(User user);
 
-    //  Friends findByUserIdAndFriendId(User userId,User friends);
     Friends findByUserIdAndFriendId(User userId,User friendsId);
 
     ArrayList<Friends> findAllByUserIdOrFriendId(User userId1,User userId2);

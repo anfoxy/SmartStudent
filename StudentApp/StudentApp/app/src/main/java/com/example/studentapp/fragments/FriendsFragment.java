@@ -53,8 +53,6 @@ public class FriendsFragment extends Fragment {
     FriendsInAdapter.OnItemClickListenerIn itemClickListenerIn;
     FriendsIsAdapter.OnItemClickListenerIs itemClickListenerIs;
 
-  //  AccountFragmentArgs args;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -78,9 +76,11 @@ public class FriendsFragment extends Fragment {
                 planCall.enqueue(new Callback<Friends>() {
                     @Override
                     public void onResponse(Call<Friends> call, Response<Friends> response) {
-                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
-                        binding.listVop.setHasFixedSize(true);
-                        binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                        if(response.isSuccessful()) {
+                            binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.listVop.setHasFixedSize(true);
+                            binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                        }
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
@@ -98,9 +98,11 @@ public class FriendsFragment extends Fragment {
                 planCall.enqueue(new Callback<Friends>() {
                     @Override
                     public void onResponse(Call<Friends> call, Response<Friends> response) {
-                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
-                        binding.listVop.setHasFixedSize(true);
-                        binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                        if(response.isSuccessful()) {
+                            binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.listVop.setHasFixedSize(true);
+                            binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                        }
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
@@ -120,10 +122,11 @@ public class FriendsFragment extends Fragment {
                 planCall.enqueue(new Callback<Friends>() {
                     @Override
                     public void onResponse(Call<Friends> call, Response<Friends> response) {
-
-                        binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
-                        binding.listVop.setHasFixedSize(true);
-                        binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                        if(response.isSuccessful()) {
+                            binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.listVop.setHasFixedSize(true);
+                            binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
+                        }
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
@@ -209,81 +212,69 @@ public class FriendsFragment extends Fragment {
 
     private void setFriends(){
 
-    /*    binding.inFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));
-        binding.friends.setBackgroundColor(Color.parseColor("@color/osn"));
-        binding.isFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));*/
-
         Call<ArrayList<Users>> getSubs = apiInterface.friendsByUser(user.getId());
         getSubs.enqueue(new Callback<ArrayList<Users>>() {
             @Override
             public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
 
+                if(response.isSuccessful()) {
                     ArrayList<Users> friends = response.body();
-
                     binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listVop.setHasFixedSize(true);
                     binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
 
-
+                }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                System.out.println("не работает!!!");
+                System.out.println("Ошибка при выводе списка друзей ");
             }
         });
     }
 
     private void setInFriends(){
 
-/*        binding.inFriends.setBackgroundColor(Color.parseColor("@color/osn"));
-        binding.friends.setBackgroundColor(Color.parseColor("#EAEAEA"));
-        binding.isFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));*/
-
         Call<ArrayList<Users>> getSubs = apiInterface.friendsIn(user.getId());
         getSubs.enqueue(new Callback<ArrayList<Users>>() {
             @Override
             public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
-
+                if(response.isSuccessful()) {
                     ArrayList<Users> friends = response.body();
 
                     binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listVop.setHasFixedSize(true);
                     binding.listVop.setAdapter(new FriendsInAdapter(getContext(), friends, itemClickListenerIn));
 
-
+                }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                System.out.println("не работает2!!!");
+                System.out.println("Ошибка при выводе входящих ");
             }
         });
     }
 
     private void setIsFriends(){
 
-/*        binding.inFriends.setBackgroundColor(Color.parseColor("#EAEAEA"));
-        binding.friends.setBackgroundColor(Color.parseColor("#EAEAEA"));
-        binding.isFriends.setBackgroundColor(Color.parseColor("@color/osn"));*/
-
         Call<ArrayList<Users>> getSubs = apiInterface.friendsIs(user.getId());
         getSubs.enqueue(new Callback<ArrayList<Users>>() {
             @Override
             public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
-
+                if(response.isSuccessful()) {
                     ArrayList<Users> friends = response.body();
 
                     binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listVop.setHasFixedSize(true);
-                    binding.listVop.setAdapter(new FriendsIsAdapter(getContext(),friends, itemClickListenerIs));
-
+                    binding.listVop.setAdapter(new FriendsIsAdapter(getContext(), friends, itemClickListenerIs));
+                }
 
             }
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                System.out.println("не работает1!!!");
+                System.out.println("Ошибка при выводе исходящих ");
             }
         });
     }
@@ -296,7 +287,6 @@ public class FriendsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_friends, container, false);
         Paper.init(getContext());
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
-        //args = AccountFragmentArgs.fromBundle(getArguments());
         return binding.getRoot();
     }
 }
