@@ -2,7 +2,9 @@ package com.example.studentapp.fragments;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToDay;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentStatisticBinding;
 import com.example.studentapp.db.ApiInterface;
@@ -23,6 +26,7 @@ import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 
 import java.time.LocalDate;
+import java.util.GregorianCalendar;
 import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
@@ -60,6 +64,42 @@ public class StatisticFragment extends Fragment {
         long days = DAYS.between(LocalDate.now(), date);
         binding.kold.setText("Количество дней до экзамена: "+days);
 
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                calIntent.setType("vnd.android.cursor.item/event");
+                calIntent.putExtra(CalendarContract.Events.TITLE, "Подготовка по предмету "+ planToSub.getSub().getNameOfSubme()+".");
+                calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
+                calIntent.putExtra(CalendarContract.Events.DESCRIPTION,
+                        "Всего вопросов по данному предмету- "+planToSub.getSub().getSizeAllQuest()+"."+
+                                "\nГотовься, твой экзамен будет- "+planToSub.dateToString()+".");
+                GregorianCalendar calDateStart = new GregorianCalendar(LocalDate.now().getYear(), LocalDate.now().getMonthValue()-1, LocalDate.now().getDayOfMonth()-1);
+                GregorianCalendar calDateEnd;
+                Integer size=0;
+                if(planToSub.getFuturePlan().size()>0){
+                    size=planToSub.getFuturePlan().size()-1;
+                    calDateEnd= new GregorianCalendar(planToSub.getFuturePlan().get(size).getDate().getYear(),
+                            planToSub.getFuturePlan().get(size).getDate().getMonthValue()-1,
+                            planToSub.getFuturePlan().get(size).getDate().getDayOfMonth());
+                }
+                else if(planToSub.getLastPlan().size()>0){
+                    size=planToSub.getLastPlan().size()-1;
+                    calDateEnd= new GregorianCalendar(planToSub.getLastPlan().get(size).getDate().getYear(),
+                            planToSub.getLastPlan().get(size).getDate().getMonthValue()-1,
+                            planToSub.getLastPlan().get(size).getDate().getDayOfMonth());
+                }
+                else calDateEnd= new GregorianCalendar(planToSub.getDateOfExams().getYear(),
+                            planToSub.getDateOfExams().getMonthValue()-1,
+                            planToSub.getDateOfExams().getDayOfMonth());
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                        calDateStart.getTimeInMillis());
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                        calDateEnd.getTimeInMillis());
+                startActivity(calIntent);
+            }
+        });
 
       /*  Call<Subjects> getSubj = apiInterface.getSubjectById(args.getId());
         getSubj.enqueue(new Callback<Subjects>() {

@@ -151,7 +151,7 @@ public class AddPlanFragment extends Fragment {
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
                 minDate.set(Calendar.YEAR, LocalDate.now().getYear());
-                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue());
+                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue()-1);
                 minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
