@@ -111,22 +111,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="21dp"
+            android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
-
             android:weightSum="2">
+
             <View
                 android:id="@+id/inSub1"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="3dp"
-                android:layout_marginStart="25dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
                 android:background="@color/normal_view_color" />
 
             <View
                 android:id="@+id/isSub1"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="3dp"
-                android:layout_marginStart="45dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:background="@color/normal_view_color" />
         </LinearLayout>
 

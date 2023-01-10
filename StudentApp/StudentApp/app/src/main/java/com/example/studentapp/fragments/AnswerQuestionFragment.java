@@ -1,5 +1,8 @@
 package com.example.studentapp.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.fonts.SystemFonts;
 import android.media.MediaPlayer;
@@ -13,6 +16,10 @@ import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,6 +70,10 @@ public class AnswerQuestionFragment extends Fragment {
     private double textKnowGet; //процент
     OkHttpClient client = new OkHttpClient();
     okhttp3.Response response;
+    // Переменная, хранящая текущее состояние карточки (сторона с текстом1 или с текстом2)
+    private boolean isText1Visible = true;
+    // Переменная, хранящая текущее состояние анимации (запущена или нет)
+    private boolean isAnimationRunning = false;
     Study study;
     Question nowQuest;
     PlanToSub plan;
@@ -76,33 +87,19 @@ public class AnswerQuestionFragment extends Fragment {
         study=new Study(plan);
         nowQuest=study.GetNewQuestion();
         setQuestions();
-
-        //кнопка нажатия на посмотреть ответ
-        binding.lookAnswerButton.setOnClickListener(new View.OnClickListener() {
+        // Обрабатываем нажатие на карточку
+        binding.textNumber.setText(plan.getTodayLearned() + "/ "+plan.getFuturePlan().get(0).getSizeOfQuetion());
+        binding.textQuestion.setText(nowQuest.getQuestion().toString());
+        binding.textAnswer.setText(nowQuest.getAnswer().toString());
+        binding.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.lookAnswerButton.setVisibility(View.INVISIBLE);
-                binding.scrollView2.setVisibility(View.VISIBLE);
-                CountAnswerText = CountSpen();
-                if(CountAnswerText <5) { //5 предложений
-                    binding.textAnswer.setVisibility(View.VISIBLE);
-                    binding.yesAnswerButton.setVisibility(View.VISIBLE);
-                    binding.noAnswerButton.setVisibility(View.VISIBLE);
-                    binding.speakButton.setVisibility(View.VISIBLE);
-                    binding.textYesNo.setVisibility(View.VISIBLE);
-                    binding.textYesNo.setText("Проверив себя, нажмите на одну из кнопок 'Знаю' или 'Не знаю'");
-                    binding.nextBtn.setVisibility(View.INVISIBLE);
-                } else {
-                    TextSpen();
-                    binding.textAnswer.setVisibility(View.VISIBLE);
-                    binding.speakButton.setVisibility(View.VISIBLE);
-                    binding.nextBtn.setVisibility(View.VISIBLE);
-                    binding.textYesNo.setVisibility(View.VISIBLE);
-                    binding.textYesNo.setText("Нажмите на те предложения, на котрые вы вероятно ответили, перед тем, как нажать 'Посмотреть ответ'");
-                }
+                flipCard();
             }
         });
-        binding.speakButton.setOnClickListener(new View.OnClickListener() {
+        //кнопка нажатия на посмотреть ответ
+
+        binding.voiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Thread thr = new Thread(new Runnable() {
@@ -119,6 +116,8 @@ public class AnswerQuestionFragment extends Fragment {
         binding.noAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isAnimationRunning = false;
+                flipCard();
                 number++;
                 study.clickReady(0.0);
                 plan.newSizeQuestionOnFuture();
@@ -141,6 +140,8 @@ public class AnswerQuestionFragment extends Fragment {
         binding.yesAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isAnimationRunning = false;
+                flipCard();
                 number++;
                 study.clickReady(1.0);
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
@@ -162,6 +163,8 @@ public class AnswerQuestionFragment extends Fragment {
         binding.nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAnimationRunning = false;
+                flipCard();
                 // после выделения текста который мы знаем
                 number++;
                 selectedCount = 0;
@@ -186,20 +189,83 @@ public class AnswerQuestionFragment extends Fragment {
 
     }
 
+    private void flipCard() {
+        // Проверяем, не запущена ли уже анимация
+        if (isAnimationRunning) {
+            return;
+        }
+        binding.cardView.setCameraDistance(27000);
+
+        // Создаем анимацию переворота
+        ObjectAnimator animator = ObjectAnimator.ofFloat(binding.cardView, "rotationY", 0, 90);animator.setDuration(200);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                // Устанавливаем флаг, что анимация запущена
+                isAnimationRunning = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                // Когда анимация закончилась, меняем видимость текстовых полей
+                CountAnswerText = CountSpen();
+                if(isText1Visible) { // Если нажали на карточку, то на обратной стороне..
+                    if(CountAnswerText <5) { //5 предложений
+                        binding.textQuestion.setVisibility(View.GONE);
+                        binding.scrollText2.setVisibility(View.VISIBLE);
+                        binding.yesAnswerButton.setVisibility(View.VISIBLE);
+                        binding.noAnswerButton.setVisibility(View.VISIBLE);
+                        binding.voiceBtn.setVisibility(View.VISIBLE);
+                        binding.textViewInfo.setText("Проверив себя, нажмите на одну из кнопок 'Знаю' или 'Не знаю'");
+                    } else {
+                        binding.textQuestion.setVisibility(View.GONE);
+                        binding.scrollText2.setVisibility(View.VISIBLE);
+                        binding.yesAnswerButton.setVisibility(View.GONE);
+                        binding.noAnswerButton.setVisibility(View.GONE);
+                        binding.voiceBtn.setVisibility(View.VISIBLE);
+                        binding.nextBtn.setVisibility(View.VISIBLE);
+                        binding.textViewInfo.setText("Нажмите на те предложения, на котрые вы вероятно ответили, перед тем, как перевернуть карту");
+                        TextSpen();
+                    }
+                }
+                else {
+                    isAnimationRunning = false;
+                    binding.textViewInfo.setText("Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите на карту, чтобы посмотреть ответ");
+                    binding.yesAnswerButton.setVisibility(View.INVISIBLE);
+                    binding.noAnswerButton.setVisibility(View.INVISIBLE);
+                    binding.nextBtn.setVisibility(View.GONE);
+                    binding.voiceBtn.setVisibility(View.INVISIBLE);
+                    binding.scrollText2.setVisibility(View.GONE);
+                    binding.textQuestion.setVisibility(View.VISIBLE);
+                    binding.textNumber.setText(plan.getTodayLearned() + "/ "+plan.getFuturePlan().get(0).getSizeOfQuetion());
+                    binding.textQuestion.setText(nowQuest.getQuestion().toString());
+                    binding.textAnswer.setText(nowQuest.getAnswer().toString());
+                }
+
+// Меняем текущее состояние карточки
+                isText1Visible = !isText1Visible;
+// Запускаем анимацию обратного переворота
+                ObjectAnimator reverseAnimator = ObjectAnimator.ofFloat(binding.cardView, "rotationY", 270, 360);
+                reverseAnimator.setDuration(200);
+                reverseAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+// Когда анимация закончилась, сбрасываем флаг
+//                        isAnimationRunning = false;
+                    }
+                });
+                reverseAnimator.start();
+            }
+        });
+        animator.start();
+    }
 
     private void setQuestions() {
         if (!study.isEndOfPlan()){ //проверка на конец тестирования
-            binding.textYesNo.setText("Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите 'Посмотреть ответ' и сделайте вердикт.");
-            binding.lookAnswerButton.setVisibility(View.VISIBLE);
-            binding.textAnswer.setVisibility(View.INVISIBLE);
-            binding.yesAnswerButton.setVisibility(View.INVISIBLE);
-            binding.noAnswerButton.setVisibility(View.INVISIBLE);
-            binding.speakButton.setVisibility(View.INVISIBLE);
-            binding.nextBtn.setVisibility(View.INVISIBLE);
-            binding.scrollView2.setVisibility(View.INVISIBLE);
-            binding.textNumber.setText("Вопрос "+number);
-            binding.textQuestion.setText(nowQuest.getQuestion().toString());
-            binding.textAnswer.setText(nowQuest.getAnswer().toString());
+            if(!isText1Visible) flipCard();
         } else {
             Toast.makeText(getContext(), "Вопросы по данному предмету закончились", Toast.LENGTH_SHORT).show();
             @NonNull NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
@@ -207,21 +273,6 @@ public class AnswerQuestionFragment extends Fragment {
         }
     }
 
-//    private void setData(){
-//        Call<Subjects> subjectsCall = apiInterface.getSubjectById(args.getId());
-//        subjectsCall.enqueue(new Callback<Subjects>() {
-//            @Override
-//            public void onResponse(Call<Subjects> call, Response<Subjects> response) {
-//                questions = response.body().getQuestions();
-//                setQuestions();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Subjects> call, Throwable t) {
-//                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
     private void TextSpen() {
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
