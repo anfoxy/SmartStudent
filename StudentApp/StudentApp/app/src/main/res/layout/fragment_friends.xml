@@ -26,6 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:text="Друзья"
                 android:gravity="center"
                 android:textSize="18sp" />
@@ -36,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:text="Входящие"
                 android:textSize="18sp"/>
 
@@ -45,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:text="Исходящие"
                 android:textSize="18sp"/>
 
@@ -112,6 +115,7 @@
             android:paddingLeft="10dp"
             android:layout_weight="1"
             android:paddingRight="10dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:hint="Отправить запрос дружбы"
             android:textColor="@color/textcolor" />
         <Button
@@ -119,6 +123,7 @@
             android:layout_weight="1"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:text="Отправить"
             android:textColor="@color/textcolor" />
     </LinearLayout>

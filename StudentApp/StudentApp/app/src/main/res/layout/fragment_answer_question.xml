@@ -67,7 +67,7 @@
                     android:fontFamily="@font/sourcesanspro_semibold"
                     android:gravity="center"
                     android:padding="20dp"
-                    android:text="Тут должен был отображаться вопрос, но я его не придумал - поэтому что имеем, то имеем... Настя лиса, Диана кот. Спасибо."
+                    android:text=""
                     android:textSize="20sp"
                     android:visibility="visible" />
 
@@ -110,7 +110,7 @@
                     android:layout_marginVertical="10dp"
                     android:textColor="#696FD1"
                     android:paddingHorizontal="20dp"
-                    android:text="Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите 'Посмотреть ответ' и сделайте вердикт."
+                    android:text="Пожалуйста, ознакомьтесь с вопросом темы, подумайте, как на него необходимо ответить, нажмите на карту, чтобы посмотреть ответ"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -146,6 +146,7 @@
                         android:textSize="14sp"
                         app:cornerRadius="10dp"
                         android:visibility="invisible"
+
                         android:layout_marginHorizontal="10dp"
                         app:backgroundTint="#FFFFFF"
                         android:layout_weight="1"
@@ -157,15 +158,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        app:cornerRadius="10dp"
                         android:layout_marginHorizontal="20dp"
-                        android:backgroundTint="#429C47"
+                        android:layout_weight="1"
                         android:visibility="gone"
-                        android:textColor="#FFFFFF"
-                        android:fontFamily="@font/sourcesanspro_semibold"
+                        app:backgroundTint="#FFFFFF"
+                        app:strokeColor="#808080"
+                        app:strokeWidth="1dp"
                         android:text="Применить выделение и продолжить"
-                        android:textSize="15sp"
-                        app:cornerRadius="5dp" />
+ />
                 </LinearLayout>
 
             </LinearLayout>

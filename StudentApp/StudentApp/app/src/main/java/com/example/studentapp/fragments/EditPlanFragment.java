@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
-import com.example.studentapp.adapters.SubjectAddRecycler;
+import com.example.studentapp.adapters.QuestionAddRecycler;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.al.Question;
 import com.example.studentapp.databinding.FragmentEditPlanBinding;
@@ -63,7 +63,7 @@ public class EditPlanFragment extends Fragment {
     FragmentEditPlanBinding binding;
     ApiInterface apiInterface;
     EditPlanFragmentArgs args;
-    SubjectAddRecycler.OnItemClickListener itemClick;
+    QuestionAddRecycler.OnItemClickListener itemClick;
     final Calendar myCalendar = Calendar.getInstance();
     PlanToSub subject;
     LocalDate localDate;
@@ -85,7 +85,7 @@ public class EditPlanFragment extends Fragment {
 
         if(localDate.isBefore(LocalDate.now())) binding.editPlan.setVisibility(View.INVISIBLE);
 
-        itemClick = new SubjectAddRecycler.OnItemClickListener() {
+        itemClick = new QuestionAddRecycler.OnItemClickListener() {
             @Override
             public void onClickQuestion(Question ques, int position) {
                 showItemDialog(view, ques,position);
@@ -177,7 +177,7 @@ public class EditPlanFragment extends Fragment {
         binding.editTextDate.setText(subject.dateToString().split("T")[0]);
         binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listVop.setHasFixedSize(true);
-        binding.listVop.setAdapter(new SubjectAddRecycler(getContext(), subject.getSub().getQuestion(), itemClick));
+        binding.listVop.setAdapter(new QuestionAddRecycler(getContext(), subject.getSub().getQuestion(), itemClick));
 
     }
 
