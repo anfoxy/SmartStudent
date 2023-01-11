@@ -30,6 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
+                    android:fontFamily="@font/sourcesanspro_semibold"
                     android:text="Название плана:"
                     android:textColor="@color/textcolor"
                     android:textSize="19sp" />
@@ -43,8 +44,7 @@
                     android:gravity="center"
                     android:paddingRight="10dp"
                     android:textColor="@color/textcolor"
-                    android:textCursorDrawable="@null"
-                    android:textStyle="bold" />
+                    android:textCursorDrawable="@null" />
             </LinearLayout>
 
             <LinearLayout
@@ -60,6 +60,7 @@
                     android:textColor="@color/textcolor"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
+                    android:fontFamily="@font/sourcesanspro_semibold"
                     android:textSize="19dp"
                     android:text="Дата экзамена:" />
 
@@ -73,8 +74,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/textcolor"
-                    android:textIsSelectable="true"
-                    android:textStyle="bold" />
+                    android:textIsSelectable="true" />
             </LinearLayout>
         </LinearLayout>
 

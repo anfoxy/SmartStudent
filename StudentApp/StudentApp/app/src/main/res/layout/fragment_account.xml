@@ -26,20 +26,22 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="84dp"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center|center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_baseline_account_circle_24" />
+                    android:src="@drawable/user" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:layout_marginTop="5dp"
                     android:text="dsdsg"
+                    android:fontFamily="@font/sourcesanspro_semibold"
                     android:textColor="@color/textcolor"
-                    android:textSize="30dp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -60,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Профиль"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:gravity="center"
                 android:textSize="18sp" />
 
@@ -68,6 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:gravity="center"
                 android:text="Достижения"
                 android:textSize="18sp"/>
@@ -102,8 +106,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="606dp"
-            android:layout_marginBottom="50dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <!--<com.google.android.material.button.MaterialButton
@@ -129,6 +132,7 @@
                 android:layout_gravity="center"
                 android:backgroundTint="#4E61C8"
                 android:text="Изменить пароль"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:textColor="@color/textbutton"
                 android:textSize="15sp"
                 app:cornerRadius="5dp"
@@ -139,9 +143,9 @@
             <LinearLayout
                 android:id="@+id/lay_profile"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:elevation="8dp"
+                android:elevation="50dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="16dp">
@@ -154,24 +158,27 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:src="@drawable/img_4" />
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/email" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="EMAIL"
+                        android:gravity="center"
+                        android:text="Электронная \nпочта"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sourcesanspro_semibold"
                         android:textColor="#000000"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/textView10"
+                        android:id="@+id/textView1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="a.kazhaeva77@mail.ru"
-                        android:textSize="10dp" />
+                        android:fontFamily="@font/sourcesanspro_semibold"
+                        android:text="aaa@mail.ru" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -182,16 +189,18 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:src="@drawable/img_5" />
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/dateexams" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Ближайший экзамен"
+                        android:layout_marginTop="5dp"
                         android:textColor="#000000"
+                        android:fontFamily="@font/sourcesanspro_semibold"
                         android:textSize="14sp" />
 
                     <TextView
@@ -199,6 +208,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:fontFamily="@font/sourcesanspro_semibold"
                         android:text="31.12.2022" />
                 </LinearLayout>
 
@@ -210,15 +220,17 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:src="@drawable/img_6" />
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/sizepredm" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_marginTop="5dp"
                         android:text="Количество предметов"
+                        android:fontFamily="@font/sourcesanspro_semibold"
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
@@ -226,6 +238,7 @@
                         android:id="@+id/textView12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/sourcesanspro_semibold"
                         android:gravity="center"
                         android:text="1" />
                 </LinearLayout>

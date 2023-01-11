@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:paddingStart="15dp"
                 android:text="Личный кабинет"
                 android:textSize="24sp"
@@ -60,6 +61,7 @@
                 android:paddingStart="15dp"
                 android:text="Друзья"
                 android:textSize="24sp"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -92,6 +94,7 @@
                 android:paddingStart="15dp"
                 android:text="О приложении"
                 android:textSize="24sp"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -124,6 +127,7 @@
                 android:paddingStart="15dp"
                 android:text="Связаться с нами"
                 android:textSize="24sp"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -158,6 +162,7 @@
                 android:text="Выход из аккаунта"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/sourcesanspro_semibold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

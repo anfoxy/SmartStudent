@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/password_auth"
             android:hint="Email"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:inputType="textEmailAddress"
             android:layout_margin="20dp" />
 
@@ -29,6 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:hint="Пароль"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:layout_margin="20dp"
             android:maxLength="25"
             android:inputType="textPassword"/>
@@ -40,6 +42,7 @@
             android:layout_marginHorizontal="30dp"
             android:text="Авторизация"
             android:textColor="@color/white"
+            android:fontFamily="@font/sourcesanspro_semibold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/password_auth"
@@ -51,6 +54,7 @@
             android:layout_height="wrap_content"
             android:text="Авторизация"
             android:textSize="20dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
             app:layout_constraintBottom_toTopOf="@+id/login_auth"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +67,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Регистрация"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:textColor="@color/gray_600"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"

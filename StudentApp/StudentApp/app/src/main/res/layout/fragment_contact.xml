@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
+        android:fontFamily="@font/sourcesanspro_semibold"
         android:paddingBottom="20dp"
         android:text="Данное приложение создавали студенты ННГУ им. Лобачевского факультета ИТММ, а именно: \nКажаева Анастасия, Пичугин Илья и Лукашук Диана.
 \nВы можете написать нам на почту: \na.kazhaeva7@mail.ru"
