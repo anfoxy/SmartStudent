@@ -38,7 +38,7 @@
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:textSize="10sp"
-                android:backgroundTint="#4E61C8" />
+                android:backgroundTint="#6A7AD5" />
 
         </LinearLayout>
         <ImageView
@@ -65,7 +65,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
             android:layout_height="54dp"
-            android:backgroundTint="#4E61C8"
+            android:backgroundTint="#6A7AD5"
             android:text="Сохранить план"
             android:textColor="@color/textbutton"
             android:textSize="15sp"

@@ -19,5 +19,5 @@
     <color name="normal_text_color">#454545</color>
     <color name="selected_text_color">#000000</color>
     <color name="normal_view_color">#AFAFAF</color>
-    <color name="selected_view_color">#5C75FF</color>
+    <color name="selected_view_color">#6A7AD5</color>
 </resources>

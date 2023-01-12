@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Зарегистрироваться"
             android:textColor="@color/white"
+            android:backgroundTint="#6A7AD5"
             android:fontFamily="@font/sourcesanspro_semibold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

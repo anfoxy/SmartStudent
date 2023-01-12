@@ -86,7 +86,7 @@
             android:layout_height="54dp"
             android:layout_marginTop="5dp"
             android:layout_marginHorizontal="10dp"
-            android:backgroundTint="#4E61C8"
+            android:backgroundTint="#6A7AD5"
             android:text="Добавить вопрос"
             android:textColor="@color/textbutton"
             android:textSize="15sp"
@@ -98,7 +98,7 @@
         <ImageView
             android:id="@+id/imageView32"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:scaleType="centerCrop"
             app:srcCompat="@android:drawable/bottom_bar" />
 
@@ -120,7 +120,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="10dp"
                 android:layout_height="54dp"
-                android:backgroundTint="#4E61C8"
+                android:backgroundTint="#6A7AD5"
                 android:text="Изменить даты подготовки"
                 android:textColor="@color/textbutton"
                 android:textSize="15sp"
@@ -135,7 +135,7 @@
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
-                android:backgroundTint="#4E61C8"
+                android:backgroundTint="#6A7AD5"
                 android:text="Сохранить"
                 android:textColor="@color/textbutton"
                 android:textSize="15sp"
@@ -144,25 +144,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/del"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="54dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#E65258"
+                android:text="Удалить предмет"
+                android:textColor="@color/textbutton"
+                android:textSize="15sp"
+                app:cornerRadius="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
-                <ImageButton
-                    android:id="@+id/del"
-                    android:layout_width="0dp"
-                    android:layout_gravity="center"
-                    android:layout_height="45dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="5dp"
-                    android:background="#FF5722"
-                    app:srcCompat="@drawable/ic_delete"
-                    tools:ignore="VectorDrawableCompat" />
-
-
-            </LinearLayout>
 
         </LinearLayout>
 
