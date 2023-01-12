@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_login"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -27,7 +27,7 @@
                 android:fontFamily="@font/sourcesanspro_semibold"
                 android:paddingStart="15dp"
                 android:text="Личный кабинет"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +49,7 @@
             android:id="@+id/constraint_friend"
 
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -60,7 +60,7 @@
                 android:layout_marginBottom="20dp"
                 android:paddingStart="15dp"
                 android:text="Друзья"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:fontFamily="@font/sourcesanspro_semibold"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -82,7 +82,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_about"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -93,7 +93,7 @@
                 android:layout_marginBottom="20dp"
                 android:paddingStart="15dp"
                 android:text="О приложении"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:fontFamily="@font/sourcesanspro_semibold"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -115,7 +115,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_contact"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -126,7 +126,7 @@
                 android:layout_marginBottom="20dp"
                 android:paddingStart="15dp"
                 android:text="Связаться с нами"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:fontFamily="@font/sourcesanspro_semibold"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -148,7 +148,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_out"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
 
             android:layout_marginVertical="5dp"
             android:background="#FAEBEB">
@@ -160,7 +160,7 @@
                 android:layout_marginBottom="20dp"
                 android:paddingStart="15dp"
                 android:text="Выход из аккаунта"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/sourcesanspro_semibold"
                 app:layout_constraintBottom_toBottomOf="parent"

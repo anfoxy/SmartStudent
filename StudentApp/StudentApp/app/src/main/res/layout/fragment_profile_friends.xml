@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/sourcesanspro_semibold"
-            android:backgroundTint="#4E61C8"
+            android:backgroundTint="#6A7AD5"
             android:text="Выдать доступ"
             android:textColor="@color/textbutton"
             android:textSize="15sp"
