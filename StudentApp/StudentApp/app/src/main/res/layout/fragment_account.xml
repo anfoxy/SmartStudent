@@ -163,7 +163,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/textView1"
+                        android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -194,7 +194,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/next_exam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -225,7 +225,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/count_exam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sourcesanspro_semibold"

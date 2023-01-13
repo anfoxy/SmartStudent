@@ -17,11 +17,18 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentAccountBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Users;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -34,15 +41,26 @@ public class AccountFragment extends Fragment {
     FragmentAccountBinding binding;
     ApiInterface apiInterface;
     Users user;
-  //  AccountFragmentArgs args;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         user = Users.getUser();
+        ArrayList<PlanToSub> subjs = MainActivity.myDBManager.getFromDB();
         binding.section1.setTextColor(getResources().getColor(R.color.selected_text_color));
         binding.underline.setBackgroundColor(Color.BLUE);
+
         binding.name.setText(user.getLogin());
+        binding.email.setText(user.getEmail());
+        binding.countExam.setText(String.valueOf(subjs.size()));
+        LocalDate localDate = subjs.stream()
+                .filter(Objects::nonNull)
+                .map(PlanToSub::getDateOfExams)
+                .min(LocalDate::compareTo)
+                .orElse(null);
+        if (localDate == null) binding.nextExam.setText("-");
+        else binding.nextExam.setText(localDate.toString());
+
         binding.layProfile.setVisibility(View.VISIBLE);
         binding.section1.setOnClickListener(new View.OnClickListener() {
             @Override

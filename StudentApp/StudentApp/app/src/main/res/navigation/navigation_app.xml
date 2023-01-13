@@ -14,9 +14,7 @@
             android:id="@+id/action_calendarFragment_to_answerQuestionFragment"
             app:destination="@id/answerQuestionFragment"
            />
-        <action
-            android:id="@+id/action_calendarFragment_to_addPlanFragment"
-            app:destination="@id/addPlanFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -196,7 +194,9 @@
         tools:layout="@layout/fragment_edit_plan">
         <action
             android:id="@+id/action_editPlanFragment_to_listFragment"
-            app:destination="@id/listFragment" />
+            app:destination="@id/listFragment"
+            app:popUpTo="@+id/listFragment"
+            app:popUpToInclusive="true"/>
         <argument
             android:name="id"
             app:argType="string" />
