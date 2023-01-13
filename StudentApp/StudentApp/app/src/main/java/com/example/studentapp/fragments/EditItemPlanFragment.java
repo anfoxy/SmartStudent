@@ -61,30 +61,22 @@ public class EditItemPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                boolean p [] = adapter.getPlanArray();
+                boolean p[] = adapter.getPlanArray();
                 ArrayList<PlanToDay> plans = new ArrayList<>();
 
 
-                for (int i=0;i<subject.getFuturePlan().size();i++)
+                for (int i = 0; i < subject.getFuturePlan().size(); i++)
                     if (p[i]) plans.add(subject.getFuturePlan().get(i));
+                if (plans.isEmpty()) {
+                    Toast.makeText(getContext(), "Укажите план подготовки", Toast.LENGTH_SHORT).show();
+                } else {
+                    subject.setFuture(plans);
+                    MainActivity.myDBManager.updatePlan(subject);
+                    Users.getUser().currentUpdateDbTime();
 
-                subject.setFuture(plans);
-                MainActivity.myDBManager.updatePlan(subject);
-                Users.getUser().currentUpdateDbTime();
-
-
-              /*  Call<ArrayList<Plan>> updatePlans = apiInterface.addPlans(args.getId(),plans);
-                updatePlans.enqueue(new Callback<ArrayList<Plan>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
-                    }
-                    @Override
-                    public void onFailure(Call<ArrayList<Plan>> call, Throwable t) {
-                    }
-                });*/
-                NavDirections action = EditItemPlanFragmentDirections.actionEditItemPlanFragmentToEditPlanFragment(args.getId());
-                Navigation.findNavController(getView()).navigate(action);
-
+                    NavDirections action = EditItemPlanFragmentDirections.actionEditItemPlanFragmentToEditPlanFragment(args.getId());
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
         });
 

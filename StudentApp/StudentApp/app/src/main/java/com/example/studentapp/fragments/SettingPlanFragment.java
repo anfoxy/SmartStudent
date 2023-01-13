@@ -53,27 +53,21 @@ public class SettingPlanFragment extends Fragment {
             public void onClick(View view) {
 
                 boolean p [] = adapter.getPlanArray();
-                ArrayList<PlanToDay> plans = new ArrayList<>();
 
+                    ArrayList<PlanToDay> plans = new ArrayList<>();
 
-                for (int i=0;i<subj.getFuturePlan().size();i++)
-                    if (p[i]) plans.add(subj.getFuturePlan().get(i));
+                    for (int i = 0; i < subj.getFuturePlan().size(); i++)
+                        if (p[i]) plans.add(subj.getFuturePlan().get(i));
+                if(plans.isEmpty()) {
+                    Toast.makeText(getContext(), "Укажите план подготовки", Toast.LENGTH_SHORT).show();
+                } else {
+                    subj.setFuture(plans);
+                    MainActivity.myDBManager.updatePlan(subj);
+                    Users.getUser().currentUpdateDbTime();
 
-                subj.setFuture(plans);
-                MainActivity.myDBManager.updatePlan(subj);
-                Users.getUser().currentUpdateDbTime();
-               /* Call<ArrayList<Plan>> updatePlan = apiInterface.addPlans(args.getId(),plans);
-                updatePlan.enqueue(new Callback<ArrayList<Plan>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Plan>> call, Response<ArrayList<Plan>> response) {
-                    }
-                    @Override
-                    public void onFailure(Call<ArrayList<Plan>> call, Throwable t) {
-                    }
-                });*/
-                NavDirections action = SettingPlanFragmentDirections.actionSettingPlanFragmentToListFragment2();
-                Navigation.findNavController(getView()).navigate(action);
-
+                    NavDirections action = SettingPlanFragmentDirections.actionSettingPlanFragmentToListFragment2();
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
         });
 

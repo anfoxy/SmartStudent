@@ -182,22 +182,26 @@ public class EditPlanFragment extends Fragment {
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             save();
-             Users.getUser().currentUpdateDbTime();
-             NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
-             Navigation.findNavController(getView()).navigate(action);
+                if (subject.getSub().getQuestion().isEmpty()) {
+                    Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
+                } else if(binding.Text1.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
+                } else {
+                    save();
+                    Users.getUser().currentUpdateDbTime();
+                    NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
         });
     }
 
     private void save(){
-
-        subject.setDateOfExams(localDate);
-        MainActivity.myDBManager.updateNameSubAndDateExams(subject,binding.Text1.getText().toString());
-        subject.getSub().setNameOfSub(binding.Text1.getText().toString());
-        MainActivity.myDBManager.updateQuestionsToSubject(subject);
-        MainActivity.myDBManager.updatePlan(subject);
-
+            subject.setDateOfExams(localDate);
+            MainActivity.myDBManager.updateNameSubAndDateExams(subject, binding.Text1.getText().toString());
+            subject.getSub().setNameOfSub(binding.Text1.getText().toString());
+            MainActivity.myDBManager.updateQuestionsToSubject(subject);
+            MainActivity.myDBManager.updatePlan(subject);
     }
     private void updateLabel(){
         String myFormat="yyyy-MM-dd";
