@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+   /*     AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.calendarFragment, R.id.listFragment, R.id.anotherFragment)
-                .build();
+                .build();*/
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.bottomNavMenu, navController);
     }

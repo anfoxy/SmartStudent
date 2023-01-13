@@ -13,14 +13,10 @@
         <action
             android:id="@+id/action_calendarFragment_to_answerQuestionFragment"
             app:destination="@id/answerQuestionFragment"
-            app:popUpTo="@+id/calendarFragment"
-            app:popUpToInclusive="true"
            />
         <action
             android:id="@+id/action_calendarFragment_to_addPlanFragment"
-            app:destination="@id/addPlanFragment"
-            app:popUpTo="@+id/calendarFragment"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/addPlanFragment" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -30,13 +26,10 @@
         <action
             android:id="@+id/action_listFragment_to_addPlanFragment"
             app:destination="@id/addPlanFragment"
-            app:popUpTo="@+id/listFragment"
-            app:popUpToInclusive="false" />
+           />
         <action
             android:id="@+id/action_listFragment_to_statisticFragment"
-            app:destination="@id/statisticFragment"
-            app:popUpTo="@+id/listFragment"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/statisticFragment" />
     </fragment>
     <fragment
         android:id="@+id/anotherFragment"
@@ -50,8 +43,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="true"/>
+           />
         <action
             android:id="@+id/action_anotherFragment_to_contactFragment"
             app:destination="@id/contactFragment"
@@ -59,8 +51,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="true"/>
+           />
         <action
             android:id="@+id/action_anotherFragment_to_accountFragment"
             app:destination="@id/accountFragment"
@@ -68,8 +59,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="true"/>
+          />
         <action
             android:id="@+id/action_anotherFragment_to_friendsFragment"
             app:destination="@id/friendsFragment"
@@ -77,8 +67,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="true"/>
+         />
     </fragment>
 
     <fragment
@@ -86,11 +75,7 @@
         android:name="com.example.studentapp.fragments.AboutAppFragment"
         android:label="@string/about_app"
         tools:layout="@layout/fragment_about_app"/>
-    <fragment
-        android:id="@+id/settingFragment"
-        android:name="com.example.studentapp.fragments.SettingFragment"
-        android:label="@string/action_settings"
-        tools:layout="@layout/fragment_setting" />
+
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.studentapp.fragments.AccountFragment"
@@ -105,8 +90,7 @@
         <action
             android:id="@+id/action_friendsFragment_to_friendsProfileFragment"
             app:destination="@id/friendsProfileFragment"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="false" />
+           />
     </fragment>
     <fragment
         android:id="@+id/friendsProfileFragment"
@@ -119,13 +103,11 @@
         <action
             android:id="@+id/action_friendsProfileFragment_to_friendsFragment"
             app:destination="@id/friendsFragment"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="false" />
+           />
         <action
             android:id="@+id/action_friendsProfileFragment_to_addSubjectsFriendFragment"
             app:destination="@id/addSubjectFriendFragment"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="false" />
+            />
     </fragment>
     <fragment
         android:id="@+id/addSubjectFriendFragment"
@@ -138,8 +120,7 @@
         <action
             android:id="@+id/action_addSubjectFriendFragment_to_friendsProfileFragment"
             app:destination="@id/friendsProfileFragment"
-            app:popUpTo="@+id/anotherFragment"
-            app:popUpToInclusive="false" />
+            />
 
     </fragment>
 
@@ -158,8 +139,7 @@
         <action
         android:id="@+id/action_answerQuestionFragment_to_calendarFragment"
         app:destination="@id/calendarFragment"
-            app:popUpTo="@+id/calendarFragment"
-            app:popUpToInclusive="false" />
+           />
         <argument
             android:name="id"
             app:argType="string" />
@@ -173,8 +153,7 @@
     <action
         android:id="@+id/action_statisticFragment_to_editPlanFragment"
         app:destination="@id/editPlanFragment"
-        app:popUpTo="@+id/fragment_list"
-        app:popUpToInclusive="false" />
+       />
     <argument
         android:name="id"
         app:argType="string" />
@@ -188,8 +167,7 @@
         <action
             android:id="@+id/action_addPlanFragment_to_settingPlanFragment2"
             app:destination="@id/settingPlanFragment"
-            app:popUpTo="@+id/fragment_list"
-            app:popUpToInclusive="false"/>
+         />
     </fragment>
     <fragment
         android:id="@+id/settingPlanFragment"
@@ -202,8 +180,7 @@
         <action
             android:id="@+id/action_settingPlanFragment_to_listFragment2"
             app:destination="@id/listFragment"
-            app:popUpTo="@+id/fragment_list"
-            app:popUpToInclusive="false"/>
+           />
     </fragment>
 
     <fragment
@@ -219,24 +196,19 @@
             app:argType="string" />
         <action
             android:id="@+id/action_editPlanFragment_to_editItemPlanFragment2"
-            app:destination="@id/editItemPlanFragment"
-            app:popUpTo="@+id/fragment_list"
-            app:popUpToInclusive="false"/>
+            app:destination="@id/editItemPlanFragment" />
     </fragment>
     <fragment
         android:id="@+id/editItemPlanFragment"
         android:name="com.example.studentapp.fragments.EditItemPlanFragment"
         android:label="Изменение подготовки"
-        tools:layout="@layout/fragment_edit_item_plan"
-        >
+        tools:layout="@layout/fragment_edit_item_plan">
         <argument
             android:name="id"
             app:argType="string" />
         <action
             android:id="@+id/action_editItemPlanFragment_to_editPlanFragment"
-            app:destination="@id/editPlanFragment"
-            app:popUpTo="@+id/fragment_list"
-            app:popUpToInclusive="false"/>
+            app:destination="@id/editPlanFragment" />
     </fragment>
 
 </navigation>
