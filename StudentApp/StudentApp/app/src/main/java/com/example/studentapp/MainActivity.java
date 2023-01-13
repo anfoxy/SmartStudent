@@ -43,15 +43,15 @@ public class MainActivity extends AppCompatActivity {
 /*        myDBManager = new MyDBManager(this);
         myDBManager.openDB();*/
 
-        updateDBTime();
-        ArrayList <PlanToSub> pl=myDBManager.getFromDB();
+
+       /* ArrayList <PlanToSub> pl=myDBManager.getFromDB();
         for(PlanToSub p : pl) {
             p.nextDay();
             MainActivity.myDBManager.updatePlan(p);
             MainActivity.myDBManager.updateQuestionsToSubject(p);
             MainActivity.myDBManager.updateSubTodayLearned(p);
             Users.getUser().currentUpdateDbTime();
-        }
+        }*/
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -80,16 +80,32 @@ public class MainActivity extends AppCompatActivity {
                     for (PlanToSub pl: getAllPlanToSub(response.body())) {
                         MainActivity.myDBManager.setFromDB(pl);
                     }
+                    ArrayList <PlanToSub> pl=myDBManager.getFromDB();
+                    for(PlanToSub p : pl) {
+                        p.nextDay();
+                        MainActivity.myDBManager.updatePlan(p);
+                        MainActivity.myDBManager.updateQuestionsToSubject(p);
+                        MainActivity.myDBManager.updateSubTodayLearned(p);
+                        Users.getUser().currentUpdateDbTime();
+                    }
                 }
             }
             @Override
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
+                ArrayList <PlanToSub> pl=myDBManager.getFromDB();
+                for(PlanToSub p : pl) {
+                    p.nextDay();
+                    MainActivity.myDBManager.updatePlan(p);
+                    MainActivity.myDBManager.updateQuestionsToSubject(p);
+                    MainActivity.myDBManager.updateSubTodayLearned(p);
+                    Users.getUser().currentUpdateDbTime();
+                }
 
             }
         });
     }
 
-    private static ArrayList<Subjects> getAllSubjects() {
+    public static ArrayList<Subjects> getAllSubjects() {
 
         ArrayList<PlanToSub> pl = MainActivity.myDBManager.getFromDB();
         ArrayList<Subjects> res = new ArrayList<>();
@@ -104,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return  res;
     }
-    private static ArrayList<PlanToSub> getAllPlanToSub(ArrayList<Subjects> pl) {
+    public static ArrayList<PlanToSub> getAllPlanToSub(ArrayList<Subjects> pl) {
         System.out.println(pl.toString());
         ArrayList<PlanToSub> res = new ArrayList<>();
         for(Subjects p : pl){

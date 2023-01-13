@@ -1,7 +1,10 @@
 package com.example.studentapp.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,6 +61,10 @@ public class FriendsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         user = Users.getUser();
 
+        if(isNetworkWorking()) {
+            binding.inter.setVisibility(View.GONE);
+            setFriends();
+        }
         itemClickListener =new FriendsAdapter.OnItemClickListener() {
             @Override
             public void onClickFriends(Users friends, int position) {
@@ -84,7 +91,7 @@ public class FriendsFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
-                        Log.d("not ok", t.getMessage());
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -106,7 +113,7 @@ public class FriendsFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
-                        Log.d("not ok", t.getMessage());
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -130,15 +137,11 @@ public class FriendsFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
-                        Log.d("not ok", t.getMessage());
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         };
-
-
-
-        setFriends();
 
         binding.sendFriends.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,8 +210,20 @@ public class FriendsFragment extends Fragment {
                 setInFriends();
             }
         });
-    }
 
+    }
+    private boolean isNetworkWorking(){
+        try {
+            ConnectivityManager manager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = null;
+            if (manager != null){
+                networkInfo = manager.getActiveNetworkInfo();
+            }
+            return networkInfo != null && networkInfo.isConnected();
+        }catch (NullPointerException ex){
+            return false;
+        }
+    }
 
     private void setFriends(){
 
@@ -222,13 +237,11 @@ public class FriendsFragment extends Fragment {
                     binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.listVop.setHasFixedSize(true);
                     binding.listVop.setAdapter(new FriendsAdapter(getContext(), friends, itemClickListener));
-
                 }
             }
-
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                System.out.println("Ошибка при выводе списка друзей ");
+                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -251,7 +264,7 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                System.out.println("Ошибка при выводе входящих ");
+                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -274,7 +287,7 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                System.out.println("Ошибка при выводе исходящих ");
+                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }

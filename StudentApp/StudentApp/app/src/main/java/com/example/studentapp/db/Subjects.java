@@ -62,7 +62,7 @@ public class Subjects {
         ArrayList<Question> question= new ArrayList<>();
         for(Questions q : getQuestions()){
             //LocalDate date_local1 = getLocalDate(q.getDate());
-            question.add(new Question(q.getQuestion(), q.getAnswer(),  LocalDate.now(), 0, 0.0));
+            question.add(new Question(q.getQuestion(), q.getAnswer(),  LocalDate.now(), q.getSizeOfView(), q.getPercentKnow()));
         }
         return question;
     }

@@ -53,7 +53,10 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainActivity.updateDBTime();
+
+        if(isNetworkWorking()){
+            updateDB();
+        }
         localDate = LocalDate.now();
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
@@ -74,6 +77,27 @@ public class CalendarFragment extends Fragment {
                 myCalendar.set(Calendar.DAY_OF_MONTH,day);
                 localDate =  myCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 getSubjs();
+            }
+        });
+    }
+
+    private void updateDB(){
+        ApiInterface apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
+        Call<ArrayList<Subjects>> update = apiInterface.update(MainActivity.getAllSubjects());
+        update.enqueue(new Callback<ArrayList<Subjects>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
+                Toast.makeText(getContext(), "Есть подключение к серверу", Toast.LENGTH_SHORT).show();
+                if(response.body() != null) {
+                    MainActivity.myDBManager.deleteAllSub();
+                    for (PlanToSub pl: MainActivity.getAllPlanToSub(response.body())) {
+                        MainActivity.myDBManager.setFromDB(pl);
+                        getSubjs();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
             }
         });
     }

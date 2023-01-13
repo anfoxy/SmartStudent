@@ -4,9 +4,11 @@ import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.mapper.CustomerMapper;
 import com.example.webserver.model.*;
 import com.example.webserver.repository.FriendsSubjectsRepository;
+import com.example.webserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class FriendSubjectsService {
     FriendsSubjectsRepository friendsSubjectsRepository;
 
     @Autowired
-    UserService userService;
+    UserRepository userRepository;
 
     @Autowired
     SubjectService subjectService;
@@ -125,11 +127,9 @@ public class FriendSubjectsService {
 
     public ArrayList<Subject>findAllFriendsSubjectsNotTablByIdFriend (Long id, User user) throws ResourceNotFoundException {
 
-        User friend = userService.findById(id);
+        User friend = userRepository.findById(id).orElse(null);
         ArrayList<FriendsSubjects> friendsSubjects = friendsSubjectsRepository.findAllByUserIdAndFriendId(user,friend);
-
         ArrayList<Subject> subjectArrayList = subjectService.findAllByUserId(user);
-
         subjectArrayList.removeIf(subject -> {
             for (FriendsSubjects friendsSub: friendsSubjects) {
                if (subject.equals(friendsSub.getSubId())) return true;
@@ -150,10 +150,11 @@ public class FriendSubjectsService {
         FriendsSubjects friends = findById(id);
         friendsSubjectsRepository.delete(friends);
     }
-
-   /* public void deleteAll(User user) throws ResourceNotFoundException {
-        friendsSubjectsRepository.deleteAll(friendsSubjectsRepository.findAllByUserIdOrFriendId(user, user));
-    }*/
+    @Transactional
+    public void deleteAllBySubId(Subject subject) throws ResourceNotFoundException {
+        if (!friendsSubjectsRepository.findAllBySubId(subject).isEmpty())
+            friendsSubjectsRepository.deleteAllBySubId(subject);
+    }
     public FriendsSubjects save(FriendsSubjects friends){
         return friendsSubjectsRepository.save(friends);
     }

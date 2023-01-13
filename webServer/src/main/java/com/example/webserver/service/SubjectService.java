@@ -74,7 +74,7 @@ public class SubjectService {
 
         return count;
     }
-
+    @Transactional
     public void delete(Subject subject) throws ResourceNotFoundException {
         if(findById(subject.getId()) != null)  subjectRepository.delete(subject);
     }

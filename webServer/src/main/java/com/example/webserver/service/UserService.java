@@ -1,7 +1,6 @@
 package com.example.webserver.service;
 
 import com.example.webserver.exception.ResourceNotFoundException;
-import com.example.webserver.dto.UserDTO;
 import com.example.webserver.mapper.CustomerMapper;
 import com.example.webserver.model.Plan;
 import com.example.webserver.model.Question;
@@ -11,6 +10,7 @@ import com.example.webserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -18,6 +18,8 @@ import java.util.*;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    FriendSubjectsService friendSubjectsService;
     @Autowired
     SubjectService subjectService;
     @Autowired
@@ -107,9 +109,12 @@ public class UserService {
         System.out.println("обновляю локальную.");
         return findAllByUserIdPlusQuestionAndPlan(userSer);
     }
+    @Transactional
     public void deleteAllSub(User userSer) throws ResourceNotFoundException {
-      ArrayList<Subject >  subjects = subjectService.findAllByUserId(userSer);
-        for (Subject subject: subjects) {
+        ArrayList<Subject> subjects = subjectService.findAllByUserId(userSer);
+        for (Subject subject : subjects) {
+
+            friendSubjectsService.deleteAllBySubId(subject);
             questionService.deleteAllBySubId(subject);
             planService.deleteAllBySubId(subject);
             subjectService.delete(subject);
@@ -154,6 +159,7 @@ public class UserService {
     private void addAllQueSubId(List<Question> questions,Subject subject) throws ResourceNotFoundException {
         for (Question q: questions) {
             q.setSubId(subject);
+            System.out.println("обновляю вопрос = " + q);
             questionService.save(q);
         }
 

@@ -170,6 +170,7 @@ public class AddPlanFragment extends Fragment {
                     Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
                 }else{
                     int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
+                    if(id>-1) id = -1;
                     planToSub.setId(id);
                     planToSub.setDateOfExams(localDate);
                     planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());

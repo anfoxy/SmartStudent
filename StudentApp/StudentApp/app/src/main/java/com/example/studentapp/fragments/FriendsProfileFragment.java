@@ -72,6 +72,7 @@ public class FriendsProfileFragment extends Fragment {
                     public void onResponse(Call<Subjects> call, Response<Subjects> response) {
                         if( response.body() != null) {
                             int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
+                            if(id>-1) id = -1;
                             PlanToSub planToSub = response.body().getPlanToSubNotPlans();
                             planToSub.setId(id);
                             LocalDate date = planToSub.getDateOfExams();
@@ -92,7 +93,7 @@ public class FriendsProfileFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Subjects> call, Throwable t) {
-                        Log.d("not ok", t.getMessage());
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -112,7 +113,7 @@ public class FriendsProfileFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<FriendsSubjects> call, Throwable t) {
-                        Log.d("not ok", t.getMessage());
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -135,7 +136,7 @@ public class FriendsProfileFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<FriendsSubjects> call, Throwable t) {
-                        Log.d("not ok", t.getMessage());
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -173,7 +174,7 @@ public class FriendsProfileFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(getContext(), "Произошла ошибка на сервере", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -221,7 +222,7 @@ public class FriendsProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Users> call, Throwable t) {
-                Toast.makeText(getContext(), "Произошла ошибка на сервере", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -240,7 +241,7 @@ public class FriendsProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
-                System.out.println("не работает2!!!");
+                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -260,7 +261,7 @@ public class FriendsProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Subjects>> call, Throwable t) {
-                System.out.println("не работает1!!!");
+                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }

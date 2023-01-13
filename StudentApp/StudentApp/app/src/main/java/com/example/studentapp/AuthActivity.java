@@ -44,7 +44,7 @@ public class AuthActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Users> call, Response<Users> response) {
                         if (response.isSuccessful()){
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), LaunchActivity.class);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             Users.writeUser(response.body());
                             Users.getUser().setUpdateDbTime("1900-01-01-01-01-01");
