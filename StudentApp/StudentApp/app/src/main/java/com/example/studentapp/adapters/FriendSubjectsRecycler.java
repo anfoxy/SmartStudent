@@ -41,7 +41,7 @@ public class FriendSubjectsRecycler extends RecyclerView.Adapter<FriendSubjectsR
     }
     @Override
     public FriendSubjectsRecycler.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_item_plan, parent, false);
+        View view = inflater.inflate(R.layout.list_item_subj_friend, parent, false);
         return new ViewHolder(view);
     }
 
