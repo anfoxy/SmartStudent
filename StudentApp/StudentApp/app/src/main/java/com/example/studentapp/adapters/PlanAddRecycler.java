@@ -27,8 +27,6 @@ public class PlanAddRecycler extends RecyclerView.Adapter<PlanAddRecycler.ViewHo
     private boolean p [];
 
     public boolean[] getPlanArray(){
-        Log.d("plan array  =  ", ""+ p);
-        boolean h = p[0];
         return p;
     }
 

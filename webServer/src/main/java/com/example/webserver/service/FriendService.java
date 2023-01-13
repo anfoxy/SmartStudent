@@ -56,9 +56,9 @@ public class FriendService {
     }
 
     public String addFriends(Friends friends){
-       User usFriends = userService.findByLogin(friends.getFriendId().getLogin());
-       if (usFriends == null) return "Not login";
-       if (usFriends.getLogin().equals(friends.getUserId().getLogin())) return "your username";
+       User usFriends = userService.findByEmail(friends.getFriendId().getEmail());
+       if (usFriends == null) return "Not email";
+       if (usFriends.getEmail().equals(friends.getUserId().getEmail())) return "your username";
        if (friendsRepository.findByUserIdAndFriendId(friends.getUserId(),usFriends) != null ||
                friendsRepository.findByUserIdAndFriendId(usFriends,friends.getUserId()) != null) return "exists";
        friends.setFriendId(usFriends);

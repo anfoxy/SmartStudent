@@ -26,9 +26,9 @@ public class Users {
 
 //
 //    private Boolean slideOn;
-    public Users(Integer id, String login) {
+    public Users(Integer id, String email) {
         this.id = id;
-        this.login = login;
+        this.email = email;
     }
 
     public Users(Integer id, String login, String email, String password) {

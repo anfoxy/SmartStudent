@@ -164,10 +164,13 @@ public class AddPlanFragment extends Fragment {
             public void onClick(View view) {
                 if (planToSub.getSub().getQuestion().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
-                }if(localDate.equals(LocalDate.now())){
+
+                }else if(localDate == null){
                     Toast.makeText(getContext(), "Добавьте дату экзамена", Toast.LENGTH_SHORT).show();
-                }if(binding.Text1.getText().toString().trim().isEmpty()){
+
+                }else if(binding.Text1.getText().toString().trim().isEmpty()){
                     Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
+
                 }else{
                     int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
                     if(id>-1) id = -1;

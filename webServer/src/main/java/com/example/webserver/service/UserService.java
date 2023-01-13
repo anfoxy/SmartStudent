@@ -44,7 +44,10 @@ public class UserService {
         User user = userRepository.findByLogin(login);
         return user;
     }
-
+    public User findByEmail(String email){
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
     public User login(String userName, String password) {
         String str =  userRepository.searchUserByEmailAndPassword(userName, password);
         return userRepository.findById(Long.valueOf(str)).orElseThrow(null);

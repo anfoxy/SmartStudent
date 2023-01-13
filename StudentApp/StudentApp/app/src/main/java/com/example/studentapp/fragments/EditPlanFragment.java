@@ -128,10 +128,44 @@ public class EditPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                MainActivity.myDBManager.delete_SUB(subject.getSub().getNameOfSubme());
-                Users.getUser().currentUpdateDbTime();
-                NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
-                Navigation.findNavController(getView()).navigate(action);
+                AlertDialog.Builder builder
+                        = new AlertDialog.Builder(getContext());
+
+                // set the custom layout
+                final View customLayout
+                        = getLayoutInflater()
+                        .inflate(
+                                R.layout.dialog_delete_sub,
+                                null);
+                builder.setView(customLayout);
+
+                AlertDialog dialog
+                        = builder.create();
+
+
+                AppCompatButton edit = customLayout.findViewById(R.id.cancel_window);
+                AppCompatButton clsBtn = customLayout.findViewById(R.id.delete_sub);
+
+
+                clsBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity.myDBManager.delete_SUB(subject.getSub().getNameOfSubme());
+                        Users.getUser().currentUpdateDbTime();
+                        NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToListFragment();
+                        Navigation.findNavController(getView()).navigate(action);
+                        dialog.dismiss();
+                    }
+                });
+
+                edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
 
             }
         });

@@ -120,6 +120,8 @@
         <action
             android:id="@+id/action_addSubjectFriendFragment_to_friendsProfileFragment"
             app:destination="@id/friendsProfileFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="true"
             />
 
     </fragment>
@@ -167,6 +169,8 @@
         <action
             android:id="@+id/action_addPlanFragment_to_settingPlanFragment2"
             app:destination="@id/settingPlanFragment"
+            app:popUpTo="@+id/addPlanFragment"
+            app:popUpToInclusive="true"
          />
     </fragment>
     <fragment
@@ -180,6 +184,8 @@
         <action
             android:id="@+id/action_settingPlanFragment_to_listFragment2"
             app:destination="@id/listFragment"
+            app:popUpTo="@+id/calendarFragment"
+            app:popUpToInclusive="false"
            />
     </fragment>
 
@@ -196,7 +202,8 @@
             app:argType="string" />
         <action
             android:id="@+id/action_editPlanFragment_to_editItemPlanFragment2"
-            app:destination="@id/editItemPlanFragment" />
+            app:destination="@id/editItemPlanFragment"
+         />
     </fragment>
     <fragment
         android:id="@+id/editItemPlanFragment"
@@ -208,7 +215,9 @@
             app:argType="string" />
         <action
             android:id="@+id/action_editItemPlanFragment_to_editPlanFragment"
-            app:destination="@id/editPlanFragment" />
+            app:destination="@id/editPlanFragment"
+            app:popUpTo="@+id/editPlanFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 </navigation>
