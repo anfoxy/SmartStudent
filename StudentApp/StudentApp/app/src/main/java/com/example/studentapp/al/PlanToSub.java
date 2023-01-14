@@ -147,7 +147,6 @@ public class PlanToSub {
             sortFuturePlan();
             //всего нужно выучить
             int v = sub.getSizeNoKnow()+todayLearned;
-            int d = futurePlan.size();
             for(int i=0; i<futurePlan.size(); i++){
                 futurePlan.get(i).setSizeOfQuetion(0);
             }
@@ -156,6 +155,20 @@ public class PlanToSub {
                     if(v==0) break;
                     futurePlan.get(i).setSizeOfQuetion(futurePlan.get(i).getSizeOfQuetion()+1);
                     v--;
+                }
+            }
+            if(futurePlan.get(0).getSizeOfQuetion()<todayLearned){
+                futurePlan.get(0).setSizeOfQuetion(todayLearned);
+                v = sub.getSizeNoKnow();
+                for(int i=1; i<futurePlan.size(); i++){
+                    futurePlan.get(i).setSizeOfQuetion(0);
+                }
+                while (v!=0){
+                    for(int i=1; i<futurePlan.size(); i++){
+                        if(v==0) break;
+                        futurePlan.get(i).setSizeOfQuetion(futurePlan.get(i).getSizeOfQuetion()+1);
+                        v--;
+                    }
                 }
             }
         }
@@ -174,7 +187,21 @@ public class PlanToSub {
         newSizeQuestionOnFuture();
     }
     public void delQuestion(Integer nom){
+        //если предмет не сегодняшний или мы его не знаем
+//        if(!sub.getQuestion(nom).getLastDate().isEqual(LocalDate.now())
+//                || sub.getQuestion(nom).getPercentKnow()<1.0) {
+//            //спокойно удаляем
+//            sub.deleteQuestion(nom);
+//            newSizeQuestionOnFuture();
+//        }
         sub.deleteQuestion(nom);
+        newSizeQuestionOnFuture();
+        //если предмет сегодняшний и мы его знаем и тудей ленед больше выучен. вопросов
+        if(sub.getQuestion(nom).getLastDate().isEqual(LocalDate.now())&&
+                sub.getQuestion(nom).getPercentKnow()==1.0 &&
+                (sub.getSizeKnow()<todayLearned)){
+            todayLearned--;
+        }
         newSizeQuestionOnFuture();
     }
     public void changeQuestion(Integer nom, String quest, String answer){
