@@ -50,7 +50,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
@@ -61,13 +63,13 @@ import retrofit2.Response;
 
 public class EditPlanFragment extends Fragment {
 
-    FragmentEditPlanBinding binding;
-    ApiInterface apiInterface;
-    EditPlanFragmentArgs args;
-    QuestionAddRecycler.OnItemClickListener itemClick;
-    final Calendar myCalendar = Calendar.getInstance();
-    PlanToSub subject;
-    LocalDate localDate;
+    private FragmentEditPlanBinding binding;
+    private EditPlanFragmentArgs args;
+    private QuestionAddRecycler.OnItemClickListener itemClick;
+    private final Calendar myCalendar = Calendar.getInstance();
+    private PlanToSub subject;
+    private LocalDate localDate;
+    private ApiInterface apiInterface;
 
     private static final String TAG = "AddPlanFragment";
     private static final int REQUEST_GALLERY = 1;
@@ -81,26 +83,26 @@ public class EditPlanFragment extends Fragment {
 
 
         subject = MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
+                .filter(c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
         localDate = subject.getDateOfExams();
 
-        if(localDate.isBefore(LocalDate.now())) binding.editPlan.setVisibility(View.INVISIBLE);
+        if (localDate.isBefore(LocalDate.now())) binding.editPlan.setVisibility(View.INVISIBLE);
 
         itemClick = new QuestionAddRecycler.OnItemClickListener() {
             @Override
             public void onClickQuestion(Question ques, int position) {
-                showItemDialog(view, ques,position);
+                showItemDialog(view, ques, position);
             }
         };
 
         setQuestions();
 
-        DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH,month);
-                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
                 updateLabel();
             }
         };
@@ -110,9 +112,12 @@ public class EditPlanFragment extends Fragment {
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
                 minDate.set(Calendar.YEAR, LocalDate.now().getYear());
-                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue()-1);
+                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue() - 1);
                 minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
                 datePickerDialog.show();
             }
@@ -189,9 +194,20 @@ public class EditPlanFragment extends Fragment {
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!subject.getSub().getNameOfSubme().equals(binding.Text1.getText().toString())) {
+                    List<PlanToSub> list = MainActivity.myDBManager.getFromDB()
+                            .stream()
+                            .filter(c -> c.getSub().getNameOfSubme().equals(binding.Text1.getText().toString()))
+                            .collect(Collectors.toList());
+                    if (!list.isEmpty()){
+                        Toast.makeText(getContext(),
+                            "Предмет с таким именем уже существует", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
                 if (subject.getSub().getQuestion().isEmpty()) {
                     Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
-                } else if(binding.Text1.getText().toString().trim().isEmpty()) {
+                } else if (binding.Text1.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
                 } else {
                     save();
@@ -277,7 +293,6 @@ public class EditPlanFragment extends Fragment {
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //!!!
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQUEST_GALLERY);
             }
@@ -285,13 +300,11 @@ public class EditPlanFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
+                if (tvQ.getText().toString().trim().isEmpty()
+                        || tvAnswer.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-
                     subject.changeQuestion(pos,tvQ.getText().toString(),tvAnswer.getText().toString());
-                    //subject.getSub().getQuestion().get(pos).setAnswer(tvAnswer.getText().toString());
-                    //subject.getSub().getQuestion().get(pos).setQuestion(tvQ.getText().toString());
                     setQuestions();
                     dialog.dismiss();
 
@@ -304,7 +317,6 @@ public class EditPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 subject.delQuestion(pos);
-              //  subject.getSub().getQuestion().remove(pos);
                 setQuestions();
                 dialog.dismiss();
 
@@ -342,12 +354,11 @@ public class EditPlanFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
+                if (tvQ.getText().toString().trim().isEmpty()
+                        || tvAnswer.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
                     subject.setNewQuestion(new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
-                /*    subject.getSub().addQuestion(
-                            new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));*/
                     setQuestions();
                     dialog.dismiss();
 

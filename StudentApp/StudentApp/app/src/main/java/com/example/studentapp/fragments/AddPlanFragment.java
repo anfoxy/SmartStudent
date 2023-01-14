@@ -51,6 +51,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
@@ -114,11 +115,14 @@ public class AddPlanFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        planToSub.getSub().getQuestion().get(position).setQuestion(tvQ.getText().toString());
-                        planToSub.getSub().getQuestion().get(position).setAnswer(tvAnswer.getText().toString());
-
-                        setQuestions(planToSub.getSub().getQuestion());
-                        dialog.dismiss();
+                        if (!tvQ.getText().toString().trim().isEmpty()
+                                || !tvAnswer.getText().toString().trim().isEmpty()) {
+                            planToSub.getSub().getQuestion().get(position).setQuestion(tvQ.getText().toString());
+                            planToSub.getSub().getQuestion().get(position).setAnswer(tvAnswer.getText().toString());
+                            setQuestions(planToSub.getSub().getQuestion());
+                            dialog.dismiss();
+                        }  Toast.makeText(getContext(),
+                                "Заполните все поля", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -136,12 +140,12 @@ public class AddPlanFragment extends Fragment {
         };
         setQuestions(planToSub.getSub().getQuestion());
 
-        DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH,month);
-                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
                 updateLabel();
             }
         };
@@ -151,7 +155,7 @@ public class AddPlanFragment extends Fragment {
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
                 minDate.set(Calendar.YEAR, LocalDate.now().getYear());
-                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue()-1);
+                minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue() - 1);
                 minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
@@ -162,28 +166,39 @@ public class AddPlanFragment extends Fragment {
         binding.AddPlan1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (planToSub.getSub().getQuestion().isEmpty()){
-                    Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
 
-                }else if(localDate == null){
-                    Toast.makeText(getContext(), "Добавьте дату экзамена", Toast.LENGTH_SHORT).show();
-
-                }else if(binding.Text1.getText().toString().trim().isEmpty()){
-                    Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
-
-                }else{
-                    int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
-                    if(id>-1) id = -1;
-                    planToSub.setId(id);
-                    planToSub.setDateOfExams(localDate);
-                    planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
-                    setNewPlan();
-                    MainActivity.myDBManager.setFromDB(planToSub);
-                    Users.getUser().currentUpdateDbTime();
-
-                    NavDirections action = AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(planToSub.getSub().getNameOfSubme());
-                    Navigation.findNavController(getView()).navigate(action);
-
+                if (binding.Text1.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getContext(),
+                            "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
+                } else {
+                    List<PlanToSub> list = MainActivity.myDBManager.getFromDB()
+                            .stream()
+                            .filter(c -> c.getSub().getNameOfSubme().equals(binding.Text1.getText().toString()))
+                            .collect(Collectors.toList());
+                    if (!list.isEmpty()) {
+                        Toast.makeText(getContext(),
+                                "Предмет с таким именем уже существует", Toast.LENGTH_SHORT).show();
+                    } else if (planToSub.getSub().getQuestion().isEmpty()) {
+                        Toast.makeText(getContext(),
+                                "Добавьте вопросы", Toast.LENGTH_SHORT).show();
+                    } else if (localDate == null) {
+                        Toast.makeText(getContext(),
+                                "Добавьте дату экзамена", Toast.LENGTH_SHORT).show();
+                    } else {
+                        int id = MainActivity.myDBManager.getFromDB()
+                                .stream()
+                                .mapToInt(PlanToSub::getId).min().orElse(0) - 1;
+                        if (id > -1) id = -1;
+                        planToSub.setId(id);
+                        planToSub.setDateOfExams(localDate);
+                        planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
+                        setNewPlan();
+                        MainActivity.myDBManager.setFromDB(planToSub);
+                        Users.getUser().currentUpdateDbTime();
+                        NavDirections action =
+                                AddPlanFragmentDirections.actionAddPlanFragmentToSettingPlanFragment2(planToSub.getSub().getNameOfSubme());
+                        Navigation.findNavController(getView()).navigate(action);
+                    }
                 }
             }
         });
@@ -245,10 +260,10 @@ public class AddPlanFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tvAnswer.getText().toString() == "" || tvQ.getText().toString() == ""){
+                if (tvQ.getText().toString().trim().isEmpty()
+                        || tvAnswer.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                 }else {
-
                     planToSub.getSub().addQuestion(
                             new Question(tvQ.getText().toString(),tvAnswer.getText().toString()));
                     setQuestions(planToSub.getSub().getQuestion());
