@@ -131,7 +131,7 @@
             android:layout_marginVertical="10dp"
             android:backgroundTint="#6A7AD5"
             android:fontFamily="@font/sourcesanspro_semibold"
-            android:text="Сохранить"
+            android:text="Продолжить"
             android:textColor="@color/textbutton"
             android:textSize="15sp"
             app:cornerRadius="5dp"

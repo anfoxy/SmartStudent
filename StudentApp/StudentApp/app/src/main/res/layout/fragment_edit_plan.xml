@@ -29,9 +29,9 @@
                     android:layout_width="242dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:gravity="center"
                     android:fontFamily="@font/sourcesanspro_semibold"
-                    android:text="Название плана:"
+                    android:gravity="center"
+                    android:text="Название предмета:"
                     android:textColor="@color/textcolor"
                     android:textSize="19sp" />
 
@@ -117,9 +117,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editPlan"
                 android:layout_width="match_parent"
+                android:layout_height="54dp"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="10dp"
-                android:layout_height="54dp"
                 android:backgroundTint="#6A7AD5"
                 android:text="Сохранить и изменить дни подготовки"
                 android:textColor="@color/textbutton"

@@ -73,6 +73,7 @@ public class AccountFragment extends Fragment {
                 //binding.editpng.setVisibility(View.VISIBLE);
                 binding.password.setVisibility(View.VISIBLE);
                 binding.layProfile.setVisibility(View.VISIBLE);
+                binding.cardDostiz.setVisibility(View.GONE);
             }
         });
         binding.section2.setOnClickListener(new View.OnClickListener() {
@@ -83,8 +84,28 @@ public class AccountFragment extends Fragment {
                 binding.underline.setBackgroundColor(Color.GRAY);
                 binding.underline3.setBackgroundColor(Color.BLUE);
                // binding.editpng.setVisibility(View.INVISIBLE);
-                binding.password.setVisibility(View.INVISIBLE);
-                binding.layProfile.setVisibility(View.INVISIBLE);
+                binding.password.setVisibility(View.GONE);
+                binding.layProfile.setVisibility(View.GONE);
+                // тут условия достижений
+                // ...
+
+                // если 5 выученных вопросов и более то:
+//                binding.profQueNo.setVisibility(View.GONE);
+//                binding.profQueYes.setVisibility(View.VISIBLE);
+
+                // если от 1 и более друзей, то:
+//                binding.profFriendNo.setVisibility(View.GONE);
+//                binding.profFriendYes.setVisibility(View.VISIBLE);
+
+                // если один и более выученных предметов то:
+//                binding.profSubNo.setVisibility(View.GONE);
+//                binding.profSubYes.setVisibility(View.VISIBLE);
+
+                // если один и более прошло за всё время экзаменов(наступил день экзамена) то:
+//                binding.profExNo.setVisibility(View.GONE);
+//                binding.profExYes.setVisibility(View.VISIBLE);
+
+                binding.cardDostiz.setVisibility(View.VISIBLE);
 
             }
         });
