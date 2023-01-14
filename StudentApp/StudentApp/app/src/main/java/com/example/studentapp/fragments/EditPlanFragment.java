@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.QuestionAddRecycler;
+import com.example.studentapp.al.PlanToDay;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.al.Question;
 import com.example.studentapp.databinding.FragmentEditPlanBinding;
@@ -173,9 +174,15 @@ public class EditPlanFragment extends Fragment {
         binding.editPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  save();
-                NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToEditItemPlanFragment2(args.getId());
-                Navigation.findNavController(getView()).navigate(action);
+                if (subject.getSub().getQuestion().isEmpty()) {
+                    Toast.makeText(getContext(), "Добавьте вопросы", Toast.LENGTH_SHORT).show();
+                } else if (binding.Text1.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getContext(), "Добавьте имя предмета", Toast.LENGTH_SHORT).show();
+                } else {
+                    save();
+                    NavDirections action = EditPlanFragmentDirections.actionEditPlanFragmentToEditItemPlanFragment2(args.getId());
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
         });
 
@@ -196,12 +203,19 @@ public class EditPlanFragment extends Fragment {
         });
     }
 
-    private void save(){
-            subject.setDateOfExams(localDate);
-            MainActivity.myDBManager.updateNameSubAndDateExams(subject, binding.Text1.getText().toString());
-            subject.getSub().setNameOfSub(binding.Text1.getText().toString());
-            MainActivity.myDBManager.updateQuestionsToSubject(subject);
-            MainActivity.myDBManager.updatePlan(subject);
+    private void save() {
+        checkPlan();
+        subject.setDateOfExams(localDate);
+        MainActivity.myDBManager.updateNameSubAndDateExams(subject, binding.Text1.getText().toString());
+        subject.getSub().setNameOfSub(binding.Text1.getText().toString());
+        MainActivity.myDBManager.updateQuestionsToSubject(subject);
+        MainActivity.myDBManager.updatePlan(subject);
+    }
+
+    private void checkPlan(){
+        for (PlanToDay plan:subject.getFuturePlan()) {
+            if(plan.getDate().isAfter(localDate)||plan.getDate().isEqual(localDate)) subject.minusDayToPlan(plan.getDate());
+        }
     }
     private void updateLabel(){
         String myFormat="yyyy-MM-dd";

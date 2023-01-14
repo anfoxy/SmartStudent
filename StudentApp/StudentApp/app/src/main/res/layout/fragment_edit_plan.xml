@@ -121,7 +121,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_height="54dp"
                 android:backgroundTint="#6A7AD5"
-                android:text="Изменить даты подготовки"
+                android:text="Сохранить и изменить дни подготовки"
                 android:textColor="@color/textbutton"
                 android:textSize="15sp"
                 app:cornerRadius="5dp"

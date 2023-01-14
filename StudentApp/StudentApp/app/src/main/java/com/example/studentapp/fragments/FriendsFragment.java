@@ -91,7 +91,8 @@ public class FriendsFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
-                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+                        if(getContext()!=null)
+                            Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -113,7 +114,8 @@ public class FriendsFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
-                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+                        if(getContext()!=null)
+                            Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -137,7 +139,8 @@ public class FriendsFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<Friends> call, Throwable t) {
-                        Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+                        if(getContext()!=null)
+                            Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -241,7 +244,8 @@ public class FriendsFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+                if(getContext()!=null)
+                    Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -264,7 +268,8 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+                if(getContext()!=null)
+                    Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -287,7 +292,8 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
-                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+                if(getContext()!=null)
+                    Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
             }
         });
     }
