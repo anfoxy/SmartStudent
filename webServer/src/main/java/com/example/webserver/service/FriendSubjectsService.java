@@ -76,9 +76,15 @@ public class FriendSubjectsService {
 
         Subject subject = new Subject(null,friends.getSubId().getName(),
                 friends.getSubId().getDays(),0,friends.getUserId());
-        int count = subjectService.numberOfDuplicateSubjects(subject);
+      /*  int count = subjectService.numberOfDuplicateSubjects(subject);
         if (count > 0) {
             subject.setName(""+subject.getName()+String.format("(%d)", count));
+        }*/
+
+
+        int count =  subjectService.numberOfDuplicateSubjects(subject);
+        if (count > 0) {
+            subject.setName(subjectService.replaceNumberInBrackets(subject.getName(),count));
         }
 
         //Subject s = subjectService.save(subject);

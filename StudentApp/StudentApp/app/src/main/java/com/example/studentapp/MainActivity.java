@@ -40,19 +40,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-/*        myDBManager = new MyDBManager(this);
-        myDBManager.openDB();*/
-
-
-       /* ArrayList <PlanToSub> pl=myDBManager.getFromDB();
-        for(PlanToSub p : pl) {
-            p.nextDay();
-            MainActivity.myDBManager.updatePlan(p);
-            MainActivity.myDBManager.updateQuestionsToSubject(p);
-            MainActivity.myDBManager.updateSubTodayLearned(p);
-            Users.getUser().currentUpdateDbTime();
-        }*/
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -62,14 +49,18 @@ public class MainActivity extends AppCompatActivity {
                 .build();*/
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.bottomNavMenu, navController);
+
+
+
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
         return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
     }
 
-    public static void updateDBTime(){
+/*    public static void updateDBTime(){
         ApiInterface apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
         Call<ArrayList<Subjects>> update = apiInterface.update(getAllSubjects());
         update.enqueue(new Callback<ArrayList<Subjects>>() {
@@ -103,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     public static ArrayList<Subjects> getAllSubjects() {
 

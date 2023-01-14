@@ -9,7 +9,8 @@
         android:id="@+id/calendarFragment"
         android:name="com.example.studentapp.fragments.CalendarFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_calendar" >
+        tools:layout="@layout/fragment_calendar"
+        >
         <action
             android:id="@+id/action_calendarFragment_to_answerQuestionFragment"
             app:destination="@id/answerQuestionFragment"
@@ -20,7 +21,9 @@
         android:id="@+id/listFragment"
         android:name="com.example.studentapp.fragments.ListFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_list" >
+        tools:layout="@layout/fragment_list"
+        app:popUpTo="@+id/listFragment"
+        app:popUpToInclusive="true">
         <action
             android:id="@+id/action_listFragment_to_addPlanFragment"
             app:destination="@id/addPlanFragment"
@@ -33,7 +36,9 @@
         android:id="@+id/anotherFragment"
         android:name="com.example.studentapp.fragments.AnotherFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_another" >
+        tools:layout="@layout/fragment_another"
+        app:popUpTo="@+id/anotherFragment"
+        >
         <action
             android:id="@+id/action_anotherFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"
@@ -57,7 +62,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-          />
+         />
         <action
             android:id="@+id/action_anotherFragment_to_friendsFragment"
             app:destination="@id/friendsFragment"

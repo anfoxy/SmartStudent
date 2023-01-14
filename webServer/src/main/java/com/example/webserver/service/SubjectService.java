@@ -63,7 +63,7 @@ public class SubjectService {
 
     public int numberOfDuplicateSubjects(Subject subject){
       ArrayList<Subject> names =  findAllByUserId(subject.getUserId());
-        int count = 0;
+    /*    int count = 0;
         Pattern pattern = Pattern.compile(String.format("^%s( \\(\\d+\\))?", subject.getName()));
         for (Subject name : names) {
             Matcher matcher = pattern.matcher(name.getName());
@@ -73,7 +73,67 @@ public class SubjectService {
         }
 
         return count;
+
+*/
+        int count = 0;
+        int c = 0;
+
+        Pattern pattern = Pattern.compile("\\(\\d+\\)$");
+        Matcher matcher = pattern.matcher(subject.getName());
+
+        if (matcher.find()) {
+            subject.setName(subject.getName().substring(0, matcher.start()));
+        }
+
+        for (Subject s : names) {
+
+            matcher = pattern.matcher(s.getName());
+            if (matcher.find()) {
+                c = Integer.parseInt(s.getName().substring(matcher.start()+1,matcher.end()-1));
+                s.setName(s.getName().substring(0, matcher.start()));
+            }
+            if (s.getName().equals(subject.getName())) {
+                if(count<=c) count = c+1;
+            }
+        }
+        return count;
     }
+
+    public String replaceNumberInBrackets(String string, int newNumber) {
+        Pattern pattern = Pattern.compile("\\(\\d+\\)$");
+        Matcher matcher = pattern.matcher(string);
+
+        return !matcher.find() ?
+                string + "(" + newNumber + ")" : string.substring(0, matcher.start()) + "(" + newNumber + ")";
+    }
+
+    private static int numberOfDuplicateSubjects(String string, ArrayList<String> stringList) {
+        int count = 0;
+        int c = 0;
+
+        Pattern pattern = Pattern.compile("\\(\\d+\\)$");
+        Matcher matcher = pattern.matcher(string);
+
+        if (matcher.find()) {
+            string = string.substring(0, matcher.start());
+        }
+
+        for (String s : stringList) {
+
+            matcher = pattern.matcher(s);
+            if (matcher.find()) {
+                c = Integer.parseInt(s.substring(matcher.start()+1,matcher.end()-1));
+                s = s.substring(0, matcher.start());
+            }
+            if (s.equals(string)) {
+                if(count<=c) count = c+1;
+            }
+        }
+        return count;
+    }
+
+
+
     @Transactional
     public void delete(Subject subject) throws ResourceNotFoundException {
         if(findById(subject.getId()) != null)  subjectRepository.delete(subject);
