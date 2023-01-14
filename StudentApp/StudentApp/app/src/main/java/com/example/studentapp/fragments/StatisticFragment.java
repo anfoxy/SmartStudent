@@ -56,13 +56,14 @@ public class StatisticFragment extends Fragment {
         System.out.println("id равно  "+args.getId());
         planToSub =  MainActivity.myDBManager.getFromDB().stream()
                 .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
-        binding.kolvop.setText("Количество вопросов: "+planToSub.getSub().getSizeAllQuest());
-        binding.kolzap.setText("Колличество запомненых вопросов: "+planToSub.getSub().getSizeKnow());
-        binding.dateob.setText("Количество невыученных вопросов:" +planToSub.getSub().getSizeNoKnow());
-        binding.dateex.setText("Дата экзамена: "+ planToSub.dateToString().split("T")[0]);
+        binding.nameSub.setText("Предмет\n"+planToSub.getSub().getNameOfSubme());
+        binding.kolvop.setText("Всего вопросов\n"+planToSub.getSub().getSizeAllQuest());
+        binding.kolzap.setText("Выученных вопросов\n"+planToSub.getSub().getSizeKnow());
+        binding.dateob.setText("Невыученных вопросов\n" +planToSub.getSub().getSizeNoKnow());
+        binding.dateex.setText("Дата экзамена\n"+ planToSub.dateToString().split("T")[0]);
         LocalDate date = LocalDate.parse(planToSub.dateToString().split("T")[0]);
         long days = DAYS.between(LocalDate.now(), date);
-        binding.kold.setText("Количество дней до экзамена: "+days);
+        binding.kold.setText("Дней до экзамена\n"+days);
 
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
