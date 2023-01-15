@@ -77,6 +77,7 @@ public class AccountFragment extends Fragment {
                 binding.password.setVisibility(View.VISIBLE);
                 binding.layProfile.setVisibility(View.VISIBLE);
                 binding.cardDostiz.setVisibility(View.GONE);
+                binding.cardSorev.setVisibility(View.GONE);
             }
         });
         binding.section2.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +137,21 @@ public class AccountFragment extends Fragment {
                     binding.profExYes.setVisibility(View.VISIBLE);
                     user.trueAch(4);
                 }
+                // соревновательный режим
+                binding.profFirstGameNo.setVisibility(View.GONE);
+                binding.profFirstGameYes.setVisibility(View.VISIBLE);
+
+                binding.profGameWowNo.setVisibility(View.GONE);
+                binding.profGameWowYes.setVisibility(View.VISIBLE);
+
+                binding.profQueAllGameNo.setVisibility(View.GONE);
+                binding.profQueAllGameYes.setVisibility(View.VISIBLE);
+
+                binding.profGameCompletedNo.setVisibility(View.GONE);
+                binding.profGameCompletedYes.setVisibility(View.VISIBLE);
+
                 binding.cardDostiz.setVisibility(View.VISIBLE);
+                binding.cardSorev.setVisibility(View.VISIBLE);
 
             }
         });
