@@ -1,9 +1,12 @@
 package com.example.studentapp.db;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Map;
 
 import io.paperdb.Paper;
 
@@ -21,14 +24,15 @@ public class Users {
     private String matchingPassword;
     @SerializedName("updateDbTime")
     private String updateDbTime;
+    private Map<String,Boolean> ach;
 
-
-
-//
-//    private Boolean slideOn;
     public Users(Integer id, String email) {
         this.id = id;
         this.email = email;
+        ach.put("5 questions", false);
+        ach.put("1 exam", false);
+        ach.put("1 friend", false);
+        ach.put("1 comlpeted sub", false);
     }
 
     public Users(Integer id, String login, String email, String password) {
@@ -129,6 +133,7 @@ public class Users {
         return Paper.book("user").read("user");
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Users{" +
@@ -136,5 +141,22 @@ public class Users {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public void trueAch(int i) {
+        switch (i) {
+            case 1:
+                ach.replace("5 questions", false, true);
+                break;
+            case 2:
+                ach.replace("1 exam", false, true);
+                break;
+            case 3:
+                ach.replace("1 friend", false, true);
+                break;
+            default:
+                ach.replace("1 comlpeted sub", false, true);
+                break;
+        }
     }
 }

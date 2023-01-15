@@ -193,6 +193,7 @@ public class AddPlanFragment extends Fragment {
                         planToSub.setDateOfExams(localDate);
                         planToSub.getSub().setNameOfSub(binding.Text1.getText().toString());
                         setNewPlan();
+
                         MainActivity.myDBManager.setFromDB(planToSub);
                         Users.getUser().currentUpdateDbTime();
                         NavDirections action =
