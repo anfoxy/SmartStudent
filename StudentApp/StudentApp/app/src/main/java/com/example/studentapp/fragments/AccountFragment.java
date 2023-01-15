@@ -98,7 +98,7 @@ public class AccountFragment extends Fragment {
                         .map(PlanToSub::getSub)
                         .map(Subject::getSizeKnow)
                         .max(Integer::compareTo).orElse(0) > 4) {
-                    user.trueAch(1);
+//                    user.trueAch(1);
                     binding.profQueNo.setVisibility(View.GONE);
                     binding.profQueYes.setVisibility(View.VISIBLE);
                 }
@@ -112,7 +112,7 @@ public class AccountFragment extends Fragment {
                         if (response.body() != null && !response.body().isEmpty()) {
                             binding.profFriendNo.setVisibility(View.GONE);
                             binding.profFriendYes.setVisibility(View.VISIBLE);
-                            user.trueAch(2);
+//                            user.trueAch(2);
                         }
                     }
 
@@ -127,7 +127,7 @@ public class AccountFragment extends Fragment {
                 if (subjs.stream().anyMatch(item -> item.getSub().getSizeKnow() == item.getSub().getSizeNoKnow())) {
                     binding.profSubNo.setVisibility(View.GONE);
                     binding.profSubYes.setVisibility(View.VISIBLE);
-                    user.trueAch(3);
+//                    user.trueAch(3);
                 }
 //
 
@@ -135,7 +135,7 @@ public class AccountFragment extends Fragment {
                 if (subjs.stream().anyMatch(item -> item.getDateOfExams().isBefore(LocalDate.now()))) {
                     binding.profExNo.setVisibility(View.GONE);
                     binding.profExYes.setVisibility(View.VISIBLE);
-                    user.trueAch(4);
+//                    user.trueAch(4);
                 }
                 // соревновательный режим
                 binding.profFirstGameNo.setVisibility(View.GONE);

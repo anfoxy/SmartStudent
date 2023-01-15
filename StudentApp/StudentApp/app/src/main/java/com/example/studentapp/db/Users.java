@@ -29,10 +29,6 @@ public class Users {
     public Users(Integer id, String email) {
         this.id = id;
         this.email = email;
-        ach.put("5 questions", false);
-        ach.put("1 exam", false);
-        ach.put("1 friend", false);
-        ach.put("1 comlpeted sub", false);
     }
 
     public Users(Integer id, String login, String email, String password) {
@@ -72,6 +68,10 @@ public class Users {
         this.email = email;
         this.password = password;
         this.matchingPassword = matchingPassword;
+//        ach.put("5 questions", false);
+//        ach.put("1 exam", false);
+//        ach.put("1 friend", false);
+//        ach.put("1 comlpeted sub", false);
     }
 
     public Users(Integer id, String email, String password) {
