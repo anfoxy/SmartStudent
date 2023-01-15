@@ -195,7 +195,6 @@ public class PlanToSub {
 //            newSizeQuestionOnFuture();
 //        }
         sub.deleteQuestion(nom);
-        newSizeQuestionOnFuture();
         //если предмет сегодняшний и мы его знаем и тудей ленед больше выучен. вопросов
         if(sub.getQuestion(nom).getLastDate().isEqual(LocalDate.now())&&
                 sub.getQuestion(nom).getPercentKnow()==1.0 &&
