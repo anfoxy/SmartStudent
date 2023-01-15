@@ -71,11 +71,12 @@ public class FriendsProfileFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Subjects> call, Response<Subjects> response) {
                         if( response.body() != null) {
-                            int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
-                            if(id>-1) id = -1;
+                          /*  int id = MainActivity.myDBManager.getFromDB().stream().mapToInt(PlanToSub::getId).min().orElse(0)-1;
+                            if(id>-1) id = -1;*/
                             PlanToSub planToSub = response.body().getPlanToSubNotPlans();
-                            planToSub.setId(id);
+                            planToSub.setId(response.body().getId());
                             LocalDate date = planToSub.getDateOfExams();
+                            if(date.isBefore(LocalDate.now())) date = LocalDate.now().plusDays(1);
                             long days = DAYS.between(LocalDate.now(), date);
                             for(int i=0; i<days; i++){
                                 planToSub.plusDayToPlan(LocalDate.now().plusDays(i));
@@ -86,7 +87,7 @@ public class FriendsProfileFragment extends Fragment {
                             binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
                             binding.listVop.setHasFixedSize(true);
                             binding.listVop.setAdapter(new FriendsInSubjectsAdapter(getContext(), subjectsArrayList, itemClickListenerIn));
-                            // тут сохраняем также в локальной !!!
+
 
 
                         }

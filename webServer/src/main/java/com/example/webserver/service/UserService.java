@@ -6,6 +6,7 @@ import com.example.webserver.model.Plan;
 import com.example.webserver.model.Question;
 import com.example.webserver.model.Subject;
 import com.example.webserver.model.User;
+import com.example.webserver.repository.SubjectRepository;
 import com.example.webserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -28,6 +30,8 @@ public class UserService {
     QuestionService questionService;
     @Autowired
     CustomerMapper mapper;
+    @Autowired
+    private SubjectRepository subjectRepository;
 
     public User putMet(Long id, User s) throws ResourceNotFoundException {
         User user = findById(id);
@@ -98,13 +102,22 @@ public class UserService {
     public ArrayList<Subject> updateDBTime(User userLoc, User userSer,ArrayList<Subject> subjects) throws ResourceNotFoundException {
         if(!checkTime(userLoc,userSer)) {
             System.out.println("обновляю сервер");
-            deleteAllSub(userSer);
-          //  subjectService.deleteAllByIdNotIn(subjects);
+            // deleteAllSub(userSer);
             for (Subject s : subjects) {
+
                 subjectService.putMet(s.getId(), s);
+                questionService.deleteAllBySubId(s);
+                planService.deleteAllBySubId(s);
                 addAllQueSubId( s.getQuestions(),s);
                 addAllPlanSubId(s.getPlans(),s);
             }
+
+            List<Long> ids = subjects.stream()
+                    .map(Subject::getId)
+                    .collect(Collectors.toList());
+            ArrayList<Subject> sub = subjectRepository.findAllByUserIdAndIdNotIn(userSer,ids);
+            deleteAllSub(sub);
+
             userSer.setUpdateDbTime(currentUpdateDbTime());
             save(userSer);
             return findAllByUserIdPlusQuestionAndPlan(userSer);
@@ -113,10 +126,8 @@ public class UserService {
         return findAllByUserIdPlusQuestionAndPlan(userSer);
     }
     @Transactional
-    public void deleteAllSub(User userSer) throws ResourceNotFoundException {
-        ArrayList<Subject> subjects = subjectService.findAllByUserId(userSer);
+    public void deleteAllSub(ArrayList<Subject> subjects) throws ResourceNotFoundException {
         for (Subject subject : subjects) {
-
             friendSubjectsService.deleteAllBySubId(subject);
             questionService.deleteAllBySubId(subject);
             planService.deleteAllBySubId(subject);

@@ -68,36 +68,27 @@ public class FriendSubjectsService {
 
     public Subject acceptFriendsSubjects(FriendsSubjects friends){
         FriendsSubjects friends1 = friendsSubjectsRepository.findByUserIdAndFriendIdAndSubId(friends.getUserId(),friends.getFriendId(),friends.getSubId());
-        //friends1.setStatus("ACCEPTED");
         friendsSubjectsRepository.delete(friends1);
         FriendsSubjects friends2 = friendsSubjectsRepository.findByUserIdAndFriendIdAndSubId(friends.getFriendId(),friends.getUserId(),friends.getSubId());
-        //friends2.setStatus("ACCEPTED");
         friendsSubjectsRepository.delete(friends2);
 
         Subject subject = new Subject(null,friends.getSubId().getName(),
                 friends.getSubId().getDays(),0,friends.getUserId());
-      /*  int count = subjectService.numberOfDuplicateSubjects(subject);
-        if (count > 0) {
-            subject.setName(""+subject.getName()+String.format("(%d)", count));
-        }*/
 
 
         int count =  subjectService.numberOfDuplicateSubjects(subject);
         if (count > 0) {
             subject.setName(subjectService.replaceNumberInBrackets(subject.getName(),count));
         }
+        System.out.println("новое имя предмета "+subject.getName());
 
-        //Subject s = subjectService.save(subject);
         subject.setQuestions(new ArrayList<>());
 
         for (Question q:questionService.findAllBySubId(friends.getSubId())) {
            subject.getQuestions().add(new Question(null,q.getQuestion(),q.getAnswer(),q.getDate(),0,0,null));
-            //questionService.save();
         }
-      /*  for (Plan p:planService.findAllBySubId(friends.getSubId())) {
-            planService.save(new Plan(null,p.getDate(),0,s));
-        }*/
-
+        subject = subjectService.save(subject);
+        questionService.createQuestion((ArrayList<Question>) subject.getQuestions(),subject);
 
         return subject;
 
@@ -120,7 +111,7 @@ public class FriendSubjectsService {
 
         String str = "OK";
         for (FriendsSubjects friends:f) {
-            if (friends.getFriendId() == null || friends.getUserId() == null) str = "Not";
+            if (friends.getFriendId() == null || friends.getUserId() == null || friends.getSubId() == null) str = "Not";
             else {
                 friendsSubjectsRepository.save(new FriendsSubjects(null, "REQUEST_SENT",
                         friends.getFriendId(), friends.getUserId(), friends.getSubId()));

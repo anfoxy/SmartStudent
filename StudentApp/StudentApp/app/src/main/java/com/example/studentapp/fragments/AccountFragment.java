@@ -16,10 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
+import com.example.studentapp.adapters.FriendsAdapter;
 import com.example.studentapp.al.PlanToSub;
+import com.example.studentapp.al.Subject;
 import com.example.studentapp.databinding.FragmentAccountBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
@@ -41,12 +44,12 @@ public class AccountFragment extends Fragment {
     FragmentAccountBinding binding;
     ApiInterface apiInterface;
     Users user;
-
+    ArrayList<PlanToSub> subjs;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         user = Users.getUser();
-        ArrayList<PlanToSub> subjs = MainActivity.myDBManager.getFromDB();
+        subjs = MainActivity.myDBManager.getFromDB();
         binding.section1.setTextColor(getResources().getColor(R.color.selected_text_color));
         binding.underline.setBackgroundColor(Color.BLUE);
 
@@ -83,28 +86,52 @@ public class AccountFragment extends Fragment {
                 binding.section1.setTextColor(getResources().getColor(R.color.normal_text_color));
                 binding.underline.setBackgroundColor(Color.GRAY);
                 binding.underline3.setBackgroundColor(Color.BLUE);
-               // binding.editpng.setVisibility(View.INVISIBLE);
+                // binding.editpng.setVisibility(View.INVISIBLE);
                 binding.password.setVisibility(View.GONE);
                 binding.layProfile.setVisibility(View.GONE);
                 // тут условия достижений
                 // ...
 
                 // если 5 выученных вопросов и более то:
-//                binding.profQueNo.setVisibility(View.GONE);
-//                binding.profQueYes.setVisibility(View.VISIBLE);
+                if (subjs.stream()
+                        .map(PlanToSub::getSub)
+                        .map(Subject::getSizeKnow)
+                        .max(Integer::compareTo).orElse(0) > 4) {
+                    binding.profQueNo.setVisibility(View.GONE);
+                    binding.profQueYes.setVisibility(View.VISIBLE);
+                }
 
                 // если от 1 и более друзей, то:
-//                binding.profFriendNo.setVisibility(View.GONE);
-//                binding.profFriendYes.setVisibility(View.VISIBLE);
+                Call<ArrayList<Users>> getSubs = apiInterface.friendsByUser(user.getId());
+                getSubs.enqueue(new Callback<ArrayList<Users>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Users>> call, Response<ArrayList<Users>> response) {
+
+                        if (response.body() != null && !response.body().isEmpty()) {
+                            binding.profFriendNo.setVisibility(View.GONE);
+                            binding.profFriendYes.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Users>> call, Throwable t) {
+
+                    }
+                });
+
 
                 // если один и более выученных предметов то:
-//                binding.profSubNo.setVisibility(View.GONE);
-//                binding.profSubYes.setVisibility(View.VISIBLE);
+                if (subjs.stream().anyMatch(item -> item.getSub().getSizeKnow() == item.getSub().getSizeNoKnow())) {
+                    binding.profSubNo.setVisibility(View.GONE);
+                    binding.profSubYes.setVisibility(View.VISIBLE);
+                }
+//
 
                 // если один и более прошло за всё время экзаменов(наступил день экзамена) то:
-//                binding.profExNo.setVisibility(View.GONE);
-//                binding.profExYes.setVisibility(View.VISIBLE);
-
+                if (subjs.stream().anyMatch(item -> item.getDateOfExams().isBefore(LocalDate.now()))) {
+                    binding.profExNo.setVisibility(View.GONE);
+                    binding.profExYes.setVisibility(View.VISIBLE);
+                }
                 binding.cardDostiz.setVisibility(View.VISIBLE);
 
             }

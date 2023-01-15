@@ -84,9 +84,10 @@ public class SubjectService {
         if (matcher.find()) {
             subject.setName(subject.getName().substring(0, matcher.start()));
         }
-
+        System.out.println("имя предмета "+ subject.getName());
         for (Subject s : names) {
 
+            System.out.println("имя предмета из списка "+ s.getName());
             matcher = pattern.matcher(s.getName());
             if (matcher.find()) {
                 c = Integer.parseInt(s.getName().substring(matcher.start()+1,matcher.end()-1));
@@ -96,10 +97,12 @@ public class SubjectService {
                 if(count<=c) count = c+1;
             }
         }
+        System.out.println("колличество совпадений "+ count);
         return count;
     }
 
     public String replaceNumberInBrackets(String string, int newNumber) {
+
         Pattern pattern = Pattern.compile("\\(\\d+\\)$");
         Matcher matcher = pattern.matcher(string);
 
