@@ -40,6 +40,7 @@ import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
+import com.example.studentapp.db_local.MyDBManager;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
@@ -317,6 +318,7 @@ public class EditPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 subject.delQuestion(pos);
+                MainActivity.myDBManager.updateSubTodayLearned(subject);
                 setQuestions();
                 dialog.dismiss();
 

@@ -194,14 +194,15 @@ public class PlanToSub {
 //            sub.deleteQuestion(nom);
 //            newSizeQuestionOnFuture();
 //        }
-        sub.deleteQuestion(nom);
-        newSizeQuestionOnFuture();
         //если предмет сегодняшний и мы его знаем и тудей ленед больше выучен. вопросов
-        if(sub.getQuestion(nom).getLastDate().isEqual(LocalDate.now())&&
+        if(sub.getSizeAllQuest()==1) todayLearned=0;
+        if(sub.getSizeAllQuest()>1 &&
+                sub.getQuestion(nom).getLastDate().isEqual(LocalDate.now())&&
                 sub.getQuestion(nom).getPercentKnow()==1.0 &&
                 (sub.getSizeKnow()<todayLearned)){
             todayLearned--;
         }
+        sub.deleteQuestion(nom);
         newSizeQuestionOnFuture();
     }
     public void changeQuestion(Integer nom, String quest, String answer){
