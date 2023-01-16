@@ -67,8 +67,10 @@ public class AnswerQuestionFragment extends Fragment {
     private int selectedCount = 0;
     private int totalCount = 0;
     private int CountAnswerText = 0;
+    private int emptyStringCount = 0;
     private double textKnowGet; //процент
     OkHttpClient client = new OkHttpClient();
+    MediaPlayer mediaPlayer = new MediaPlayer();
     okhttp3.Response response;
     // Переменная, хранящая текущее состояние карточки (сторона с текстом1 или с текстом2)
     private boolean isText1Visible = true;
@@ -125,6 +127,7 @@ public class AnswerQuestionFragment extends Fragment {
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
                 Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
+                    stopAudio();
                     Toast.makeText(getContext(),
                             "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
                     NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
@@ -148,6 +151,7 @@ public class AnswerQuestionFragment extends Fragment {
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
                 Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
+                    stopAudio();
                     Toast.makeText(getContext(),
                             "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
                     NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
@@ -168,12 +172,17 @@ public class AnswerQuestionFragment extends Fragment {
                 // после выделения текста который мы знаем
                 number++;
                 selectedCount = 0;
+                emptyStringCount=0;
+                System.out.println("СНИЗУ ПРИ НАЖАТИИ НА НЕКСТ БТН");
+                System.out.println(textKnowGet);
                 study.clickReady(textKnowGet*0.01);
+                emptyStringCount=0;
                 plan.newSizeQuestionOnFuture();
                 MainActivity.myDBManager.updateQuestionsToSubject(plan);
                 MainActivity.myDBManager.updateSubTodayLearned(plan);
                 Users.getUser().currentUpdateDbTime();
                 if(study.isEndOfPlan()){
+                    stopAudio();
                     Toast.makeText(getContext(),
                             "Вы прошли план на сегодня по этому предмету.", Toast.LENGTH_SHORT).show();
                     NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
@@ -194,6 +203,7 @@ public class AnswerQuestionFragment extends Fragment {
         if (isAnimationRunning) {
             return;
         }
+        stopAudio();
         binding.cardView.setCameraDistance(27000);
 
         // Создаем анимацию переворота
@@ -267,31 +277,54 @@ public class AnswerQuestionFragment extends Fragment {
         if (!study.isEndOfPlan()){ //проверка на конец тестирования
             if(!isText1Visible) flipCard();
         } else {
+            stopAudio();
             Toast.makeText(getContext(), "Вопросы по данному предмету закончились", Toast.LENGTH_SHORT).show();
             @NonNull NavDirections action = AnswerQuestionFragmentDirections.actionAnswerQuestionFragmentToCalendarFragment();
             Navigation.findNavController(getView()).navigate(action);
         }
     }
 
-
     private void TextSpen() {
+        String text = nowQuest.getAnswer();
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
-        iterator.setText(nowQuest.getAnswer());
+        iterator.setText(text);
         int start = iterator.first();
         int end = iterator.next();
-        spannable = new SpannableString(nowQuest.getAnswer());
+        spannable = new SpannableString(text);
         totalCount = 0;
         while (end != BreakIterator.DONE) {
-            final String sentence = nowQuest.getAnswer().substring(start, end);
-            ClickableSpan clickableSpan = new SentenceSpan();
-            spannable.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            final String sentence = text.substring(start, end);
+            if (!sentence.trim().isEmpty()) {
+                ClickableSpan clickableSpan = new SentenceSpan();
+                spannable.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                totalCount++;
+            }
             start = end;
             end = iterator.next();
-            totalCount++;
         }
-
         binding.textAnswer.setText(spannable);
         binding.textAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+    private class SentenceSpan extends ClickableSpan {
+        @Override
+        public void onClick(View widget) {
+            int start = spannable.getSpanStart(this);
+            int end = spannable.getSpanEnd(this);
+            BackgroundColorSpan[] spans = spannable.getSpans(start, end, BackgroundColorSpan.class);
+            if (spans.length > 0) {
+                spannable.removeSpan(spans[0]);
+                selectedCount--;
+            } else {
+                spannable.setSpan(new BackgroundColorSpan(Color.YELLOW), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                selectedCount++;
+            }
+            textKnowGet=(double) selectedCount / (totalCount-emptyStringCount) * 100;
+            binding.textAnswer.setText(spannable);
+        }
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setUnderlineText(false);
+        }
     }
 
     private int CountSpen() {
@@ -333,9 +366,9 @@ public class AnswerQuestionFragment extends Fragment {
     }
 
     public void PlayAudio(String base64Audio) {
+        stopAudio();
         try {
             String url = "data:audio/mp3;base64," + base64Audio;
-            MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepare();
             mediaPlayer.start();
@@ -344,32 +377,10 @@ public class AnswerQuestionFragment extends Fragment {
         }
     }
 
-    // Кастомный класс для обработки нажатий на предложения
-    private class SentenceSpan extends ClickableSpan {
-        @Override
-        public void onClick(View widget) {
-            int start = spannable.getSpanStart(this);
-            int end = spannable.getSpanEnd(this);
-            BackgroundColorSpan[] spans = spannable.getSpans(start, end, BackgroundColorSpan.class);
-            if (spans.length > 0) {
-                // Если предложение уже выделено, то удаляем выделение
-                spannable.removeSpan(spans[0]);
-                selectedCount--;
-            } else {
-                // Если предложение не выделено, то выделяем его
-                spannable.setSpan(new BackgroundColorSpan(Color.YELLOW), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                selectedCount++;
-            }
-            // Обновляем текст с процентом выделенных предложений
-//            String selectedPercentage = String.format(Locale.US, "Выделено: %d/%d (%.1f%%)", selectedCount, totalCount, (double) selectedCount / totalCount * 100);
-
-            textKnowGet=(double) selectedCount / totalCount * 100;
-            binding.textAnswer.setText(spannable);
-//            binding.textAnswer.append("\n" + selectedPercentage);
-        }
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            ds.setUnderlineText(false);
+    public void stopAudio() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
         }
     }
 
