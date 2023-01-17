@@ -1,7 +1,12 @@
 package com.example.studentapp.db;
 
+
+
+
+
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -27,7 +32,7 @@ public interface ApiInterface {
     @PUT("/user/{id}")
     Call<Users> editUsers(@Path("id") int id,@Body Users user);
 
-    @GET("subjects/byUser/{id}")
+/*    @GET("subjects/byUser/{id}")
     Call<ArrayList<Subjects>> getSubjectsByUser(@Path("id") int id);
 
     @GET("subjects_question/{id}")
@@ -41,9 +46,6 @@ public interface ApiInterface {
 
     @POST("questions")
     Call<Questions> addQuestion(@Body Questions questions);
-
-    @POST("plan")
-    Call<ArrayList<Plan>> addPlan(@Body ArrayList<Plan> plan);
 
     @POST("plans/{id}")
     Call<ArrayList<Plan>> addPlans(@Path("id") int id, @Body ArrayList<Plan> plan);
@@ -61,7 +63,10 @@ public interface ApiInterface {
     Call<Questions> updateQuestion(@Path("id") int id, @Body Questions question);
 
     @PUT("plan/{id}")
-    Call<Plan> updatePlan(@Path("id") int id, @Body Plan plan);
+    Call<Plan> updatePlan(@Path("id") int id, @Body Plan plan);*/
+
+    @POST("plan")
+    Call<ArrayList<Plan>> addPlan(@Body ArrayList<Plan> plan);
 
     @POST("friends_add")
     Call<String> friendsAdd(@Body Friends friends);
@@ -108,4 +113,29 @@ public interface ApiInterface {
     @POST("friends_subjects_in")
     Call<ArrayList<Subjects>> friendsSubjectsIn(@Body FriendsSubjects friends);
 
+
+    @POST("/game/set")
+    Call<Game> gameSet(@Body Game game);
+
+
+    @GET("/game/check_start/{id}")
+    Observable<String> gameCheckStart(@Path("id") int id);
+
+    @POST("/game/checking_availability/{id}")
+    Call<Game> checkingForGameAvailability(@Path("id") int id,@Body Users friend);
+
+    @POST("/game/set_status/{id}")
+    Call<Game> gameSetStatus(@Path("id") int id,@Body String status);
+
+    @GET("/game/start/{id}")
+    Call<Game> gameStart(@Path("id") int id);
+
+    @POST("/game_subjects/get_question")
+    Call<GameSubjects> gameGetQuestion(@Body Game status);
+
+    @POST("/game_subjects/set_question_host")
+    Call<GameSubjects> gameSetQuestionHost(@Body GameSubjects status);
+
+    @POST("/game_subjects/set_question_friend")
+    Call<GameSubjects> gameSetQuestionFriend(@Body GameSubjects status);
 }

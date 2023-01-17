@@ -111,6 +111,12 @@
             android:id="@+id/action_friendsProfileFragment_to_addSubjectsFriendFragment"
             app:destination="@id/addSubjectFriendFragment"
             />
+        <action
+            android:id="@+id/action_friendsProfileFragment_to_ListSubjectGameFragment"
+            app:destination="@id/ListSubjectGameFragment" />
+        <action
+            android:id="@+id/action_friendsProfileFragment_to_LoadingGameFragment"
+            app:destination="@id/LoadingGameFragment" />
     </fragment>
     <fragment
         android:id="@+id/addSubjectFriendFragment"
@@ -223,6 +229,99 @@
             app:destination="@id/editPlanFragment"
             app:popUpTo="@+id/editPlanFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ListSubjectGameFragment"
+        android:name="com.example.studentapp.fragments.game.ListSubjectGameFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_list_subject_game" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_ListSubjectGameFragment_to_SettingGameFragment"
+            app:destination="@id/SettingGameFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SettingGameFragment"
+        android:name="com.example.studentapp.fragments.game.SettingGameFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_setting_game">
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="friend"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_SettingGameFragment_to_LoadingGameFragment2"
+            app:destination="@id/LoadingGameFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/QuestionGameFragment"
+        android:name="com.example.studentapp.fragments.game.QuestionGameFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_question_game" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="status"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_QuestionGameFragment_to_CompareGameFragment"
+            app:destination="@id/CompareGameFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/CompareGameFragment"
+        android:name="com.example.studentapp.fragments.game.CompareGameFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_compare_game" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="status"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_CompareGameFragment_to_ResultGameFragment"
+            app:destination="@id/ResultGameFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ResultGameFragment"
+        android:name="com.example.studentapp.fragments.game.ResultGameFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_result_game" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/LoadingGameFragment"
+        android:name="com.example.studentapp.fragments.game.LoadingGameFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_loading_game" >
+        <argument
+            android:name="idGame"
+            app:argType="integer" />
+        <argument
+            android:name="status"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_LoadingGameFragment_to_QuestionGameFragment"
+            app:destination="@id/QuestionGameFragment" />
+
     </fragment>
 
 </navigation>

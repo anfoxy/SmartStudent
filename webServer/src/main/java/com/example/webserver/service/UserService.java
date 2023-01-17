@@ -153,7 +153,7 @@ public class UserService {
     }
 
 
-    private String currentUpdateDbTime() {
+    public String currentUpdateDbTime() {
         Calendar cal = new GregorianCalendar();
         String time = "" + cal.get(Calendar.YEAR)+
                 "-" +  checkDateFor0(cal.get(Calendar.MONTH)+1)+

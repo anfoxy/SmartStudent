@@ -31,6 +31,7 @@ import com.example.studentapp.databinding.FragmentProfileFriendsBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Friends;
 import com.example.studentapp.db.FriendsSubjects;
+import com.example.studentapp.db.Game;
 import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
@@ -151,11 +152,53 @@ public class FriendsProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToAddSubjectsFriendFragment(args.getId()));
+                Navigation
+                        .findNavController(getView())
+                        .navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToAddSubjectsFriendFragment(args.getId()));
             }
         });
 
+        binding.game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if(friends!= null) {
+                    System.out.println("11111");
+                    Call<Game> friendsDelete = apiInterface.checkingForGameAvailability(Users.getUser().getId(), friends);
+                    friendsDelete.enqueue(new Callback<Game>() {
+                        @Override
+                        public void onResponse(Call<Game> call, Response<Game> response) {
+                            System.out.println("22222");
+                            if (response.body() != null) {
+                                //проверяем кто мы в этой игре, и что с самой игрой
+
+                                if (response.body().getStatus().equals("FRIEND")) {
+
+                                    Navigation.
+                                            findNavController(getView()).
+                                            navigate(FriendsProfileFragmentDirections
+                                                    .actionFriendsProfileFragmentToLoadingGameFragment(response.body().getId(), "FRIEND"));
+                                } else if (response.body().getStatus().equals("HOST")) {
+                                    Navigation.
+                                            findNavController(getView()).
+                                            navigate(FriendsProfileFragmentDirections
+                                                    .actionFriendsProfileFragmentToLoadingGameFragment(response.body().getId(), "HOST"));
+                                } else {
+                                    Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(args.getId()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Game> call, Throwable t) {
+                            if (getContext() != null)
+                                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }else   Toast.makeText(getContext(), "Повторите попытку позже", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override

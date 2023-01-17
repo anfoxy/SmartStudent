@@ -111,6 +111,7 @@ public class FriendService {
         return users;
     }
 
+
     public Friends putMet(Long id, Friends res) throws ResourceNotFoundException {
         Friends friends = findById(id);
         friends.setStatus(res.getStatus());
@@ -139,4 +140,7 @@ public class FriendService {
         return friendsRepository.findAll();
     }
 
+    public Friends findByUserIdAndFriendId(User user, User friend) {
+       return friendsRepository.findByUserIdAndFriendId(user,friend);
+    }
 }

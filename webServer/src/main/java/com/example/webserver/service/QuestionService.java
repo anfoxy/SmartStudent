@@ -61,8 +61,7 @@ public class QuestionService {
         return questionRepository.save(question);
     }
     public Question findById(Long id) throws ResourceNotFoundException {
-        return questionRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Question not found for id:" + id.toString() + ""));
+        return questionRepository.findById(id).orElse(null);
     }
     public List<Question> findAll() {
         return questionRepository.findAll();

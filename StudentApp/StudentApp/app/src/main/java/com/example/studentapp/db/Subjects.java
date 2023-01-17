@@ -31,6 +31,13 @@ public class Subjects {
         this.userId = userId;
     }
 
+    public Subjects(int id, ArrayList<Questions> questions) {
+        this.id = id;
+        this.questions = questions;
+    }
+    public Subjects(int id) {
+        this.id = id;
+    }
     public Subjects(int id, String name, String days, int todayLearned, Users userId, ArrayList<Questions> questions, ArrayList<Plan> plans) {
         this.id = id;
         this.name = name;
