@@ -112,11 +112,11 @@
             app:destination="@id/addSubjectFriendFragment"
             />
         <action
-            android:id="@+id/action_friendsProfileFragment_to_ListSubjectGameFragment"
-            app:destination="@id/ListSubjectGameFragment" />
-        <action
             android:id="@+id/action_friendsProfileFragment_to_LoadingGameFragment"
             app:destination="@id/LoadingGameFragment" />
+        <action
+            android:id="@+id/action_friendsProfileFragment_to_ListGameHistoryFragment"
+            app:destination="@id/ListGameHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/addSubjectFriendFragment"
@@ -274,8 +274,8 @@
             android:name="status"
             app:argType="string" />
         <action
-            android:id="@+id/action_QuestionGameFragment_to_CompareGameFragment"
-            app:destination="@id/CompareGameFragment" />
+            android:id="@+id/action_QuestionGameFragment_to_LoadingGameFragment"
+            app:destination="@id/LoadingGameFragment" />
 
     </fragment>
 
@@ -291,8 +291,8 @@
             android:name="status"
             app:argType="string" />
         <action
-            android:id="@+id/action_CompareGameFragment_to_ResultGameFragment"
-            app:destination="@id/ResultGameFragment" />
+            android:id="@+id/action_CompareGameFragment_to_LoadingGameFragment"
+            app:destination="@id/LoadingGameFragment" />
 
     </fragment>
 
@@ -305,6 +305,9 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="status"
+            app:argType="string" />
 
     </fragment>
     <fragment
@@ -320,7 +323,36 @@
             app:argType="string" />
         <action
             android:id="@+id/action_LoadingGameFragment_to_QuestionGameFragment"
-            app:destination="@id/QuestionGameFragment" />
+            app:destination="@id/QuestionGameFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_LoadingGameFragment_to_ResultGameFragment"
+            app:destination="@id/ResultGameFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_LoadingGameFragment_to_CompareGameFragment"
+            app:destination="@id/CompareGameFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ListGameHistoryFragment"
+        android:name="com.example.studentapp.fragments.game.ListGameHistoryFragment"
+        android:label="игра"
+        tools:layout="@layout/fragment_list_game_history" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_ListGameHistoryFragment_to_ListSubjectGameFragment"
+            app:destination="@id/ListSubjectGameFragment" />
+        <action
+            android:id="@+id/action_ListGameHistoryFragment_to_LoadingGameFragment"
+            app:destination="@id/LoadingGameFragment" />
 
     </fragment>
 

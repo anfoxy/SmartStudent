@@ -18,21 +18,31 @@ public class Game {
     private String status;
     @SerializedName("date")
     private String date;
-
+    @SerializedName("name")
+    private String name;
     @SerializedName("numberOfQue")
     private Integer numberOfQue;
 
-    public Game(Integer id, Subjects subId, Friends friendId, String date,Integer numberOfQue) {
+    public Game(Integer id, Subjects subId, Friends friendId, String date,Integer numberOfQue,String name) {
         this.id = id;
         this.subId = subId;
         this.friendId = friendId;
         this.date = date;
         this.numberOfQue = numberOfQue;
+        this.name = name;
     }
 
     public Game(Integer id, String status) {
         this.id = id;
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getId() {
@@ -83,6 +93,7 @@ public class Game {
         this.numberOfQue = numberOfQue;
     }
 
+
     @Override
     public String toString() {
         return "Game{" +
@@ -91,6 +102,7 @@ public class Game {
                 ", friendId=" + friendId +
                 ", status='" + status + '\'' +
                 ", date='" + date + '\'' +
+                ", name='" + name + '\'' +
                 ", numberOfQue=" + numberOfQue +
                 '}';
     }

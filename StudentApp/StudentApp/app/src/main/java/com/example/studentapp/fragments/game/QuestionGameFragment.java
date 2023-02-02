@@ -1,6 +1,9 @@
 package com.example.studentapp.fragments.game;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.renderscript.ScriptGroup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.studentapp.AuthActivity;
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.al.PlanToSub;
@@ -27,6 +31,9 @@ import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 
 import java.time.LocalDate;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import io.paperdb.Paper;
@@ -42,15 +49,17 @@ public class QuestionGameFragment extends Fragment {
     QuestionGameFragmentArgs args;
     Game game;
     GameSubjects gameSubjects;
+    boolean timerStart = false;
+    int second;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        game = new Game(args.getId(),args.getStatus());
+        game = new Game(args.getId(), args.getStatus());
         getQuestion();
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(gameSubjects != null) {
+                if (gameSubjects != null) {
 
                     if (args.getStatus().equals("HOST")) {
                         gameSubjects.setAnswerHost(binding.tvAnswer.getText().toString());
@@ -89,7 +98,50 @@ public class QuestionGameFragment extends Fragment {
         });
     }
 
-    private void getQuestion(){
+    private void timer() {
+        timerStart =true;
+
+        if (gameSubjects != null) {
+            second = Integer.parseInt(gameSubjects.getGameId().getDate());
+            Integer id = args.getId();
+            String status = args.getStatus();
+
+            Runnable helloRunnable = new Runnable() {
+                public void run() {
+                    while (second > 0) {
+                        binding.time.setText(setTime());
+                        second--;
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Navigation.findNavController(getView()).
+                                    navigate(QuestionGameFragmentDirections
+                                            .actionQuestionGameFragmentToLoadingGameFragment(id, status));
+                        }
+                    });
+                }
+            };
+            Thread t = new Thread(helloRunnable);
+            t.start();
+        }
+    }
+
+   private String setTime(){
+      int minutes = second / 60;
+      int seconds = second % 60;
+        return checkDateFor0(minutes) + ":"  + checkDateFor0(seconds);
+    }
+    private String checkDateFor0(int figure){
+        return figure < 10 ? "0" + figure : "" + figure;
+    }
+    private void getQuestion() {
 
         binding.tvAnswer.setText("");
         Call<GameSubjects> getUser = apiInterface.gameGetQuestion(game);
@@ -100,18 +152,14 @@ public class QuestionGameFragment extends Fragment {
 
 
                     if (response.body().getId().equals(-1)) {
-                        try {
-                            Thread.sleep(3000);
-                            Toast.makeText(getContext(), "Подсчет результатов...", Toast.LENGTH_SHORT).show();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
                         Navigation.
                                 findNavController(getView()).
                                 navigate(QuestionGameFragmentDirections
-                                        .actionQuestionGameFragmentToCompareGameFragment(response.body().getId(), "HOST"));
+                                        .actionQuestionGameFragmentToLoadingGameFragment(args.getId(), args.getStatus()));
                     } else {
                         gameSubjects = response.body();
+                        if(!timerStart)timer();
                         binding.tvQuestion.setText(gameSubjects.getQuestion());
                     }
                 }

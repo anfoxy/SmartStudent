@@ -26,21 +26,23 @@ public class Game {
     //END - закончена
     //EXPECTED - хост ожидает друга
     //ACCEPTED - друг принял, ожидаем запуск от хоста
-
+    //RESULT_START - начат этап результатов
     @JoinColumn(name = "date")
     private String date;
-
+    @JoinColumn(name = "name")
+    private String name;
     @JoinColumn(name = "number_of_que")
     private Integer numberOfQue;
     transient private Subject subId;
     public Game() {
     }
 
-    public Game(Long id, Subject subId, Friends friendId, String status) {
+    public Game(Long id, Subject subId, Friends friendId, String status,String name) {
         this.id = id;
         this.subId = subId;
         this.friendId = friendId;
         this.status = status;
+        this.name = name;
     }
     public Game(String status) {
 

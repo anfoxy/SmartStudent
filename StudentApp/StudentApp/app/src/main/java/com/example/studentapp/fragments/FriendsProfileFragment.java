@@ -162,18 +162,16 @@ public class FriendsProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(friends!= null) {
-                    System.out.println("11111");
+                if (friends != null) {
+
                     Call<Game> friendsDelete = apiInterface.checkingForGameAvailability(Users.getUser().getId(), friends);
                     friendsDelete.enqueue(new Callback<Game>() {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
-                            System.out.println("22222");
                             if (response.body() != null) {
                                 //проверяем кто мы в этой игре, и что с самой игрой
 
                                 if (response.body().getStatus().equals("FRIEND")) {
-
                                     Navigation.
                                             findNavController(getView()).
                                             navigate(FriendsProfileFragmentDirections
@@ -184,7 +182,11 @@ public class FriendsProfileFragment extends Fragment {
                                             navigate(FriendsProfileFragmentDirections
                                                     .actionFriendsProfileFragmentToLoadingGameFragment(response.body().getId(), "HOST"));
                                 } else {
-                                    Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(args.getId()));
+                                   // Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(args.getId()));
+                                    Navigation.
+                                            findNavController(getView()).
+                                            navigate(FriendsProfileFragmentDirections
+                                                    .actionFriendsProfileFragmentToListGameHistoryFragment(friends.getId()));
                                 }
                             }
                         }

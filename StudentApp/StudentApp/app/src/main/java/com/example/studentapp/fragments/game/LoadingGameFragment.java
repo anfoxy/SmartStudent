@@ -36,21 +36,12 @@ public class LoadingGameFragment extends Fragment {
     ApiInterface apiInterface;
     FragmentLoadingGameBinding binding;
     LoadingGameFragmentArgs args;
-
+    Disposable disposable = null;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-        /*plan= MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
-
-        binding.nameSub.setText(args.getId());
-
-        */
-        Schedulers.start();
        if(args.getStatus().equals("HOST")) {
            System.out.println("хост");
            observableHost();
@@ -59,13 +50,6 @@ public class LoadingGameFragment extends Fragment {
            System.out.println("друг");
            observableFriend();
        }
-        binding.Exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //закрываем игру
-
-            }
-        });
 
 
     }
@@ -73,27 +57,32 @@ public class LoadingGameFragment extends Fragment {
 
    private void observableFriend(){
 
+      // Schedulers.start();
+
        Observable<String> observable = apiInterface.gameCheckStart(args.getIdGame())
                .repeatWhen(completed -> completed.delay(3, TimeUnit.SECONDS))
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread());
 
-       observable.subscribe(new Observer<String>() {
+      observable.subscribe(new Observer<String>() {
            @Override
            public void onSubscribe(Disposable d) {
-
+               disposable = d;
            }
 
            @Override
            public void onNext(String status) {
                if(status.equals("EXPECTED")) {
                    // хост ожидает нашего подключения
-                   Schedulers.shutdown();
+                 //  Schedulers.shutdown();
+
+                   disposable.dispose();
                    Call<Game> getUser = apiInterface.gameSetStatus(args.getIdGame(),"ACCEPTED");
                    getUser.enqueue(new Callback<Game>() {
                        @Override
                        public void onResponse(Call<Game> call, Response<Game> response) {
                            if(response.body() != null){
+                               binding.text.setText("Ожидаем ответа от хоста.");
                                observableFriend();
                            }
                        }
@@ -103,18 +92,61 @@ public class LoadingGameFragment extends Fragment {
                    });
 
                }
+               if(status.equals("QUESTION_FRIEND")||status.equals("ACCEPTED")) {
+                   binding.text.setText("Ожидаем ответа от хоста.");
+               }
                if(status.equals("NOT")) {
                    // если произошла какая-то ошибка, и данной игры нет
-                   Schedulers.shutdown();
+                //   Schedulers.shutdown();
+                   disposable.dispose();
                    binding.text.setText("Игра была завершена.");
                }
-               if(status.equals("STARTED")) {
+               if(status.equals("STARTED")||status.equals("QUESTION_HOST")) {
                    // игра уже была запущена и мы должны вернуться к игре
-                   Schedulers.shutdown();
+                  // Schedulers.shutdown();
+                   disposable.dispose();
+                   binding.text.setText("Идет загрузка игры...");
+                   try {
+                       Thread.sleep(1000);
+                   } catch (InterruptedException e) {
+                       e.printStackTrace();
+                   }
                    LoadingGameFragmentDirections
                            .ActionLoadingGameFragmentToQuestionGameFragment action =
                            LoadingGameFragmentDirections
                                    .actionLoadingGameFragmentToQuestionGameFragment(args.getIdGame(),"FRIEND");
+                   Navigation.findNavController(getView()).navigate(action);
+               }
+               if(status.equals("RESULT_HOST")||status.equals("RESULT_START")) {
+                   // игра уже на этапе результирования
+                 //  Schedulers.shutdown();
+                   disposable.dispose();
+                   binding.text.setText("Идет загрузка игры...");
+                   try {
+                       Thread.sleep(1000);
+                   } catch (InterruptedException e) {
+                       e.printStackTrace();
+                   }
+                   LoadingGameFragmentDirections
+                           .ActionLoadingGameFragmentToCompareGameFragment action =
+                           LoadingGameFragmentDirections
+                                   .actionLoadingGameFragmentToCompareGameFragment(args.getIdGame(),"FRIEND");
+                   Navigation.findNavController(getView()).navigate(action);
+               }
+               if(status.equals("END")||status.equals("RESULT_FRIEND")) {
+                   // игра уже была запущена и мы должны вернуться к игре
+                  // Schedulers.shutdown();
+                   disposable.dispose();
+                   binding.text.setText("Идет загрузка игры...");
+                   try {
+                       Thread.sleep(1000);
+                   } catch (InterruptedException e) {
+                       e.printStackTrace();
+                   }
+                   LoadingGameFragmentDirections
+                           .ActionLoadingGameFragmentToResultGameFragment action =
+                           LoadingGameFragmentDirections
+                                   .actionLoadingGameFragmentToResultGameFragment(args.getIdGame(),"FRIEND");
                    Navigation.findNavController(getView()).navigate(action);
                }
 
@@ -133,6 +165,7 @@ public class LoadingGameFragment extends Fragment {
    }
 
     private void observableHost(){
+      //  Schedulers.start();
         Observable<String> observable = apiInterface.gameCheckStart(args.getIdGame())
                 .repeatWhen(completed -> completed.delay(3, TimeUnit.SECONDS))
                 .subscribeOn(Schedulers.io())
@@ -141,20 +174,26 @@ public class LoadingGameFragment extends Fragment {
         observable.subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                disposable = d;
             }
 
             @Override
             public void onNext(String status) {
                 if(status.equals("ACCEPTED")) {
                     // друг принял игру и мы должны теперь ее запустить
-                    Schedulers.shutdown();
-
+                 //   Schedulers.shutdown();
+                    disposable.dispose();
                     Call<Game> getUser = apiInterface.gameStart(args.getIdGame());
                     getUser.enqueue(new Callback<Game>() {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
                             if(response.body() != null){
+                                binding.text.setText("Идет загрузка игры...");
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 LoadingGameFragmentDirections
                                         .ActionLoadingGameFragmentToQuestionGameFragment action =
                                         LoadingGameFragmentDirections
@@ -166,24 +205,63 @@ public class LoadingGameFragment extends Fragment {
                         public void onFailure(Call<Game> call, Throwable t) {
                         }
                     });
-
-
+                }
+                if(status.equals("QUESTION_HOST")||status.equals("EXPECTED")) {
+                    binding.text.setText("Ожидаем ответа от друга.");
                 }
                 if(status.equals("NOT")) {
                     // если произошла какая-то ошибка, и данной игры нет
-                    Schedulers.shutdown();
+                    disposable.dispose();
                     binding.text.setText("Игра была завершена.");
                 }
-                if(status.equals("STARTED")) {
+                if(status.equals("STARTED")||status.equals("QUESTION_FRIEND")) {
                     // игра уже была запущена и мы должны вернуться к игре
-                    Schedulers.shutdown();
+                   // Schedulers.shutdown();
+                    disposable.dispose();
+                    binding.text.setText("Идет загрузка игры...");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     LoadingGameFragmentDirections
                             .ActionLoadingGameFragmentToQuestionGameFragment action =
                             LoadingGameFragmentDirections
                                     .actionLoadingGameFragmentToQuestionGameFragment(args.getIdGame(),"HOST");
                     Navigation.findNavController(getView()).navigate(action);
                 }
-
+                if(status.equals("RESULT_FRIEND")||status.equals("RESULT_START")) {
+                    // игра уже на этапе результирования
+                  //  Schedulers.shutdown();
+                    disposable.dispose();
+                    binding.text.setText("Идет загрузка игры...");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    LoadingGameFragmentDirections
+                            .ActionLoadingGameFragmentToCompareGameFragment action =
+                            LoadingGameFragmentDirections
+                                    .actionLoadingGameFragmentToCompareGameFragment(args.getIdGame(),"HOST");
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+                if(status.equals("END")||status.equals("RESULT_HOST")) {
+                    // игра уже была запущена и мы должны вернуться к игре
+                   // Schedulers.shutdown();
+                    disposable.dispose();
+                    binding.text.setText("Идет загрузка игры...");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    LoadingGameFragmentDirections
+                            .ActionLoadingGameFragmentToResultGameFragment action =
+                            LoadingGameFragmentDirections
+                                    .actionLoadingGameFragmentToResultGameFragment(args.getIdGame(),"HOST");
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
 
             @Override
@@ -201,7 +279,7 @@ public class LoadingGameFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Schedulers.shutdown();
+        if(disposable != null) disposable.dispose();
     }
 
     @Override

@@ -7,7 +7,7 @@ public class GameSubjects {
     @SerializedName("id")
     private Integer id;
 
-    @SerializedName("subId")
+    @SerializedName("gameId")
     private Game gameId;
 
 
@@ -110,5 +110,17 @@ public class GameSubjects {
         this.resultFriend = resultFriend;
     }
 
-
+    @Override
+    public String toString() {
+        return "GameSubjects{" +
+                "id=" + id +
+                ", gameId=" + gameId +
+                ", question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", answerHost='" + answerHost + '\'' +
+                ", answerFriend='" + answerFriend + '\'' +
+                ", resultHost=" + resultHost +
+                ", resultFriend=" + resultFriend +
+                '}';
+    }
 }

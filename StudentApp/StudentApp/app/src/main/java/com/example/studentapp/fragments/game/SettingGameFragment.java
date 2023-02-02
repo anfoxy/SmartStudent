@@ -79,7 +79,7 @@ public class SettingGameFragment extends Fragment implements SeekBar.OnSeekBarCh
 
                 Game game = new Game(null,
                         new Subjects(plan.getId()),
-                        new Friends(null,"",friend,Users.getUser()),binding.time.getText().toString(),colQue);
+                        new Friends(null,"",friend,Users.getUser()),binding.time.getText().toString(),colQue,plan.getSub().getNameOfSubme());
 
                 Call<Game> getUser = apiInterface.gameSet(game);
                 getUser.enqueue(new Callback<Game>() {

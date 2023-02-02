@@ -14,10 +14,57 @@
         android:orientation="vertical"
         tools:context=".fragments.game.ResultGameFragment">
 
+        <TextView
+            android:id="@+id/nameSub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:gravity="center"
+            android:text="Загрузка..."
+            android:textColor="@color/textcolor"
+            android:textSize="36sp"
+            android:layout_marginBottom="20dp"/>
 
+        <TextView
+            android:id="@+id/result_host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:text="Загрузка..."
+            android:textColor="@color/textcolor"
+            android:textSize="24sp"
+            android:layout_marginBottom="10dp" />
+        <TextView
+            android:id="@+id/result_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:text="Загрузка..."
+            android:textColor="@color/textcolor"
+            android:textSize="24sp"
+            android:layout_marginBottom="20dp"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listVop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
+        </androidx.recyclerview.widget.RecyclerView>
 
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Exit"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:backgroundTint="#6A7AD5"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:text="Удалить"
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            app:cornerRadius="5dp"
+            />
     </LinearLayout>
 </layout>

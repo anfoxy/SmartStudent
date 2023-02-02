@@ -2,12 +2,14 @@ package com.example.webserver.controller;
 
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.model.Game;
+import com.example.webserver.model.GameSubjects;
 import com.example.webserver.model.Question;
 import com.example.webserver.model.User;
 import com.example.webserver.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,6 +60,12 @@ public class GameController {
     public String checkStartGame(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         return  gameService.checkStart(id);
     }
+
+    @PostMapping("/game/get_question_list")
+    public ArrayList<GameSubjects> gameGetQuestionList(@RequestBody Game game) throws ResourceNotFoundException {
+        return  gameService.gameGetQuestionList(game);
+    }
+
 
     @DeleteMapping("/game/{id}")
     public Game deleteGame(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {

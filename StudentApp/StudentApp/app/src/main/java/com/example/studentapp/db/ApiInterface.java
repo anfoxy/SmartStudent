@@ -131,11 +131,28 @@ public interface ApiInterface {
     Call<Game> gameStart(@Path("id") int id);
 
     @POST("/game_subjects/get_question")
-    Call<GameSubjects> gameGetQuestion(@Body Game status);
+    Call<GameSubjects> gameGetQuestion(@Body Game game);
 
     @POST("/game_subjects/set_question_host")
-    Call<GameSubjects> gameSetQuestionHost(@Body GameSubjects status);
+    Call<GameSubjects> gameSetQuestionHost(@Body GameSubjects game);
 
     @POST("/game_subjects/set_question_friend")
-    Call<GameSubjects> gameSetQuestionFriend(@Body GameSubjects status);
+    Call<GameSubjects> gameSetQuestionFriend(@Body GameSubjects game);
+
+    @POST("/game_subjects/set_result_host")
+    Call<GameSubjects> gameSetResultHost(@Body GameSubjects game);
+
+    @POST("/game_subjects/set_result_friend")
+    Call<GameSubjects> gameSetResultFriend(@Body GameSubjects game);
+
+    @POST("/game_subjects/get_result")
+    Call<GameSubjects> gameGetResult(@Body Game game);
+
+    @POST("/game/get_question_list")
+    Call<ArrayList<GameSubjects>> gameGetQuestionList(@Body Game game);
+
+    @POST("/game_history/get_all/{id}")
+    Call<ArrayList<Game>> getAllGamesByUserId(@Path("id") int id,@Body Users user);
+
+
 }
