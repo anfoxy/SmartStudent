@@ -27,8 +27,10 @@ import com.example.studentapp.databinding.FragmentCompareGameBinding;
 import com.example.studentapp.databinding.FragmentResultGameBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Game;
+import com.example.studentapp.db.GameHistory;
 import com.example.studentapp.db.GameSubjects;
 import com.example.studentapp.db.ServiceBuilder;
+import com.example.studentapp.db.Users;
 
 import java.util.ArrayList;
 
@@ -40,15 +42,17 @@ import retrofit2.Response;
 
 public class ResultGameFragment extends Fragment {
 
-    ApiInterface apiInterface;
-    FragmentResultGameBinding binding;
-    ResultGameFragmentArgs args;
-    Game game;
-    ArrayList<GameSubjects> gameSubjects ;
-    int friendWin;
-    int hostWin;
-    boolean allEnd = true;
-    QuestionGameAddRecycler.OnItemClickListener itemClick;
+    private ApiInterface apiInterface;
+    private FragmentResultGameBinding binding;
+    private ResultGameFragmentArgs args;
+    private Game game;
+    private ArrayList<GameSubjects> gameSubjects ;
+    private int friendWin;
+    private int hostWin;
+    private boolean allEnd = true;
+    private QuestionGameAddRecycler.OnItemClickListener itemClick;
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -127,6 +131,28 @@ public class ResultGameFragment extends Fragment {
             }
 
         };
+        binding.exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<ArrayList<GameHistory>> getRes = apiInterface.deleteGame(new GameHistory(null, Users.getUser(),game));
+                getRes.enqueue(new Callback<ArrayList<GameHistory>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<GameHistory>> call, Response<ArrayList<GameHistory>> response) {
+                        if (response.body() != null && !gameSubjects.isEmpty()) {
+                            Navigation.
+                                    findNavController(getView()).
+                                    navigate(ResultGameFragmentDirections
+                                            .actionResultGameFragmentToFriendsProfileFragment(gameSubjects.get(0).getGameId().getFriendId().getId()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<GameHistory>> call, Throwable t) {
+                    }
+                });
+
+            }
+        });
     }
 
     private void setInfo() {

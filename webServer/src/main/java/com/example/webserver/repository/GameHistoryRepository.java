@@ -13,5 +13,7 @@ public interface GameHistoryRepository extends JpaRepository<GameHistory,Long> {
 
     ArrayList<GameHistory> findAllByUserId(User user);
 
+    GameHistory findByGameIdAndUserId(Game game,User user);
+    ArrayList<GameHistory> findAllByGameId(Game game);
     void deleteAllByGameId(Game game);
 }

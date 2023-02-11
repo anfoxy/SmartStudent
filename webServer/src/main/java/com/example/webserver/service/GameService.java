@@ -153,24 +153,6 @@ public class GameService {
             }
         }
         return new Game("NOT");
-       /* Friends friends;
-        Game game = null;
-
-        friends = friendService.findByUserIdAndFriendId(usr, friend);
-        if(friends!=null) {
-            game = gameRepository.findByFriendId(friends);
-        }
-
-        if(game == null) {
-            friends = friendService.findByUserIdAndFriendId(friend, usr);
-            if (friends != null) game = gameRepository.findByFriendId(friends);
-            if(game != null) game.setStatus("FRIEND");
-        }else {
-            if(!game.getStatus().equals("END"))
-            game.setStatus("HOST");}
-
-        if(game == null) game = new Game("NOT");
-        return game;*/
     }
 
     public Game gameSetStatus(Long id, String status) throws ResourceNotFoundException {

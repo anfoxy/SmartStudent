@@ -154,5 +154,6 @@ public interface ApiInterface {
     @POST("/game_history/get_all/{id}")
     Call<ArrayList<Game>> getAllGamesByUserId(@Path("id") int id,@Body Users user);
 
-
+    @DELETE("/game_history")
+    Call<ArrayList<GameHistory>> deleteGame(@Body GameHistory game);
 }

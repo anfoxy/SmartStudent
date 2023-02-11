@@ -39,11 +39,10 @@ public class GameHistoryController {
         return  gameHistoryService.save(gameHistory);
     }
 
-    @DeleteMapping("/game_history/{id}")
-    public GameHistory deleteGameHistory(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-        GameHistory q =  gameHistoryService.findById(id);
-        gameHistoryService.delete(id);
-        return q;
+    @DeleteMapping("/game_history")
+    public GameHistory deleteGameHistory(@RequestBody GameHistory gameHistory) throws ResourceNotFoundException {
+
+        return  gameHistoryService.delete(gameHistory);
     }
 
     @PutMapping("/game_history/{id}")

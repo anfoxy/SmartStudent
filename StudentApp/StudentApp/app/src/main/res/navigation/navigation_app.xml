@@ -308,6 +308,9 @@
         <argument
             android:name="status"
             app:argType="string" />
+        <action
+            android:id="@+id/action_ResultGameFragment_to_friendsProfileFragment"
+            app:destination="@id/friendsProfileFragment" />
 
     </fragment>
     <fragment
