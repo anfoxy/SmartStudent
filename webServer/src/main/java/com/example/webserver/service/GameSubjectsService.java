@@ -100,10 +100,12 @@ public class GameSubjectsService {
     public GameSubjects getQuestion(Game game) {
 
         Game g = gameRepository.findById(game.getId()).orElse(null);
+        if(g.getStatus().equals("END"))  return new GameSubjects((long) -1);
         ArrayList<GameSubjects> gameSubjectsArrayList = null;
         if(g != null) {
             gameSubjectsArrayList = findAllByGameId(g);
         } else return null;
+
 
         if (gameSubjectsArrayList!= null && !gameSubjectsArrayList.isEmpty()){
             for (GameSubjects gameSub: gameSubjectsArrayList) {

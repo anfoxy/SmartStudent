@@ -1,5 +1,6 @@
 package com.example.studentapp.fragments.game;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,16 +8,20 @@ import android.renderscript.ScriptGroup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.studentapp.AuthActivity;
+import com.example.studentapp.LaunchActivity;
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.al.PlanToSub;
@@ -92,6 +97,70 @@ public class QuestionGameFragment extends Fragment {
                             }
                         });
                     }
+                }
+
+            }
+        });
+        binding.check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (gameSubjects != null) {
+                    AlertDialog.Builder builder
+                            = new AlertDialog.Builder(getContext());
+
+                    // set the custom layout
+                    final View customLayout
+                            = getLayoutInflater()
+                            .inflate(
+                                    R.layout.dialog_out,
+                                    null);
+                    builder.setView(customLayout);
+
+
+
+                    AlertDialog dialog
+                            = builder.create();
+
+                   TextView text = customLayout.findViewById(R.id.text_out);
+                   text.setText("Вы действительно хотите выйти \\n из игры?");
+                    Button out = customLayout.findViewById(R.id.out_acc);
+                    AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+
+                    out.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                                Call<Integer> getUser = apiInterface.exitingTheGame(Users.getUser().getId(),gameSubjects.getGameId());
+                                getUser.enqueue(new Callback<Integer>() {
+                                    @Override
+                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                        if (response.body() != null) {
+                                            Navigation.
+                                                    findNavController(getView()).
+                                                    navigate(QuestionGameFragmentDirections
+                                                            .actionQuestionGameFragmentToFriendsProfileFragment(response.body()));
+                                            dialog.dismiss();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Integer> call, Throwable t) {
+                                    }
+                                });
+
+                        }
+                    });
+
+                    clsBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
                 }
 
             }

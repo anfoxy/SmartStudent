@@ -279,6 +279,11 @@
         <action
             android:id="@+id/action_QuestionGameFragment_to_LoadingGameFragment"
             app:destination="@id/LoadingGameFragment" />
+        <action
+            android:id="@+id/action_QuestionGameFragment_to_friendsProfileFragment"
+            app:destination="@id/friendsProfileFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
 
     </fragment>
 

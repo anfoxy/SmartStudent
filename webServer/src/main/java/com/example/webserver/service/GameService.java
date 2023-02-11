@@ -198,4 +198,11 @@ public class GameService {
         Game g = findById(game.getId());
         return g != null ? gameSubjectsService.getAllByGameId(g) : null;
     }
+
+    public Long exitingTheGame(Long usr,Game game) {
+        game.setStatus("END");
+        gameRepository.save(game);
+        if(game.getFriendId().getFriendId().getId().equals(usr)) return game.getFriendId().getUserId().getId();
+        return game.getFriendId().getFriendId().getId();
+    }
 }

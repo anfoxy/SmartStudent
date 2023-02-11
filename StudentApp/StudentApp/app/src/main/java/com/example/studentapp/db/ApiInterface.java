@@ -33,39 +33,6 @@ public interface ApiInterface {
     @PUT("/user/{id}")
     Call<Users> editUsers(@Path("id") long id,@Body Users user);
 
-/*    @GET("subjects/byUser/{id}")
-    Call<ArrayList<Subjects>> getSubjectsByUser(@Path("id") int id);
-
-    @GET("subjects_question/{id}")
-    Call<Subjects> getSubjectById(@Path("id") int id);
-
-    @GET("subjects/{id}")
-    Call<Subjects> getSubjectByIdNotQuestion(@Path("id") int id);
-
-    @POST("subjects")
-    Call<Subjects> addSubject(@Body Subjects subjects);
-
-    @POST("questions")
-    Call<Questions> addQuestion(@Body Questions questions);
-
-    @POST("plans/{id}")
-    Call<ArrayList<Plan>> addPlans(@Path("id") int id, @Body ArrayList<Plan> plan);
-
-    @DELETE("subjects/{id}")
-    Call<Subjects> deleteSubject(@Path("id") int id);
-
-    @DELETE("questions/{id}")
-    Call<Questions> deleteQuestion(@Path("id") int id);
-
-    @PUT("subjects/{id}")
-    Call<Subjects> updateSubject(@Path("id") int id, @Body Subjects sub);
-
-    @PUT("questions/{id}")
-    Call<Questions> updateQuestion(@Path("id") int id, @Body Questions question);
-
-    @PUT("plan/{id}")
-    Call<Plan> updatePlan(@Path("id") int id, @Body Plan plan);*/
-
     @POST("plan")
     Call<ArrayList<Plan>> addPlan(@Body ArrayList<Plan> plan);
 
@@ -157,4 +124,8 @@ public interface ApiInterface {
 
     @HTTP(method = "DELETE", path = "/game_history", hasBody = true)
     Call<Integer> deleteGame(@Body GameHistory game);
+
+    @POST("/game/exiting_the_game/{id}")
+    Call<Integer> exitingTheGame(@Path("id") long id,@Body Game game);
+
 }
