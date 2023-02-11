@@ -1,12 +1,16 @@
 package com.example.studentapp.fragments.game;
 
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,17 +33,16 @@ import com.example.studentapp.db.Users;
 import com.example.studentapp.fragments.FriendsProfileFragmentDirections;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Locale;
 import java.util.stream.Collectors;
 
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,27 +62,42 @@ public class SettingGameFragment extends Fragment implements SeekBar.OnSeekBarCh
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        friend = new Users(args.getFriend());
+        String[] hoursValues = new String[]{"00ч", "01ч", "02ч", "03ч", "04ч", "05ч", "06ч", "07ч", "08ч", "09ч"};
 
-        plan= MainActivity.myDBManager.getFromDB().stream()
-                .filter( c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
+        binding.hoursPicker.setMinValue(0);
+        binding.hoursPicker.setMaxValue(hoursValues.length - 1);
+        binding.hoursPicker.setDisplayedValues(hoursValues);
+        binding.hoursPicker.setValue(0);
+
+        String[] minutesValues = new String[]{"00м", "05м", "10м", "15м", "20м", "25м", "30м", "35м", "40м", "45м", "50м", "55м"};
+
+        binding.minutesPicker.setMinValue(0);
+        binding.minutesPicker.setMaxValue(minutesValues.length - 1);
+        binding.minutesPicker.setDisplayedValues(minutesValues);
+        binding.minutesPicker.setValue(0);
+
+
+        binding.hoursPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        binding.minutesPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        friend = new Users(args.getFriend());
+        plan = MainActivity.myDBManager.getFromDB().stream()
+                .filter(c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
+        binding.questionCount.setText("Количество вопросов: " + String.valueOf(1 + " / " + plan.getSub().getQuestion().size()));
 
         binding.nameSub.setText(args.getId());
         binding.seekBar.setOnSeekBarChangeListener(this);
+
         binding.Start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               binding.seekBar.getProgress();
 
-             /* ArrayList<Questions> questions = new ArrayList<>();
-              for (int i = 0 ; i<binding.seekBar.getProgress(); i++) {
-                  questions.add(plan.getSub().getQuestions().get(i));
-                  questions.get(i).setId(plan.getId());
-              }*/
+              int t = binding.hoursPicker.getValue()*60+binding.minutesPicker.getValue()*5;
+              String time = "" + t;
 
                 Game game = new Game(null,
                         new Subjects(plan.getId()),
-                        new Friends(null,"",friend,Users.getUser()),binding.time.getText().toString(),colQue,plan.getSub().getNameOfSubme());
+                        new Friends(null,"",friend,Users.getUser()),time,colQue,plan.getSub().getNameOfSubme());
 
                 Call<Game> getUser = apiInterface.gameSet(game);
                 getUser.enqueue(new Callback<Game>() {
@@ -114,9 +132,8 @@ public class SettingGameFragment extends Fragment implements SeekBar.OnSeekBarCh
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         colQue = seekBar.getProgress();
-        binding.questionCount.setText("Колличество вопросов: "+String.valueOf(seekBar.getProgress()));
+        binding.questionCount.setText("Количество вопросов: "+String.valueOf(seekBar.getProgress() + " / " + plan.getSub().getQuestion().size()));
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

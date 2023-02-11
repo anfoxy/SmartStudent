@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/inter"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -44,11 +44,38 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="60dp"
-            android:layout_marginVertical="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center"
             android:src="@drawable/friends" />
+
+        <EditText
+            android:id="@+id/nameFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:inputType="textEmailAddress"
+            android:hint="Добавить друга (Email)"
+            android:padding="10dp"
+            android:maxLength="40"
+            android:layout_marginHorizontal="5dp"
+            android:gravity="center"
+            android:textColor="@color/textcolor"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:backgroundTint="#6A7AD5"
+            android:text="Отправить запрос"
+            android:textColor="@color/textbutton"
+            android:textSize="13sp"
+            app:cornerRadius="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,35 +165,6 @@
             android:background="@color/normal_view_color" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="horizontal">
-        <EditText
-            android:id="@+id/nameFriend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:layout_weight="1"
-            android:paddingRight="10dp"
-            android:textSize="16sp"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:hint="Добавить друга (EMAIL)"
-            android:textColor="@color/textcolor" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sendFriends"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="5dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#6A7AD5"
-                android:text="Отправить запрос"
-                android:textColor="@color/textbutton"
-                android:textSize="13sp"
-                app:cornerRadius="5dp" />
-    </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
