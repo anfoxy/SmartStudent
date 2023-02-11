@@ -17,4 +17,5 @@ public interface SubjectRepository extends JpaRepository<Subject,Long> {
    // ArrayList<Subject> findAllByIdNotInAndUserId(List<Long> id,User user);
     ArrayList<Subject> findAllByUserIdAndIdNotIn(User user,List<Long> id);
 
+    void deleteAllByUserId(User user);
 }

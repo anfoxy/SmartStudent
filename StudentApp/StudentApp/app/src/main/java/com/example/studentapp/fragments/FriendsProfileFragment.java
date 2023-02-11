@@ -26,7 +26,7 @@ import com.example.studentapp.adapters.FriendsIsAdapter;
 import com.example.studentapp.adapters.FriendsIsSubjectsAdapter;
 import com.example.studentapp.adapters.SubjectAddRecycler;
 import com.example.studentapp.al.PlanToSub;
-import com.example.studentapp.databinding.FragmentFriendsBinding;
+
 import com.example.studentapp.databinding.FragmentProfileFriendsBinding;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Friends;
@@ -182,11 +182,7 @@ public class FriendsProfileFragment extends Fragment {
                                             navigate(FriendsProfileFragmentDirections
                                                     .actionFriendsProfileFragmentToLoadingGameFragment(response.body().getId(), "HOST"));
                                 } else {
-                                   // Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(args.getId()));
-                                    Navigation.
-                                            findNavController(getView()).
-                                            navigate(FriendsProfileFragmentDirections
-                                                    .actionFriendsProfileFragmentToListGameHistoryFragment(friends.getId()));
+                                    Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(friends.getId()));
                                 }
                             }
                         }
@@ -201,7 +197,20 @@ public class FriendsProfileFragment extends Fragment {
                 }else   Toast.makeText(getContext(), "Повторите попытку позже", Toast.LENGTH_SHORT).show();
             }
         });
+        binding.history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if (friends != null) {
+
+                  Navigation
+                          .findNavController(getView())
+                          .navigate(FriendsProfileFragmentDirections
+                                  .actionFriendsProfileFragmentToListGameHistoryFragment(friends.getId()));
+
+                }else   Toast.makeText(getContext(), "Повторите попытку позже", Toast.LENGTH_SHORT).show();
+            }
+        });
         binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

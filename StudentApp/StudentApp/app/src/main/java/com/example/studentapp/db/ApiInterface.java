@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -27,10 +28,10 @@ public interface ApiInterface {
     Call<String> regUsers(@Body Users user);
 
     @GET("/user/{id}")
-    Call<Users> getUsers(@Path("id") int id);
+    Call<Users> getUsers(@Path("id") long id);
 
     @PUT("/user/{id}")
-    Call<Users> editUsers(@Path("id") int id,@Body Users user);
+    Call<Users> editUsers(@Path("id") long id,@Body Users user);
 
 /*    @GET("subjects/byUser/{id}")
     Call<ArrayList<Subjects>> getSubjectsByUser(@Path("id") int id);
@@ -75,13 +76,13 @@ public interface ApiInterface {
     Call<String> friendsDelete(@Body Friends friends);
 
     @GET("friends_by_user/{id}")
-    Call<ArrayList<Users>> friendsByUser(@Path("id") int id);
+    Call<ArrayList<Users>> friendsByUser(@Path("id") long id);
 
     @GET("friends_is/{id}")
-    Call<ArrayList<Users>> friendsIs(@Path("id") int id);
+    Call<ArrayList<Users>> friendsIs(@Path("id") long id);
 
     @GET("friends_in/{id}")
-    Call<ArrayList<Users>> friendsIn(@Path("id") int id);
+    Call<ArrayList<Users>> friendsIn(@Path("id") long id);
 
     @POST("friends_accept")
     Call<Friends> friendsAccept(@Body Friends friends);
@@ -93,7 +94,7 @@ public interface ApiInterface {
     Call<Friends> friendsRefuse(@Body Friends friends);
 
     @POST("friends_subjects_by_id_not_table/{id}")
-    Call<ArrayList<Subjects>> getAllFriendsSubjectsNotTabl(@Path("id") int id,@Body Users user);
+    Call<ArrayList<Subjects>> getAllFriendsSubjectsNotTabl(@Path("id") long id,@Body Users user);
 
     @POST("friends_subjects_delete_is")
     Call<FriendsSubjects> friendsSubjectsDeleteIs(@Body FriendsSubjects friends);
@@ -119,16 +120,16 @@ public interface ApiInterface {
 
 
     @GET("/game/check_start/{id}")
-    Observable<String> gameCheckStart(@Path("id") int id);
+    Observable<String> gameCheckStart(@Path("id") long id);
 
     @POST("/game/checking_availability/{id}")
-    Call<Game> checkingForGameAvailability(@Path("id") int id,@Body Users friend);
+    Call<Game> checkingForGameAvailability(@Path("id") long id,@Body Users friend);
 
     @POST("/game/set_status/{id}")
-    Call<Game> gameSetStatus(@Path("id") int id,@Body String status);
+    Call<Game> gameSetStatus(@Path("id") long id,@Body String status);
 
     @GET("/game/start/{id}")
-    Call<Game> gameStart(@Path("id") int id);
+    Call<Game> gameStart(@Path("id") long id);
 
     @POST("/game_subjects/get_question")
     Call<GameSubjects> gameGetQuestion(@Body Game game);
@@ -152,8 +153,8 @@ public interface ApiInterface {
     Call<ArrayList<GameSubjects>> gameGetQuestionList(@Body Game game);
 
     @POST("/game_history/get_all/{id}")
-    Call<ArrayList<Game>> getAllGamesByUserId(@Path("id") int id,@Body Users user);
+    Call<ArrayList<Game>> getAllGamesByUserId(@Path("id") long id,@Body Users user);
 
-    @DELETE("/game_history")
-    Call<ArrayList<GameHistory>> deleteGame(@Body GameHistory game);
+    @HTTP(method = "DELETE", path = "/game_history", hasBody = true)
+    Call<Integer> deleteGame(@Body GameHistory game);
 }

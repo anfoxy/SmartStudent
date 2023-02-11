@@ -131,23 +131,25 @@ public class ResultGameFragment extends Fragment {
             }
 
         };
-        binding.exit.setOnClickListener(new View.OnClickListener() {
+        binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<ArrayList<GameHistory>> getRes = apiInterface.deleteGame(new GameHistory(null, Users.getUser(),game));
-                getRes.enqueue(new Callback<ArrayList<GameHistory>>() {
+                Call<Integer> getRes = apiInterface.deleteGame(new GameHistory(null, Users.getUser(),game));
+                getRes.enqueue(new Callback<Integer>() {
                     @Override
-                    public void onResponse(Call<ArrayList<GameHistory>> call, Response<ArrayList<GameHistory>> response) {
-                        if (response.body() != null && !gameSubjects.isEmpty()) {
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if (response.body() != null ) {
+                            System.out.println(response.body());
                             Navigation.
                                     findNavController(getView()).
                                     navigate(ResultGameFragmentDirections
-                                            .actionResultGameFragmentToFriendsProfileFragment(gameSubjects.get(0).getGameId().getFriendId().getId()));
+                                            .actionResultGameFragmentToFriendsProfileFragment(response.body()));
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<GameHistory>> call, Throwable t) {
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                        System.out.println("Ошибка");
                     }
                 });
 

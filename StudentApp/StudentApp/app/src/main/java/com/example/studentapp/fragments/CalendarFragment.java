@@ -131,7 +131,7 @@ public class CalendarFragment extends Fragment {
         binding.listSub.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listSub.setHasFixedSize(true);
         binding.listSub.setAdapter(new SubjectPlanAdapter(getContext(), subToDayCalendar, localDate, itemClick));
-        if(subjs.size() == 0) {
+        if(subToDayCalendar.isEmpty()) {
             binding.textPlanNull.setVisibility(View.VISIBLE);
             binding.predmNullPlan.setVisibility(View.VISIBLE);
         } else {

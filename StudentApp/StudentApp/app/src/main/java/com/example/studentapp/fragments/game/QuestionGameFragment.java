@@ -134,9 +134,11 @@ public class QuestionGameFragment extends Fragment {
     }
 
    private String setTime(){
-      int minutes = second / 60;
-      int seconds = second % 60;
-        return checkDateFor0(minutes) + ":"  + checkDateFor0(seconds);
+       int hours = second / 3600;
+       int minutes = (second % 3600) / 60;
+       int seconds = second % 60;
+       if(hours>0) return checkDateFor0(hours) + ":"  +checkDateFor0(minutes) + ":"  + checkDateFor0(seconds);
+       return checkDateFor0(minutes) + ":"  + checkDateFor0(seconds);
     }
     private String checkDateFor0(int figure){
         return figure < 10 ? "0" + figure : "" + figure;

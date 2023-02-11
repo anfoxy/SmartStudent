@@ -58,14 +58,7 @@ public class ListGameHistoryFragment extends Fragment {
             }
         };
         setGames();
-        // Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(args.getId()));
 
-        binding.start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(getView()).navigate(ListGameHistoryFragmentDirections.actionListGameHistoryFragmentToListSubjectGameFragment(args.getId()));
-            }
-        });
 
     }
     private void setGames() {

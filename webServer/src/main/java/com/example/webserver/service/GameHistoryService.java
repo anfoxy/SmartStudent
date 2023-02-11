@@ -34,17 +34,21 @@ public class GameHistoryService {
         return game;
     }
 
-    public void delete(GameHistory gameHistory) throws ResourceNotFoundException {
+    public Long delete(GameHistory gameHistory) throws ResourceNotFoundException {
         Game game = gameRepository.findById(gameHistory.getGameId().getId()).orElse(new Game());
 
         ArrayList<GameHistory> gameHistoryArrayList = gameHistoryRepository.findAllByGameId(game);
         GameHistory gameHistory2 = gameHistoryRepository.findByGameIdAndUserId(game,gameHistory.getUserId());
-
+        gameHistoryRepository.delete(gameHistory2);
         if(gameHistoryArrayList.size() < 2) {
             gameSubjectsService.deleteAllByGameId(game);
             gameRepository.delete(game);
         }
-        gameHistoryRepository.delete(gameHistory2);
+
+
+        if(game.getFriendId().getFriendId().getId().equals(gameHistory.getUserId().getId()))
+            return game.getFriendId().getUserId().getId();
+        else  return game.getFriendId().getFriendId().getId();
     }
     public GameHistory save(GameHistory game){
         return gameHistoryRepository.save(game);
@@ -66,7 +70,8 @@ public class GameHistoryService {
 
 
         gameList.removeIf((Game g) ->{
-            if(g.getFriendId().getUserId().getEmail().equals(user.getEmail())
+            if (!g.getStatus().equals("END")) return true;
+            else if(g.getFriendId().getUserId().getEmail().equals(user.getEmail())
                     && g.getFriendId().getFriendId().getId().equals(idFriend)) {
                 g.setStatus("HOST");
                 return false;

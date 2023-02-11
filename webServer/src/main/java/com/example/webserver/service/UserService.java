@@ -102,22 +102,33 @@ public class UserService {
     public ArrayList<Subject> updateDBTime(User userLoc, User userSer,ArrayList<Subject> subjects) throws ResourceNotFoundException {
         if(!checkTime(userLoc,userSer)) {
             System.out.println("обновляю сервер");
+
             // deleteAllSub(userSer);
-            for (Subject s : subjects) {
-
-                subjectService.putMet(s.getId(), s);
-                questionService.deleteAllBySubId(s);
-                planService.deleteAllBySubId(s);
-                addAllQueSubId( s.getQuestions(),s);
-                addAllPlanSubId(s.getPlans(),s);
+            if(subjects.isEmpty()){
+                ArrayList<Subject> subjectsArray =  subjectRepository.findAllByUserId(userSer);
+                for (Subject s : subjectsArray) {
+                    questionService.deleteAllBySubId(s);
+                    planService.deleteAllBySubId(s);
+                }
+                deleteAllSub(subjectsArray);
             }
+            else {
+                for (Subject s : subjects) {
 
-            List<Long> ids = subjects.stream()
-                    .map(Subject::getId)
-                    .collect(Collectors.toList());
-            ArrayList<Subject> sub = subjectRepository.findAllByUserIdAndIdNotIn(userSer,ids);
-            deleteAllSub(sub);
+                    subjectService.putMet(s.getId(), s);
+                    questionService.deleteAllBySubId(s);
+                    planService.deleteAllBySubId(s);
+                    addAllQueSubId(s.getQuestions(), s);
+                    addAllPlanSubId(s.getPlans(), s);
+                }
 
+                List<Long> ids = subjects.stream()
+                        .map(Subject::getId)
+                        .collect(Collectors.toList());
+                ArrayList<Subject> sub = subjectRepository.findAllByUserIdAndIdNotIn(userSer, ids);
+
+                deleteAllSub(sub);
+            }
             userSer.setUpdateDbTime(currentUpdateDbTime());
             save(userSer);
             return findAllByUserIdPlusQuestionAndPlan(userSer);

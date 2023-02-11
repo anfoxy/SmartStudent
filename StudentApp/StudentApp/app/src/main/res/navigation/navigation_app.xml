@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_friendsProfileFragment_to_ListGameHistoryFragment"
             app:destination="@id/ListGameHistoryFragment" />
+        <action
+            android:id="@+id/action_friendsProfileFragment_to_ListSubjectGameFragment"
+            app:destination="@id/ListSubjectGameFragment" />
     </fragment>
     <fragment
         android:id="@+id/addSubjectFriendFragment"
@@ -350,9 +353,6 @@
         <argument
             android:name="id"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_ListGameHistoryFragment_to_ListSubjectGameFragment"
-            app:destination="@id/ListSubjectGameFragment" />
         <action
             android:id="@+id/action_ListGameHistoryFragment_to_LoadingGameFragment"
             app:destination="@id/LoadingGameFragment" />
