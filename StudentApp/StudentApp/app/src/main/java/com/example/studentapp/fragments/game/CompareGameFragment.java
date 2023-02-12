@@ -40,6 +40,7 @@ public class CompareGameFragment extends Fragment {
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 setResult(2);
             }
         });

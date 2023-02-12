@@ -82,7 +82,7 @@ public class LoadingGameFragment extends Fragment {
                        @Override
                        public void onResponse(Call<Game> call, Response<Game> response) {
                            if(response.body() != null){
-                               binding.text.setText("Ожидаем ответа от хоста.");
+                               binding.text.setText("Ожидание подключения другого пользователя.");
                                observableFriend();
                            }
                        }
@@ -93,7 +93,7 @@ public class LoadingGameFragment extends Fragment {
 
                }
                if(status.equals("QUESTION_FRIEND")||status.equals("ACCEPTED")) {
-                   binding.text.setText("Ожидаем ответа от хоста.");
+                   binding.text.setText("Ожидание синхронизации хоста..");
                }
                if(status.equals("NOT")) {
                    // если произошла какая-то ошибка, и данной игры нет
@@ -121,7 +121,7 @@ public class LoadingGameFragment extends Fragment {
                    // игра уже на этапе результирования
                  //  Schedulers.shutdown();
                    disposable.dispose();
-                   binding.text.setText("Идет загрузка игры...");
+                   binding.text.setText("Подготавливаем результаты..");
                    try {
                        Thread.sleep(1000);
                    } catch (InterruptedException e) {
@@ -207,7 +207,7 @@ public class LoadingGameFragment extends Fragment {
                     });
                 }
                 if(status.equals("QUESTION_HOST")||status.equals("EXPECTED")) {
-                    binding.text.setText("Ожидаем ответа от друга.");
+                    binding.text.setText("Ожидание другого пользователя..");
                 }
                 if(status.equals("NOT")) {
                     // если произошла какая-то ошибка, и данной игры нет
@@ -234,7 +234,7 @@ public class LoadingGameFragment extends Fragment {
                     // игра уже на этапе результирования
                   //  Schedulers.shutdown();
                     disposable.dispose();
-                    binding.text.setText("Идет загрузка игры...");
+                    binding.text.setText("Идет загрузка игры..");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -250,7 +250,7 @@ public class LoadingGameFragment extends Fragment {
                     // игра уже была запущена и мы должны вернуться к игре
                    // Schedulers.shutdown();
                     disposable.dispose();
-                    binding.text.setText("Идет загрузка игры...");
+                    binding.text.setText("Идет загрузка игры..");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {

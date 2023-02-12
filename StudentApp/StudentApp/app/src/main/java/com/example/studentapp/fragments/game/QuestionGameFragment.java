@@ -122,7 +122,7 @@ public class QuestionGameFragment extends Fragment {
                             = builder.create();
 
                    TextView text = customLayout.findViewById(R.id.text_out);
-                   text.setText("Вы действительно хотите выйти \\n из игры?");
+                   text.setText("Вы действительно хотите выйти \n из игры?");
                     Button out = customLayout.findViewById(R.id.out_acc);
                     AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
 

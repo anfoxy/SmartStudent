@@ -16,8 +16,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F1F1F1"
+            android:layout_height="45dp"
+            android:background="#fff"
+            android:elevation="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/nameSub"
@@ -25,6 +30,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sourcesanspro_semibold"
                 android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
                 android:layout_weight="1"
                 android:text="Проверяем результаты"
                 android:textColor="@color/textcolor"
@@ -33,74 +40,184 @@
                 android:id="@+id/check"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginEnd="25dp"
-                android:layout_gravity="center_vertical|end"
-                android:src="@drawable/del" />
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:src="@drawable/exit" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/question"
-            android:layout_weight="1"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:background="#BCC2C6"
-            android:gravity="clip_horizontal"
-            android:hint="Вопрос"
-            android:focusable="false"
+            android:height="40dp"
             android:fontFamily="@font/sourcesanspro_semibold"
+            android:background="#C5D2FF"
+            android:gravity="center"
             android:padding="10dp"
             android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginHorizontal="10dp"
+            android:elevation="5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="wrap_content"
+            android:text="Вопрос" />
 
-        <EditText
-            android:id="@+id/answer"
-            android:layout_weight="1"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:background="#BCC2C6"
-            android:gravity="clip_horizontal"
-            android:hint="Ответ"
-            android:focusable="false"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:padding="10dp"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/answer_me"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:background="#E0F2FF"
-            android:gravity="clip_horizontal"
-            android:hint="Ответ мой"
-            android:focusable="false"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:padding="10dp"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/answer_friend"
-            android:layout_weight="1"
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:background="#fff"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="10dp"
+                    android:scrollbarStyle="insideInset"
+                    android:layout_marginHorizontal="10dp"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/sourcesanspro_semibold"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="TextView"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:background="#E0F2FF"
-            android:gravity="clip_horizontal"
-            android:focusable="false"
-            android:hint="Ответ друга"
+            android:height="40dp"
             android:fontFamily="@font/sourcesanspro_semibold"
+            android:background="#C5D2FF"
+            android:gravity="center"
             android:padding="10dp"
             android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginHorizontal="10dp"
+            android:elevation="5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="7dp"
+            android:layout_height="wrap_content"
+            android:text="Ответ" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+
+                    android:background="#fff"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="10dp"
+                    android:scrollbarStyle="insideInset"
+                    android:layout_marginHorizontal="10dp"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/sourcesanspro_semibold"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="TextView"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:height="40dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:background="#C5F0FF"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="10dp"
+            android:elevation="5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="7dp"
+            android:layout_height="wrap_content"
+            android:text="Ваш ответ" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/answer_me"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:background="#fff"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="10dp"
+                    android:scrollbarStyle="insideInset"
+                    android:layout_marginHorizontal="10dp"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/sourcesanspro_semibold"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="TextView"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:height="40dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:background="#C5F0FF"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="10dp"
+            android:elevation="5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="7dp"
+            android:layout_height="wrap_content"
+            android:text="Ответ друга" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/answer_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:background="#fff"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="10dp"
+                    android:scrollbarStyle="insideInset"
+                    android:layout_marginHorizontal="10dp"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/sourcesanspro_semibold"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="TextView"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
 
 
         <com.google.android.material.button.MaterialButton

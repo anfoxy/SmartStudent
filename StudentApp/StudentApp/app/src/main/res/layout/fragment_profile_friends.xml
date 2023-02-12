@@ -21,8 +21,8 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center|center_horizontal"
-                android:layout_margin="16dp"
-                android:src="@drawable/user" />
+                android:layout_margin="12dp"
+                android:src="@drawable/profile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sourcesanspro_semibold"
-                        android:text="Логин:"
+                        android:text="Имя пользователя:"
                         android:textColor="#757575"
                         android:layout_marginTop="5dp"
                         android:textSize="15sp"
@@ -64,12 +64,12 @@
 
                 <ImageView
                     android:id="@+id/delete"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center|center_horizontal"
-                    android:layout_margin="16dp"
+                    android:layout_margin="12dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/del_user" />
+                    android:src="@drawable/delete_friends" />
 
             </LinearLayout>
 

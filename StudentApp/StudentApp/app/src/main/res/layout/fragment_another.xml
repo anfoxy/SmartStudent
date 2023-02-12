@@ -15,8 +15,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_login"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginVertical="5dp"
+            android:layout_height="65dp"
+            android:elevation="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+
+
             android:background="#FFFFFF">
 
             <TextView
@@ -47,9 +51,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_friend"
-
+            android:elevation="5dp"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
+
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -82,7 +87,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_about"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
+            android:elevation="5dp"
+
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -115,7 +122,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_contact"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
+            android:elevation="5dp"
+
             android:layout_marginVertical="5dp"
             android:background="#FFFFFF">
 
@@ -148,7 +157,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_out"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
+            android:elevation="5dp"
 
             android:layout_marginVertical="5dp"
             android:background="#FAEBEB">
@@ -176,6 +186,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/ic_arrow_right"
                 tools:ignore="VectorDrawableCompat" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
