@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
     </data>
 
     <LinearLayout
@@ -14,46 +13,63 @@
         android:orientation="vertical"
         tools:context=".fragments.game.ListSubjectGameFragment">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/text_info_sub_game"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="3dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="#fff"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:gravity="center"
+            android:text="Выберите предмет, с которым хотите начать игру"
+            android:textColor="#6373AC"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_sub_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/list_item">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_sub_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:listitem="@layout/list_item_game">
 
-            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
-            <TextView
-                android:id="@+id/text_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Список предметов пуст"
-                android:textSize="16sp"
-                android:textColor="#787878"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/predm_null_png"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="300dp"
+            android:src="@drawable/no_game"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/text_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/predm_null_png"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center|center_horizontal"
-                android:layout_margin="16dp"
-                android:src="@drawable/img_7"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/text_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:gravity="center"
+            android:text="Список общих предметов пуст.\n\nДля соревновательного\nрежима необходимо иметь хотя бы один общий предмет."
+            android:textColor="#787878"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </LinearLayout>

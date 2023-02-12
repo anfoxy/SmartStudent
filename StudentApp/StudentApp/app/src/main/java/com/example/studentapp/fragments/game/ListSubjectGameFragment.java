@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
-import com.example.studentapp.adapters.SubjectAdapter;
+import com.example.studentapp.adapters.SubjectAdapterGame;
 import com.example.studentapp.al.PlanToSub;
 import com.example.studentapp.databinding.FragmentListSubjectGameBinding;
 import com.example.studentapp.db.ApiInterface;
@@ -29,13 +29,13 @@ public class ListSubjectGameFragment extends Fragment {
 
     FragmentListSubjectGameBinding binding;
     ApiInterface apiInterface;
-    SubjectAdapter.OnItemClickListener itemClickListener;
+    SubjectAdapterGame.OnItemClickListener itemClickListener;
     ListSubjectGameFragmentArgs args;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        itemClickListener =new SubjectAdapter.OnItemClickListener() {
+        itemClickListener =new SubjectAdapterGame.OnItemClickListener() {
             @Override
             public void onClickSubject(PlanToSub subject, int position) {
                 // переход на экран редактирования режима игры
@@ -54,13 +54,18 @@ public class ListSubjectGameFragment extends Fragment {
         ArrayList<PlanToSub> subjs = MainActivity.myDBManager.getFromDB();
         binding.listSubView.setHasFixedSize(true);
         binding.listSubView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.listSubView.setAdapter(new SubjectAdapter(getContext(), subjs, itemClickListener));
+        binding.listSubView.setAdapter(new SubjectAdapterGame(getContext(), subjs, itemClickListener));
         if(subjs.size() == 0) {
             binding.predmNullPng.setVisibility(View.VISIBLE);
             binding.textList.setVisibility(View.VISIBLE);
+            binding.textInfoSubGame.setVisibility(View.GONE);
+            binding.listSubView.setVisibility(View.GONE);
+
         } else {
-            binding.textList.setVisibility(View.INVISIBLE);
-            binding.predmNullPng.setVisibility(View.INVISIBLE);
+            binding.textList.setVisibility(View.GONE);
+            binding.predmNullPng.setVisibility(View.GONE);
+            binding.textInfoSubGame.setVisibility(View.VISIBLE);
+            binding.listSubView.setVisibility(View.VISIBLE);
         }
     }
 
