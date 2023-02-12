@@ -11,22 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F1F1F1"
+        android:gravity="center"
         android:orientation="vertical"
         tools:context=".fragments.game.LoadingGameFragment">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center|center_horizontal"
+            android:src="@drawable/loading" />
 
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="40dp"
             android:fontFamily="@font/sourcesanspro_semibold"
             android:gravity="center"
             android:text="Идет загрузка игры..."
             android:textColor="@color/textcolor"
             android:textSize="24sp" />
-
-
-
     </LinearLayout>
 </layout>

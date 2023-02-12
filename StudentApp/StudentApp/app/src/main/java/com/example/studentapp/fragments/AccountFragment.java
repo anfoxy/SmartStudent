@@ -61,7 +61,7 @@ public class AccountFragment extends Fragment {
                 .map(PlanToSub::getDateOfExams)
                 .min(LocalDate::compareTo)
                 .orElse(null);
-        if (localDate == null) binding.nextExam.setText("-");
+        if (localDate == null) binding.nextExam.setText("отсутствует");
         else binding.nextExam.setText(localDate.toString());
 
         binding.layProfile.setVisibility(View.VISIBLE);

@@ -87,7 +87,7 @@ public class EditPlanFragment extends Fragment {
                 .filter(c -> c.getSub().getNameOfSubme().equals(args.getId())).collect(Collectors.toList()).get(0);
         localDate = subject.getDateOfExams();
 
-        if (localDate.isBefore(LocalDate.now())) binding.editPlan.setVisibility(View.INVISIBLE);
+        if (localDate.isBefore(LocalDate.now())) binding.editPlan.setVisibility(View.GONE);
 
         itemClick = new QuestionAddRecycler.OnItemClickListener() {
             @Override

@@ -18,8 +18,20 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center|center_horizontal"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:src="@drawable/game_settings"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:background="#FFFFFF"
+            android:elevation="10dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:gravity="center"
+            android:text="Параметры соревновательного\nрежима"
+            android:textColor="#607CB5"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/nameSub"
@@ -32,18 +44,6 @@
             android:gravity="center"
             android:text="Предмет"
             android:textColor="#606060"
-            android:textSize="25sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:gravity="center"
-            android:layout_marginVertical="5dp"
-            android:elevation="10dp"
-            android:text="Параметры соревновательного\nрежима"
-            android:textColor="#607CB5"
             android:textSize="25sp" />
 
 
@@ -77,7 +77,7 @@
             android:fontFamily="@font/sourcesanspro_semibold"
             android:gravity="center"
             android:textColor="#606060"
-            android:elevation="10dp"
+
             android:background="#FFFFFF"
             android:text="Время на прохождение теста:"
             android:textSize="22sp" />
@@ -92,14 +92,18 @@
                 android:id="@+id/hoursPicker"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
+                android:layout_marginTop="1dp"
                 android:background="#FFFFFF"
+                android:elevation="10dp"
                 android:layout_height="match_parent"/>
 
             <NumberPicker
                 android:id="@+id/minutesPicker"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
+                android:layout_marginTop="1dp"
                 android:background="#FFFFFF"
+                android:elevation="10dp"
                 android:layout_height="match_parent"/>
 
         </LinearLayout>

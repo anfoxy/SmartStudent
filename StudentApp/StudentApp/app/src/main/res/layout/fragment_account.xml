@@ -28,22 +28,32 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="85dp"
+                    android:layout_width="75dp"
                     android:layout_height="85dp"
                     android:layout_gravity="center|center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:src="@drawable/user" />
+                    android:src="@drawable/profile" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sourcesanspro_semibold"
+                    android:gravity="center"
+                    android:text="Имя пользователя"
+                    android:textColor="#707070"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:text="dsdsg"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/sourcesanspro_semibold"
+                    android:gravity="center"
+                    android:text="name"
                     android:textColor="@color/textcolor"
-                    android:textSize="26sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -157,8 +167,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
                                 android:src="@drawable/email" />
 
                             <TextView
@@ -188,8 +198,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
                                 android:src="@drawable/dateexams" />
 
                             <TextView
@@ -219,8 +229,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
                                 android:src="@drawable/sizepredm" />
 
                             <TextView
