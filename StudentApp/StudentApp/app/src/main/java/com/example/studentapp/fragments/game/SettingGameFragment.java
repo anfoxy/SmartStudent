@@ -108,7 +108,7 @@ public class SettingGameFragment extends Fragment implements SeekBar.OnSeekBarCh
                             Navigation.
                                     findNavController(getView()).
                                     navigate(SettingGameFragmentDirections
-                                            .actionSettingGameFragmentToLoadingGameFragment2(response.body().getId(),"HOST"));
+                                            .actionSettingGameFragmentToLoadingGameFragment2(response.body().getId()));
                         }
                     }
                     @Override

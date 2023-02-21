@@ -273,9 +273,9 @@
         <argument
             android:name="id"
             app:argType="integer" />
-        <argument
-            android:name="status"
-            app:argType="string" />
+<!--        <argument
+            android:name="idFriend"
+            app:argType="integer" />-->
         <action
             android:id="@+id/action_QuestionGameFragment_to_LoadingGameFragment"
             app:destination="@id/LoadingGameFragment" />
@@ -295,9 +295,9 @@
         <argument
             android:name="id"
             app:argType="integer" />
-        <argument
-            android:name="status"
-            app:argType="string" />
+<!--        <argument
+            android:name="idFriend"
+            app:argType="integer" />-->
         <action
             android:id="@+id/action_CompareGameFragment_to_LoadingGameFragment"
             app:destination="@id/LoadingGameFragment" />
@@ -313,9 +313,9 @@
         <argument
             android:name="id"
             app:argType="integer" />
-        <argument
-            android:name="status"
-            app:argType="string" />
+<!--        <argument
+            android:name="idFriend"
+            app:argType="integer" />-->
         <action
             android:id="@+id/action_ResultGameFragment_to_friendsProfileFragment"
             app:destination="@id/friendsProfileFragment" />
@@ -329,9 +329,12 @@
         <argument
             android:name="idGame"
             app:argType="integer" />
-        <argument
+     <!--   <argument
+            android:name="idFriend"
+            app:argType="integer" />-->
+<!--        <argument
             android:name="status"
-            app:argType="string" />
+            app:argType="string" />-->
         <action
             android:id="@+id/action_LoadingGameFragment_to_QuestionGameFragment"
             app:destination="@id/QuestionGameFragment"

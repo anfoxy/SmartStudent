@@ -60,14 +60,15 @@ public class GameController {
         return  gameService.setGame(game);
     }
 
-    @GetMapping("/game/check_start/{id}")
-    public String checkStartGame(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-        return  gameService.checkStart(id);
+    @GetMapping("/game/check_start/{id_game}/{id_user}")
+    public String checkStartGame(@PathVariable(value = "id_game") Long game_id,@PathVariable(value = "id_user") Long user_id) throws ResourceNotFoundException {
+        System.out.println("статус ");
+        return  gameService.checkStart(game_id,user_id);
     }
 
-    @PostMapping("/game/get_question_list")
-    public ArrayList<GameSubjects> gameGetQuestionList(@RequestBody Game game) throws ResourceNotFoundException {
-        return  gameService.gameGetQuestionList(game);
+    @GetMapping("/game/get_question_list/{id}")
+    public ArrayList<GameSubjects> gameGetQuestionList(@PathVariable(value = "id") Long game_id) throws ResourceNotFoundException {
+        return  gameService.gameGetQuestionList(game_id);
     }
 
 

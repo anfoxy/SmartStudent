@@ -52,7 +52,7 @@ public class ListGameHistoryFragment extends Fragment {
                 ListGameHistoryFragmentDirections
                         .ActionListGameHistoryFragmentToLoadingGameFragment action =
                         ListGameHistoryFragmentDirections
-                                .actionListGameHistoryFragmentToLoadingGameFragment(game.getId(), game.getStatus());
+                                .actionListGameHistoryFragmentToLoadingGameFragment(game.getId());
                 Navigation.findNavController(getView()).navigate(action);
 
             }

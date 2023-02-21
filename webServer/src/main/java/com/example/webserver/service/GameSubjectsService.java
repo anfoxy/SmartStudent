@@ -1,10 +1,7 @@
 package com.example.webserver.service;
 
 import com.example.webserver.exception.ResourceNotFoundException;
-import com.example.webserver.model.Game;
-import com.example.webserver.model.GameSubjects;
-import com.example.webserver.model.Question;
-import com.example.webserver.model.Subject;
+import com.example.webserver.model.*;
 import com.example.webserver.repository.GameRepository;
 import com.example.webserver.repository.GameSubjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +34,13 @@ public class GameSubjectsService {
     public boolean setSubjectsGame(Integer questionsSize, Game game) throws ResourceNotFoundException {
 
        ArrayList<Question> questions = questionService.findAllBySubId(game.getSubId());
-        if(questionsSize<1 || questions.size()< 1) return  false;
+        if(questionsSize<1 || questions.isEmpty()) return  false;
         for(int i = 0; i<questionsSize && i<questions.size();i++){
-            System.out.println("в вопросе  "+ questions.get(i));
-
             GameSubjects gameSubjects = new GameSubjects(null,
                     game,questions.get(i).getQuestion(),questions.get(i).getAnswer(),
                     null,null,null,null);
-            System.out.println("в GameSubjects  "+ gameSubjects);
             save(gameSubjects);
         }
-
         return true;
     }
 
@@ -57,7 +50,7 @@ public class GameSubjectsService {
     }
 
     private ArrayList<GameSubjects> findAllByGameId(Game game) {
-        return gameSubjectsRepository.findAllByGameId(game);
+        return game != null ? gameSubjectsRepository.findAllByGameId(game) : null;
     }
 
     public GameSubjects putMet(Long id, GameSubjects req) throws ResourceNotFoundException {
@@ -74,13 +67,6 @@ public class GameSubjectsService {
         return game;
     }
 
-    public boolean deleteGame(Long userId) {
-        if (gameSubjectsRepository.findById(userId).isPresent()) {
-            gameSubjectsRepository.deleteById(userId);
-            return true;
-        }
-        return false;
-    }
     public void delete(Long id) throws ResourceNotFoundException {
         GameSubjects game = findById(id);
         gameSubjectsRepository.delete(game);
@@ -91,43 +77,44 @@ public class GameSubjectsService {
     }
     public GameSubjects findById(Long id) throws ResourceNotFoundException {
         return gameSubjectsRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("GameSubjects not found for id:" + id.toString() + ""));
+                new ResourceNotFoundException("GameSubjects not found for id:" + id + ""));
     }
     public List<GameSubjects> findAll() {
         return gameSubjectsRepository.findAll();
     }
 
-    public GameSubjects getQuestion(Game game) {
+    public GameSubjects getQuestion(Long id_game, User user) {
 
-        Game g = gameRepository.findById(game.getId()).orElse(null);
-        if(g.getStatus().equals("END"))  return new GameSubjects((long) -1);
-        ArrayList<GameSubjects> gameSubjectsArrayList = null;
-        if(g != null) {
-            gameSubjectsArrayList = findAllByGameId(g);
-        } else return null;
-
+        Game g = gameRepository.findById(id_game).orElse(null);
+        ArrayList<GameSubjects> gameSubjectsArrayList = findAllByGameId(g);
 
         if (gameSubjectsArrayList!= null && !gameSubjectsArrayList.isEmpty()){
+
             for (GameSubjects gameSub: gameSubjectsArrayList) {
-                if(game.getStatus().equals("HOST") && gameSub.getAnswerHost() == null) {
+                if(g.getFriendId().getUserId().getId().equals(user.getId()) && gameSub.getAnswerHost() == null) {
                     gameSub.getGameId().setDate(getTimeToEnd(gameSub.getGameId()));
                     return gameSub;
                 }
-                if(game.getStatus().equals("FRIEND") && gameSub.getAnswerFriend() == null) {
+                if(g.getFriendId().getFriendId().getId().equals(user.getId()) && gameSub.getAnswerFriend() == null) {
                     gameSub.getGameId().setDate(getTimeToEnd(gameSub.getGameId()));
                     return gameSub;
                 }
             }
-            if (game.getStatus().equals("HOST")) {
-                if (g.getStatus().equals("STARTED")) {
-                    g.setStatus("QUESTION_HOST");
-                    gameRepository.save(g);
-                } else {
-                    g.setStatus("RESULT_START");
-                    gameRepository.save(g);
-                }
-                return new GameSubjects((long) -1);
+            updateStatusForQuestionEnd(g,user);
+            return new GameSubjects((long) -1);
+        }
+        return null;
+    }
+    private void updateStatusForQuestionEnd(Game g,User user){
+        if (g.getFriendId().getUserId().getId().equals(user.getId())) {
+            if (g.getStatus().equals("STARTED")) {
+                g.setStatus("QUESTION_HOST");
+                gameRepository.save(g);
+            } else {
+                g.setStatus("RESULT_START");
+                gameRepository.save(g);
             }
+        } else {
             if (g.getStatus().equals("STARTED")) {
                 g.setStatus("QUESTION_FRIEND");
                 gameRepository.save(g);
@@ -135,10 +122,9 @@ public class GameSubjectsService {
                 g.setStatus("RESULT_START");
                 gameRepository.save(g);
             }
-            return new GameSubjects((long) -1);
         }
-        return null;
     }
+
     private String getTimeToEnd(Game game){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
         LocalDateTime date = LocalDateTime.parse(game.getDate(), formatter);
@@ -147,6 +133,21 @@ public class GameSubjectsService {
         return "" + SECONDS.between(LocalDateTime.now(), date);
     }
 
+    public GameSubjects setQuestion(GameSubjects game,Long id_usr) throws ResourceNotFoundException {
+        System.out.println("ghbikb");
+        GameSubjects g = findById(game.getId());
+        if(g != null) {
+            if(game.getGameId().getFriendId().getUserId().getId().equals(id_usr)) {
+                g.setAnswerHost(game.getAnswerHost());
+                return save(g);
+            }
+            if(game.getGameId().getFriendId().getFriendId().getId().equals(id_usr)) {
+                g.setAnswerFriend(game.getAnswerHost());
+                return save(g);
+            }
+        }
+        return  null;
+    }
     public GameSubjects setQuestionHost(GameSubjects game) throws ResourceNotFoundException {
 
         GameSubjects g = findById(game.getId());
@@ -166,31 +167,35 @@ public class GameSubjectsService {
         return  null;
     }
 
-    public GameSubjects getResult(Game game) {
-        // вынести в отдельную функцию, т.к код повторяется в другой функции. отличается только if
-        Game g = gameRepository.findById(game.getId()).orElse(null);
-        ArrayList<GameSubjects> gameSubjectsArrayList = null;
-        if (g != null) {
-            gameSubjectsArrayList = findAllByGameId(g);
-        } else return null;
+    public GameSubjects getResult(Long id_game, User user) {
+
+        Game g = gameRepository.findById(id_game).orElse(null);
+        ArrayList<GameSubjects> gameSubjectsArrayList = findAllByGameId(g);
 
         if (gameSubjectsArrayList != null && !gameSubjectsArrayList.isEmpty()) {
             for (GameSubjects gameSub : gameSubjectsArrayList) {
-                if (game.getStatus().equals("HOST") && gameSub.getResultHost() == null)
+
+                if (g.getFriendId().getUserId().getId().equals(user.getId()) && gameSub.getResultHost() == null)
                     return gameSub;
-                if (game.getStatus().equals("FRIEND") && gameSub.getResultFriend() == null)
+                if (g.getFriendId().getFriendId().getId().equals(user.getId()) && gameSub.getResultFriend() == null)
                     return gameSub;
             }
-            if (game.getStatus().equals("HOST")) {
-                if (g.getStatus().equals("RESULT_START")) {
-                    g.setStatus("RESULT_HOST");
-                    gameRepository.save(g);
-                } else {
-                    g.setStatus("END");
-                    gameRepository.save(g);
-                }
-                return new GameSubjects((long) -1);
+            updateStatusForResultEnd(g,user);
+            return new GameSubjects((long) -1);
+        }
+        return  null;
+    }
+
+    private void updateStatusForResultEnd(Game g,User user){
+        if (g.getFriendId().getUserId().getId().equals(user.getId())) {
+            if (g.getStatus().equals("RESULT_START")) {
+                g.setStatus("RESULT_HOST");
+                gameRepository.save(g);
+            } else {
+                g.setStatus("END");
+                gameRepository.save(g);
             }
+        } else {
             if (g.getStatus().equals("RESULT_START")) {
                 g.setStatus("RESULT_FRIEND");
                 gameRepository.save(g);
@@ -198,7 +203,19 @@ public class GameSubjectsService {
                 g.setStatus("END");
                 gameRepository.save(g);
             }
-            return new GameSubjects((long) -1);
+        }
+    }
+    public GameSubjects setResult(GameSubjects game,Long id_usr) throws ResourceNotFoundException {
+        GameSubjects g = findById(game.getId());
+        if(g != null) {
+            if(game.getGameId().getFriendId().getUserId().getId().equals(id_usr)) {
+                g.setResultHost(game.getResultHost());
+                return save(g);
+            }
+            if(game.getGameId().getFriendId().getFriendId().getId().equals(id_usr)) {
+                g.setResultFriend(game.getResultHost());
+                return save(g);
+            }
         }
         return  null;
     }

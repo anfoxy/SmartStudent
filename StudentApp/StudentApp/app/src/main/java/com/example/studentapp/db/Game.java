@@ -32,9 +32,8 @@ public class Game {
         this.name = name;
     }
 
-    public Game(Integer id, String status) {
+    public Game(Integer id) {
         this.id = id;
-        this.status = status;
     }
 
     public String getName() {

@@ -3,6 +3,7 @@ package com.example.webserver.controller;
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.model.Game;
 import com.example.webserver.model.GameSubjects;
+import com.example.webserver.model.User;
 import com.example.webserver.service.GameService;
 import com.example.webserver.service.GameSubjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,14 @@ public class GameSubjectsController {
         return  gameService.setResultFriend(game);
     }
 
+    @PostMapping("/game_subjects/set_result/{id}")
+    public GameSubjects setResult(@PathVariable(value = "id") Long id_usr,@RequestBody GameSubjects game) throws ResourceNotFoundException {
+        return  gameService.setResult(game,id_usr);
+    }
+    @PostMapping("/game_subjects/set_question/{id}")
+    public GameSubjects setQuestion(@PathVariable(value = "id") Long id_usr,@RequestBody GameSubjects game) throws ResourceNotFoundException {
+        return  gameService.setQuestion(game,id_usr);
+    }
     @PostMapping("/game_subjects/set_question_host")
     public GameSubjects setQuestionHost(@RequestBody GameSubjects game) throws ResourceNotFoundException {
         return  gameService.setQuestionHost(game);
@@ -35,16 +44,14 @@ public class GameSubjectsController {
         return  gameService.setQuestionFriend(game);
     }
 
-    @PostMapping("/game_subjects/get_question")
-    public GameSubjects getQuestion(@RequestBody Game game){
-
-        return  gameService.getQuestion(game);
+    @PostMapping("/game_subjects/get_question/{id}")
+    public GameSubjects getQuestion(@PathVariable(value = "id") Long id_game,@RequestBody User user){
+        return  gameService.getQuestion(id_game,user);
     }
 
-    @PostMapping("/game_subjects/get_result")
-    public GameSubjects getResult(@RequestBody Game game){
-
-        return  gameService.getResult(game);
+    @PostMapping("/game_subjects/get_result/{id}")
+    public GameSubjects getResult(@PathVariable(value = "id") Long id_game,@RequestBody User user){
+        return  gameService.getResult(id_game,user);
     }
     @GetMapping("/game_subjects")
     public List<GameSubjects> getAllGame() {
@@ -70,7 +77,6 @@ public class GameSubjectsController {
 
     @PutMapping("/game_subjects/{id}")
     public GameSubjects putGame(@PathVariable Long id,@RequestBody GameSubjects req) throws ResourceNotFoundException {
-        System.out.println(req);
         return gameService.putMet(id,req);
     }
 

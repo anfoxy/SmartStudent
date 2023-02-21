@@ -45,11 +45,9 @@ public class ResultGameFragment extends Fragment {
     private ApiInterface apiInterface;
     private FragmentResultGameBinding binding;
     private ResultGameFragmentArgs args;
-    private Game game;
     private ArrayList<GameSubjects> gameSubjects ;
     private int friendWin;
     private int hostWin;
-    private boolean allEnd = true;
     private QuestionGameAddRecycler.OnItemClickListener itemClick;
 
 
@@ -57,14 +55,13 @@ public class ResultGameFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        game = new Game(args.getId(),args.getStatus());
 
-        Call<ArrayList<GameSubjects>> getRes = apiInterface.gameGetQuestionList(game);
+        Call<ArrayList<GameSubjects>> getRes = apiInterface.gameGetQuestionList(args.getId());
         getRes.enqueue(new Callback<ArrayList<GameSubjects>>() {
             @Override
             public void onResponse(Call<ArrayList<GameSubjects>> call, Response<ArrayList<GameSubjects>> response) {
                 if (response.body() != null) {
-                    gameSubjects= response.body();
+                    gameSubjects = response.body();
                     setInfo();
                 }
             }
@@ -134,12 +131,11 @@ public class ResultGameFragment extends Fragment {
         binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<Integer> getRes = apiInterface.deleteGame(new GameHistory(null, Users.getUser(),game));
+                Call<Integer> getRes = apiInterface.deleteGame(new GameHistory(null, Users.getUser(),new Game(args.getId())));
                 getRes.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
                         if (response.body() != null ) {
-                            System.out.println(response.body());
                             Navigation.
                                     findNavController(getView()).
                                     navigate(ResultGameFragmentDirections
@@ -161,7 +157,6 @@ public class ResultGameFragment extends Fragment {
         if(gameSubjects.isEmpty()) return ;
         binding.nameSub.setText(whoWon());
 
-        System.out.println(gameSubjects.get(0));
         binding.resultFriend.setText(""+gameSubjects.get(0).getGameId().getFriendId().getFriendId().getLogin()+": "+friendWin);
         binding.resultHost.setText(""+gameSubjects.get(0).getGameId().getFriendId().getUserId().getLogin()+": "+hostWin);
         setQuestions();
@@ -184,7 +179,7 @@ public class ResultGameFragment extends Fragment {
         for (GameSubjects gs: gameSubjects) {
 
             if(gs.getResultFriend() == null || gs.getResultHost()== null) {
-                allEnd = false;
+
                 friendWin = 0;
                 hostWin = 0;
                 return "Ожидаем другого участника";

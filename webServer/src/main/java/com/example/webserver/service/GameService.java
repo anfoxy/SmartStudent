@@ -2,16 +2,11 @@ package com.example.webserver.service;
 
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.model.*;
-import com.example.webserver.repository.FriendsSubjectsRepository;
-import com.example.webserver.repository.GameHistoryRepository;
 import com.example.webserver.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -34,8 +29,6 @@ public class GameService {
     GameSubjectsService gameSubjectsService;
     @Autowired
     GameHistoryService gameHistoryService;
-    @Autowired
-    private FriendsSubjectsRepository friendsSubjectsRepository;
 
 
     public Game putMet(Long id, Game req) throws ResourceNotFoundException {
@@ -47,14 +40,6 @@ public class GameService {
         game.setNumberOfQue(req.getNumberOfQue());
         gameRepository.save(game);
         return game;
-    }
-
-    public boolean deleteGame(Long userId) {
-        if (gameRepository.findById(userId).isPresent()) {
-            gameRepository.deleteById(userId);
-            return true;
-        }
-        return false;
     }
 
     public void delete(Long id) throws ResourceNotFoundException {
@@ -84,7 +69,6 @@ public class GameService {
         Subject subject = subjectService.findById(game.getSubId().getId());
         if (subject == null) return null;
 
-
         Integer questions = game.getNumberOfQue();
 
         game.setFriendId(friends);
@@ -99,7 +83,6 @@ public class GameService {
         gameHistoryService.save(new GameHistory(null,game.getFriendId().getFriendId(),game));
 
         if(!gameSubjectsService.setSubjectsGame(questions,game)) {
-            //deleted
             gameSubjectsService.deleteAllByGameId(game);
             gameHistoryService.deleteByGameId(game);
             gameRepository.delete(game);
@@ -110,16 +93,78 @@ public class GameService {
     }
 
 
-    public String checkStart(Long game) throws ResourceNotFoundException {
-        Game game1 = findById(game);
+    public String checkStart(Long game_id,Long user_id) throws ResourceNotFoundException {
+        Game game1 = findById(game_id);
+
         if((game1.getStatus().equals("STARTED")
                         ||game1.getStatus().equals("QUESTION_HOST")
                         ||game1.getStatus().equals("QUESTION_FRIEND"))&&checkTime(game1.getDate())){
             game1.setStatus("RESULT_START");
             save(game1);
         }
-        return game1 != null ? game1.getStatus() : "NOT";
+        String str = getStatusForGame(game1,user_id);
+        System.out.println("статус " +str);
+        return str;
     }
+
+    private String getStatusForGame(Game game,Long user){
+
+        switch (game.getStatus()) {
+            case "ACCEPTED":
+                if (game.getFriendId().getUserId().getId().equals(user))
+                    return "ACCEPTED";
+                if (game.getFriendId().getFriendId().getId().equals(user))
+                    return "WAIT";
+                return "NOT";
+
+            case "EXPECTED":
+                if (game.getFriendId().getUserId().getId().equals(user))
+                    return "WAIT";
+                if (game.getFriendId().getFriendId().getId().equals(user)) {
+                    game.setStatus("ACCEPTED");
+                    save(game);
+                    return "EXPECTED";
+                }
+                return "NOT";
+
+            case "END":
+                return "END";
+
+            case "STARTED":
+                return "QUEST_START";
+
+            case "QUESTION_FRIEND":
+                if (game.getFriendId().getUserId().getId().equals(user))
+                    return "QUEST_START";
+                if (game.getFriendId().getFriendId().getId().equals(user))
+                    return "WAIT";
+                return "NOT";
+            case "QUESTION_HOST":
+                if (game.getFriendId().getUserId().getId().equals(user))
+                    return "WAIT";
+                if (game.getFriendId().getFriendId().getId().equals(user))
+                    return "QUEST_START";
+                return "NOT";
+
+            case "RESULT_START":
+                return "RESULT_START";
+
+            case "RESULT_FRIEND":
+                if (game.getFriendId().getUserId().getId().equals(user))
+                    return "RESULT_START";
+                if (game.getFriendId().getFriendId().getId().equals(user))
+                    return "END";
+                return "NOT";
+            case "RESULT_HOST":
+                if (game.getFriendId().getUserId().getId().equals(user))
+                    return "END";
+                if (game.getFriendId().getFriendId().getId().equals(user))
+                    return "RESULT_START";
+                return "NOT";
+        }
+        return "NOT";
+    }
+
     private boolean checkTime(String date){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
@@ -132,27 +177,21 @@ public class GameService {
 
         User usr = userService.findById(id);
 
-        System.out.println("друг "+friend);
-        System.out.println("я "+usr);
         ArrayList<GameHistory> gameHistories = gameHistoryService.findByUserId(usr);
 
         if(gameHistories.isEmpty()) return new Game("NOT");
 
         for (GameHistory g : gameHistories) {
-            if(!g.getGameId().getStatus().equals("END") &&
-                    (g.getGameId().getFriendId().getFriendId().getEmail().equals(friend.getEmail())
-                            ||g.getGameId().getFriendId().getUserId().getEmail().equals(friend.getEmail()))){
-                if(g.getGameId().getFriendId().getUserId().getEmail().equals(usr.getEmail()))  {
-                    g.getGameId().setStatus("HOST");
+            if( checkFriend(g.getGameId().getFriendId(),friend) && !g.getGameId().getStatus().equals("END"))  {
+                    g.getGameId().setStatus("START");
                     return g.getGameId();
-                }else {
-                    g.getGameId().setStatus("FRIEND");
-                    return g.getGameId();
-                }
-
             }
         }
         return new Game("NOT");
+    }
+
+    private boolean checkFriend(Friends g, User friend) {
+        return g.getFriendId().getId().equals(friend.getId()) || g.getUserId().getId().equals(friend.getId());
     }
 
     public Game gameSetStatus(Long id, String status) throws ResourceNotFoundException {
@@ -177,25 +216,21 @@ public class GameService {
 
     public String updateTimeGame(int min) {
 
-        System.out.println("min "+min);
-
         LocalDateTime localDate =LocalDateTime.now().plusMinutes(min);
-
         String time = "" + checkDateFor0(localDate.getYear())+
                 "-" +  checkDateFor0(localDate.getMonthValue())+
                 "-" +  checkDateFor0(localDate.getDayOfMonth())+
                 "-" +  checkDateFor0(localDate.getHour())+
                 "-" +  checkDateFor0(localDate.getMinute())+
                 "-" +  checkDateFor0(localDate.getSecond());
-        System.out.println("time "+time);
         return time;
     }
     private String checkDateFor0(int figure){
         return figure < 10 ? "0" + figure : "" + figure;
     }
 
-    public ArrayList<GameSubjects> gameGetQuestionList(Game game) throws ResourceNotFoundException {
-        Game g = findById(game.getId());
+    public ArrayList<GameSubjects> gameGetQuestionList(Long game) throws ResourceNotFoundException {
+        Game g = findById(game);
         return g != null ? gameSubjectsService.getAllByGameId(g) : null;
     }
 

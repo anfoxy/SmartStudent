@@ -157,8 +157,41 @@ public class FriendsProfileFragment extends Fragment {
                         .navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToAddSubjectsFriendFragment(args.getId()));
             }
         });
-
         binding.game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (friends != null) {
+
+                    Call<Game> friendsDelete = apiInterface.checkingForGameAvailability(Users.getUser().getId(), friends);
+                    friendsDelete.enqueue(new Callback<Game>() {
+                        @Override
+                        public void onResponse(Call<Game> call, Response<Game> response) {
+                            if (response.body() != null) {
+                                //проверяем кто мы в этой игре, и что с самой игрой
+
+                                if (response.body().getStatus().equals("START")) {
+                                    Navigation.
+                                            findNavController(getView()).
+                                            navigate(FriendsProfileFragmentDirections
+                                                    .actionFriendsProfileFragmentToLoadingGameFragment(response.body().getId()));
+                                }  else {
+                                    Navigation.findNavController(getView()).navigate(FriendsProfileFragmentDirections.actionFriendsProfileFragmentToListSubjectGameFragment(friends.getId()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Game> call, Throwable t) {
+                            if (getContext() != null)
+                                Toast.makeText(getContext(), "Сервер не отвечает", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }else   Toast.makeText(getContext(), "Повторите попытку позже", Toast.LENGTH_SHORT).show();
+            }
+        });
+        /*binding.game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -196,7 +229,7 @@ public class FriendsProfileFragment extends Fragment {
                     });
                 }else   Toast.makeText(getContext(), "Повторите попытку позже", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         binding.history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,7 +239,7 @@ public class FriendsProfileFragment extends Fragment {
                   Navigation
                           .findNavController(getView())
                           .navigate(FriendsProfileFragmentDirections
-                                  .actionFriendsProfileFragmentToListGameHistoryFragment(friends.getId()));
+                                  .actionFriendsProfileFragmentToListGameHistoryFragment(args.getId()));
 
                 }else   Toast.makeText(getContext(), "Повторите попытку позже", Toast.LENGTH_SHORT).show();
             }

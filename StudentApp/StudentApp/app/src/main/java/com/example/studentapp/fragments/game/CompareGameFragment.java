@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Game;
 import com.example.studentapp.db.GameSubjects;
 import com.example.studentapp.db.ServiceBuilder;
+import com.example.studentapp.db.Users;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -30,17 +30,14 @@ public class CompareGameFragment extends Fragment {
     ApiInterface apiInterface;
     FragmentCompareGameBinding binding;
     CompareGameFragmentArgs args;
-    Game game;
     GameSubjects gameSubjects;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        game = new Game(args.getId(),args.getStatus());
-        getQuestion();
+        getResult();
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 setResult(2);
             }
         });
@@ -61,59 +58,38 @@ public class CompareGameFragment extends Fragment {
     }
     private void setResult( int res) {
         if (gameSubjects != null) {
-            if (args.getStatus().equals("HOST")) {
-                gameSubjects.setResultHost(res);
-                Call<GameSubjects> getUser = apiInterface.gameSetResultHost(gameSubjects);
-                getUser.enqueue(new Callback<GameSubjects>() {
-                    @Override
-                    public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
-                        if (response.body() != null) {
-                            getQuestion();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<GameSubjects> call, Throwable t) {
+            gameSubjects.setResultHost(res);
+            Call<GameSubjects> getUser = apiInterface.gameSetResult(Users.getUser().getId(), gameSubjects);
+            getUser.enqueue(new Callback<GameSubjects>() {
+                @Override
+                public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
+                    if (response.body() != null) {
+                        getResult();
                     }
-                });
-            } else {
-                gameSubjects.setResultFriend(res);
-                Call<GameSubjects> getUser = apiInterface.gameSetResultFriend(gameSubjects);
-                getUser.enqueue(new Callback<GameSubjects>() {
-                    @Override
-                    public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
-                        if (response.body() != null) {
-                            getQuestion();
-                        }
-                    }
+                }
 
-                    @Override
-                    public void onFailure(Call<GameSubjects> call, Throwable t) {
-                    }
-                });
-            }
+                @Override
+                public void onFailure(Call<GameSubjects> call, Throwable t) {
+                }
+            });
+
         }
     }
 
 
+    private void getResult(){
 
-
-    private void getQuestion(){
-
-
-        Call<GameSubjects> getUser = apiInterface.gameGetResult(game);
+        Call<GameSubjects> getUser = apiInterface.gameGetResult(args.getId(),Users.getUser());
         getUser.enqueue(new Callback<GameSubjects>() {
             @Override
             public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
                 if (response.body() != null) {
-
-
                     if (response.body().getId().equals(-1)) {
-                        // меняем статус и ждем друга
                         Navigation.
                                 findNavController(getView()).
                                 navigate(CompareGameFragmentDirections
-                                        .actionCompareGameFragmentToLoadingGameFragment(args.getId(), args.getStatus()));
+                                        .actionCompareGameFragmentToLoadingGameFragment(args.getId()));
                     } else {
                         gameSubjects = response.body();
                         binding.question.setText(gameSubjects.getQuestion());

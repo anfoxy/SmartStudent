@@ -86,8 +86,8 @@ public interface ApiInterface {
     Call<Game> gameSet(@Body Game game);
 
 
-    @GET("/game/check_start/{id}")
-    Observable<String> gameCheckStart(@Path("id") long id);
+    @GET("/game/check_start/{id_game}/{id_user}")
+    Observable<String> gameCheckStart(@Path("id_game") long id_game,@Path("id_user") long id_user);
 
     @POST("/game/checking_availability/{id}")
     Call<Game> checkingForGameAvailability(@Path("id") long id,@Body Users friend);
@@ -98,10 +98,16 @@ public interface ApiInterface {
     @GET("/game/start/{id}")
     Call<Game> gameStart(@Path("id") long id);
 
-    @POST("/game_subjects/get_question")
-    Call<GameSubjects> gameGetQuestion(@Body Game game);
+    @POST("/game_subjects/get_question/{id}")
+    Call<GameSubjects> gameGetQuestion(@Path("id") long id,@Body Users user);
 
-    @POST("/game_subjects/set_question_host")
+    @POST("/game_subjects/set_question/{id}")
+    Call<GameSubjects> gameSetQuestion(@Path("id") long id,@Body GameSubjects game);
+
+    @POST("/game_subjects/set_result/{id}")
+    Call<GameSubjects> gameSetResult(@Path("id") long id,@Body GameSubjects game);
+
+   /* @POST("/game_subjects/set_question_host")
     Call<GameSubjects> gameSetQuestionHost(@Body GameSubjects game);
 
     @POST("/game_subjects/set_question_friend")
@@ -112,12 +118,12 @@ public interface ApiInterface {
 
     @POST("/game_subjects/set_result_friend")
     Call<GameSubjects> gameSetResultFriend(@Body GameSubjects game);
+*/
+    @POST("/game_subjects/get_result/{id}")
+    Call<GameSubjects> gameGetResult(@Path("id") long id,@Body Users user);
 
-    @POST("/game_subjects/get_result")
-    Call<GameSubjects> gameGetResult(@Body Game game);
-
-    @POST("/game/get_question_list")
-    Call<ArrayList<GameSubjects>> gameGetQuestionList(@Body Game game);
+    @GET("/game/get_question_list/{id}")
+    Call<ArrayList<GameSubjects>> gameGetQuestionList(@Path("id") long id);
 
     @POST("/game_history/get_all/{id}")
     Call<ArrayList<Game>> getAllGamesByUserId(@Path("id") long id,@Body Users user);

@@ -52,55 +52,40 @@ public class QuestionGameFragment extends Fragment {
     ApiInterface apiInterface;
     FragmentQuestionGameBinding binding;
     QuestionGameFragmentArgs args;
-    Game game;
     GameSubjects gameSubjects;
     boolean timerStart = false;
     int second;
+    Thread t;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        game = new Game(args.getId(), args.getStatus());
         getQuestion();
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (gameSubjects != null) {
+                //timerStop();
+              if (gameSubjects != null) {
 
-                    if (args.getStatus().equals("HOST")) {
-                        gameSubjects.setAnswerHost(binding.tvAnswer.getText().toString());
-                        Call<GameSubjects> getUser = apiInterface.gameSetQuestionHost(gameSubjects);
-                        getUser.enqueue(new Callback<GameSubjects>() {
-                            @Override
-                            public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
-                                if (response.body() != null) {
-                                    getQuestion();
-                                }
+                    System.out.println("gameSubjects");
+                    gameSubjects.setAnswerHost(binding.tvAnswer.getText().toString());
+                    Call<GameSubjects> getUser = apiInterface.gameSetQuestion(Users.getUser().getId(), gameSubjects);
+                    getUser.enqueue(new Callback<GameSubjects>() {
+                        @Override
+                        public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
+                            if (response.body() != null) {
+                                getQuestion();
                             }
+                        }
 
-                            @Override
-                            public void onFailure(Call<GameSubjects> call, Throwable t) {
-                            }
-                        });
-                    } else {
-                        gameSubjects.setAnswerFriend(binding.tvAnswer.getText().toString());
-                        Call<GameSubjects> getUser = apiInterface.gameSetQuestionFriend(gameSubjects);
-                        getUser.enqueue(new Callback<GameSubjects>() {
-                            @Override
-                            public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
-                                if (response.body() != null) {
-                                    getQuestion();
-                                }
-                            }
+                        @Override
+                        public void onFailure(Call<GameSubjects> call, Throwable t) {
+                        }
+                    });
 
-                            @Override
-                            public void onFailure(Call<GameSubjects> call, Throwable t) {
-                            }
-                        });
-                    }
                 }
-
             }
         });
+
         binding.check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +93,6 @@ public class QuestionGameFragment extends Fragment {
                     AlertDialog.Builder builder
                             = new AlertDialog.Builder(getContext());
 
-                    // set the custom layout
                     final View customLayout
                             = getLayoutInflater()
                             .inflate(
@@ -116,13 +100,11 @@ public class QuestionGameFragment extends Fragment {
                                     null);
                     builder.setView(customLayout);
 
-
-
                     AlertDialog dialog
                             = builder.create();
 
-                   TextView text = customLayout.findViewById(R.id.text_out);
-                   text.setText("Вы действительно хотите выйти \n из игры?");
+                    TextView text = customLayout.findViewById(R.id.text_out);
+                    text.setText("Вы действительно хотите выйти \n из игры?");
                     Button out = customLayout.findViewById(R.id.out_acc);
                     AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
 
@@ -130,23 +112,23 @@ public class QuestionGameFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
 
-                                Call<Integer> getUser = apiInterface.exitingTheGame(Users.getUser().getId(),gameSubjects.getGameId());
-                                getUser.enqueue(new Callback<Integer>() {
-                                    @Override
-                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                        if (response.body() != null) {
-                                            Navigation.
-                                                    findNavController(getView()).
-                                                    navigate(QuestionGameFragmentDirections
-                                                            .actionQuestionGameFragmentToFriendsProfileFragment(response.body()));
-                                            dialog.dismiss();
-                                        }
+                            Call<Integer> getUser = apiInterface.exitingTheGame(Users.getUser().getId(), gameSubjects.getGameId());
+                            getUser.enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                    if (response.body() != null) {
+                                        Navigation.
+                                                findNavController(getView()).
+                                                navigate(QuestionGameFragmentDirections
+                                                        .actionQuestionGameFragmentToFriendsProfileFragment(response.body()));
+                                        dialog.dismiss();
                                     }
+                                }
 
-                                    @Override
-                                    public void onFailure(Call<Integer> call, Throwable t) {
-                                    }
-                                });
+                                @Override
+                                public void onFailure(Call<Integer> call, Throwable t) {
+                                }
+                            });
 
                         }
                     });
@@ -166,18 +148,44 @@ public class QuestionGameFragment extends Fragment {
             }
         });
     }
+    private void getQuestion() {
+
+        binding.tvAnswer.setText("");
+        Call<GameSubjects> getUser = apiInterface.gameGetQuestion(args.getId(),Users.getUser());
+        getUser.enqueue(new Callback<GameSubjects>() {
+            @Override
+            public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
+                if (response.body() != null) {
+                    if (response.body().getId().equals(-1)) {
+                        Navigation.
+                                findNavController(getView()).
+                                navigate(QuestionGameFragmentDirections
+                                        .actionQuestionGameFragmentToLoadingGameFragment(args.getId()));
+                    } else {
+                        gameSubjects = response.body();
+                        if (!timerStart) timer();
+                        binding.tvQuestion.setText(gameSubjects.getQuestion());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<GameSubjects> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void timer() {
-        timerStart =true;
+        timerStart = true;
 
         if (gameSubjects != null) {
             second = Integer.parseInt(gameSubjects.getGameId().getDate());
             Integer id = args.getId();
-            String status = args.getStatus();
 
             Runnable helloRunnable = new Runnable() {
                 public void run() {
-                    while (second > 0) {
+
+                    while (!Thread.currentThread().isInterrupted() && second > 0) {
                         binding.time.setText(setTime());
                         second--;
                         try {
@@ -186,62 +194,40 @@ public class QuestionGameFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Navigation.findNavController(getView()).
-                                    navigate(QuestionGameFragmentDirections
-                                            .actionQuestionGameFragmentToLoadingGameFragment(id, status));
-                        }
-                    });
+                    if (!Thread.currentThread().isInterrupted()) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Navigation.findNavController(getView()).
+                                        navigate(QuestionGameFragmentDirections
+                                                .actionQuestionGameFragmentToLoadingGameFragment(id));
+                            }
+                        });
+                    }
                 }
             };
-            Thread t = new Thread(helloRunnable);
+            t = new Thread(helloRunnable);
             t.start();
         }
     }
 
-   private String setTime(){
-       int hours = second / 3600;
-       int minutes = (second % 3600) / 60;
-       int seconds = second % 60;
-       if(hours>0) return checkDateFor0(hours) + ":"  +checkDateFor0(minutes) + ":"  + checkDateFor0(seconds);
-       return checkDateFor0(minutes) + ":"  + checkDateFor0(seconds);
+    void timerStop(){
+        if(t != null){
+            t.interrupt();
+        }
     }
-    private String checkDateFor0(int figure){
+
+    private String setTime() {
+        int hours = second / 3600;
+        int minutes = (second % 3600) / 60;
+        int seconds = second % 60;
+        if (hours > 0)
+            return checkDateFor0(hours) + ":" + checkDateFor0(minutes) + ":" + checkDateFor0(seconds);
+        return checkDateFor0(minutes) + ":" + checkDateFor0(seconds);
+    }
+    private String checkDateFor0(int figure) {
         return figure < 10 ? "0" + figure : "" + figure;
     }
-    private void getQuestion() {
-
-        binding.tvAnswer.setText("");
-        Call<GameSubjects> getUser = apiInterface.gameGetQuestion(game);
-        getUser.enqueue(new Callback<GameSubjects>() {
-            @Override
-            public void onResponse(Call<GameSubjects> call, Response<GameSubjects> response) {
-                if (response.body() != null) {
-
-
-                    if (response.body().getId().equals(-1)) {
-
-                        Navigation.
-                                findNavController(getView()).
-                                navigate(QuestionGameFragmentDirections
-                                        .actionQuestionGameFragmentToLoadingGameFragment(args.getId(), args.getStatus()));
-                    } else {
-                        gameSubjects = response.body();
-                        if(!timerStart)timer();
-                        binding.tvQuestion.setText(gameSubjects.getQuestion());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GameSubjects> call, Throwable t) {
-            }
-        });
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -253,5 +239,9 @@ public class QuestionGameFragment extends Fragment {
         Paper.init(getContext());
         return binding.getRoot();
     }
-
+    @Override
+    public void onPause() {
+        super.onPause();
+       // timerStop();
+    }
 }
