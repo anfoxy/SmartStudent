@@ -39,6 +39,15 @@ public class GameController {
     public Long gameSetStatus(@PathVariable(value = "id") Long id,@RequestBody Game game) throws ResourceNotFoundException {
         return  gameService.exitingTheGame(id,game);
     }
+    @GetMapping("/game/abandon_the_game/{id}")
+    public Game abandonTheGame(@PathVariable(value = "id") Long id)  {
+        return  gameService.abandonTheGame(id);
+    }
+    @GetMapping("/game/check_end/{id_game}")
+    public Boolean gameCheckEnd(@PathVariable(value = "id_game") Long id)  {
+        return  gameService.gameCheckEnd(id);
+    }
+
 
     @GetMapping("/game/start/{id}")
     public Game gameStart(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {

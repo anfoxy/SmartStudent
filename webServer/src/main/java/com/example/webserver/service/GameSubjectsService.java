@@ -88,8 +88,10 @@ public class GameSubjectsService {
         Game g = gameRepository.findById(id_game).orElse(null);
         ArrayList<GameSubjects> gameSubjectsArrayList = findAllByGameId(g);
 
+
         if (gameSubjectsArrayList!= null && !gameSubjectsArrayList.isEmpty()){
 
+            if (g.getStatus().equals("END")) return new GameSubjects((long) -1);
             for (GameSubjects gameSub: gameSubjectsArrayList) {
                 if(g.getFriendId().getUserId().getId().equals(user.getId()) && gameSub.getAnswerHost() == null) {
                     gameSub.getGameId().setDate(getTimeToEnd(gameSub.getGameId()));

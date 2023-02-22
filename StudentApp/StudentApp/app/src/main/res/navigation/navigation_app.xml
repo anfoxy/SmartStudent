@@ -262,7 +262,9 @@
 
         <action
             android:id="@+id/action_SettingGameFragment_to_LoadingGameFragment2"
-            app:destination="@id/LoadingGameFragment" />
+            app:destination="@id/LoadingGameFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
     </fragment>
 
     <fragment
@@ -278,7 +280,9 @@
             app:argType="integer" />-->
         <action
             android:id="@+id/action_QuestionGameFragment_to_LoadingGameFragment"
-            app:destination="@id/LoadingGameFragment" />
+            app:destination="@id/LoadingGameFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
         <action
             android:id="@+id/action_QuestionGameFragment_to_friendsProfileFragment"
             app:destination="@id/friendsProfileFragment"
@@ -300,7 +304,9 @@
             app:argType="integer" />-->
         <action
             android:id="@+id/action_CompareGameFragment_to_LoadingGameFragment"
-            app:destination="@id/LoadingGameFragment" />
+            app:destination="@id/LoadingGameFragment"
+            app:popUpTo="@+id/friendsProfileFragment"
+            app:popUpToInclusive="false"/>
 
     </fragment>
 
@@ -318,7 +324,9 @@
             app:argType="integer" />-->
         <action
             android:id="@+id/action_ResultGameFragment_to_friendsProfileFragment"
-            app:destination="@id/friendsProfileFragment" />
+            app:destination="@id/friendsProfileFragment"
+            app:popUpTo="@+id/friendsFragment"
+            app:popUpToInclusive="false"/>
 
     </fragment>
     <fragment

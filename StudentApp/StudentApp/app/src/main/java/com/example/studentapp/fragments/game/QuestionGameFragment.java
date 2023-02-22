@@ -54,6 +54,7 @@ public class QuestionGameFragment extends Fragment {
     QuestionGameFragmentArgs args;
     GameSubjects gameSubjects;
     boolean timerStart = false;
+    boolean timerStop = false;
     int second;
     Thread t;
     @Override
@@ -63,8 +64,7 @@ public class QuestionGameFragment extends Fragment {
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //timerStop();
-              if (gameSubjects != null) {
+                 if (gameSubjects != null) {
 
                     System.out.println("gameSubjects");
                     gameSubjects.setAnswerHost(binding.tvAnswer.getText().toString());
@@ -185,7 +185,7 @@ public class QuestionGameFragment extends Fragment {
             Runnable helloRunnable = new Runnable() {
                 public void run() {
 
-                    while (!Thread.currentThread().isInterrupted() && second > 0) {
+                    while (!timerStop && second > 0) {
                         binding.time.setText(setTime());
                         second--;
                         try {
@@ -194,7 +194,7 @@ public class QuestionGameFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    if (!Thread.currentThread().isInterrupted()) {
+                    if (!timerStop) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -212,9 +212,7 @@ public class QuestionGameFragment extends Fragment {
     }
 
     void timerStop(){
-        if(t != null){
-            t.interrupt();
-        }
+        timerStop = true;
     }
 
     private String setTime() {
@@ -242,6 +240,6 @@ public class QuestionGameFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-       // timerStop();
+        timerStop();
     }
 }

@@ -33,8 +33,14 @@ import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Users;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,27 +55,15 @@ public class ResultGameFragment extends Fragment {
     private int friendWin;
     private int hostWin;
     private QuestionGameAddRecycler.OnItemClickListener itemClick;
-
+    private boolean endGame = false;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setGameSubjects();
+        update();
 
-        Call<ArrayList<GameSubjects>> getRes = apiInterface.gameGetQuestionList(args.getId());
-        getRes.enqueue(new Callback<ArrayList<GameSubjects>>() {
-            @Override
-            public void onResponse(Call<ArrayList<GameSubjects>> call, Response<ArrayList<GameSubjects>> response) {
-                if (response.body() != null) {
-                    gameSubjects = response.body();
-                    setInfo();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<GameSubjects>> call, Throwable t) {
-            }
-        });
         itemClick = new QuestionGameAddRecycler.OnItemClickListener() {
 
             @Override
@@ -153,6 +147,23 @@ public class ResultGameFragment extends Fragment {
         });
     }
 
+    private void setGameSubjects(){
+        Call<ArrayList<GameSubjects>> getRes = apiInterface.gameGetQuestionList(args.getId());
+        getRes.enqueue(new Callback<ArrayList<GameSubjects>>() {
+            @Override
+            public void onResponse(Call<ArrayList<GameSubjects>> call, Response<ArrayList<GameSubjects>> response) {
+                if (response.body() != null) {
+                    gameSubjects = response.body();
+                    setInfo();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<GameSubjects>> call, Throwable t) {
+            }
+        });
+    }
+
     private void setInfo() {
         if(gameSubjects.isEmpty()) return ;
         binding.nameSub.setText(whoWon());
@@ -207,6 +218,39 @@ public class ResultGameFragment extends Fragment {
         }
     }
 
+    Disposable disposable = null;
+    private void update(){
+        if(!endGame) {
+            Observable<Boolean> observable = apiInterface.gameCheckEnd(args.getId())
+                    .repeatWhen(completed -> completed.delay(3, TimeUnit.SECONDS))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+            observable.subscribe(new Observer<Boolean>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    disposable = d;
+                }
+
+                @Override
+                public void onNext(Boolean status) {
+                    if(status) {
+                        disposable.dispose();
+                        setGameSubjects();
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    //оповестить о том, что произошли проблемы с инетом
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -2,6 +2,7 @@ package com.example.webserver.service;
 
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.model.*;
+import com.example.webserver.repository.GameHistoryRepository;
 import com.example.webserver.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class GameService {
     GameSubjectsService gameSubjectsService;
     @Autowired
     GameHistoryService gameHistoryService;
+    @Autowired
+    private GameHistoryRepository gameHistoryRepository;
 
 
     public Game putMet(Long id, Game req) throws ResourceNotFoundException {
@@ -96,6 +99,7 @@ public class GameService {
     public String checkStart(Long game_id,Long user_id) throws ResourceNotFoundException {
         Game game1 = findById(game_id);
 
+        if(game1 == null)  return "NOT";
         if((game1.getStatus().equals("STARTED")
                         ||game1.getStatus().equals("QUESTION_HOST")
                         ||game1.getStatus().equals("QUESTION_FRIEND"))&&checkTime(game1.getDate())){
@@ -120,11 +124,8 @@ public class GameService {
             case "EXPECTED":
                 if (game.getFriendId().getUserId().getId().equals(user))
                     return "WAIT";
-                if (game.getFriendId().getFriendId().getId().equals(user)) {
-                    game.setStatus("ACCEPTED");
-                    save(game);
+                if (game.getFriendId().getFriendId().getId().equals(user))
                     return "EXPECTED";
-                }
                 return "NOT";
 
             case "END":
@@ -234,10 +235,30 @@ public class GameService {
         return g != null ? gameSubjectsService.getAllByGameId(g) : null;
     }
 
-    public Long exitingTheGame(Long usr,Game game) {
+    public Long exitingTheGame(Long usr,Game game) throws ResourceNotFoundException {
+        game = findById(game.getId());
         game.setStatus("END");
         gameRepository.save(game);
         if(game.getFriendId().getFriendId().getId().equals(usr)) return game.getFriendId().getUserId().getId();
         return game.getFriendId().getFriendId().getId();
+    }
+
+    public Game abandonTheGame(Long id) {
+
+        Game game = gameRepository.findById(id).orElse(null);
+        ArrayList<GameHistory> gameHistoryArrayList = gameHistoryRepository.findAllByGameId(game);
+
+        if (game != null && gameHistoryArrayList != null) {
+            gameHistoryRepository.deleteAll(gameHistoryArrayList);
+            gameSubjectsService.deleteAllByGameId(game);
+            gameRepository.delete(game);
+        }
+
+        return game;
+    }
+
+    public Boolean gameCheckEnd(Long id) {
+        Game game = gameRepository.findById(id).orElse(new Game("NOT"));
+        return game.getStatus().equals("END");
     }
 }

@@ -89,12 +89,18 @@ public interface ApiInterface {
     @GET("/game/check_start/{id_game}/{id_user}")
     Observable<String> gameCheckStart(@Path("id_game") long id_game,@Path("id_user") long id_user);
 
+
+    @GET("/game/check_end/{id_game}")
+    Observable<Boolean> gameCheckEnd(@Path("id_game") long id_game);
+
     @POST("/game/checking_availability/{id}")
     Call<Game> checkingForGameAvailability(@Path("id") long id,@Body Users friend);
 
     @POST("/game/set_status/{id}")
     Call<Game> gameSetStatus(@Path("id") long id,@Body String status);
 
+    @GET("/game/abandon_the_game/{id}")
+    Call<Game> abandonTheGame(@Path("id") long id);
     @GET("/game/start/{id}")
     Call<Game> gameStart(@Path("id") long id);
 

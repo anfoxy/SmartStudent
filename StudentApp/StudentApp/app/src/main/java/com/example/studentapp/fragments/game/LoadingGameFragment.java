@@ -1,12 +1,16 @@
 package com.example.studentapp.fragments.game;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -57,7 +61,6 @@ public class LoadingGameFragment extends Fragment {
                 .repeatWhen(completed -> completed.delay(3, TimeUnit.SECONDS))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        System.out.println("status fffffffffffffffffff" );
         observable.subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -69,15 +72,73 @@ public class LoadingGameFragment extends Fragment {
 
                 System.out.println("status " + status);
                 if(status.equals("EXPECTED")) {
-                    binding.text.setText("Ожидание запуска игры хостом.");
-                   /* // хост ожидает нашего подключения
+                    // хост ожидает нашего подключения
                     disposable.dispose();
-                    Call<Game> getUser = apiInterface.gameSetStatus(args.getIdGame(),"ACCEPTED");
+                    AlertDialog.Builder builder
+                            = new AlertDialog.Builder(getContext());
+
+                    final View customLayout
+                            = getLayoutInflater()
+                            .inflate(
+                                    R.layout.dialog_out,
+                                    null);
+                    builder.setView(customLayout);
+
+                    AlertDialog dialog
+                            = builder.create();
+
+                    TextView text = customLayout.findViewById(R.id.text_out);
+                    text.setText("Принять игру?");
+                    Button out = customLayout.findViewById(R.id.out_acc);
+                    AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+
+                    out.setText("Начать");
+                    clsBtn.setText("Отказаться");
+                    out.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Call<Game> getUser = apiInterface.gameSetStatus(args.getIdGame(),"ACCEPTED");
+                            getUser.enqueue(new Callback<Game>() {
+                                @Override
+                                public void onResponse(Call<Game> call, Response<Game> response) {
+                                    if(response.body() != null){
+                                        observableAll();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<Game> call, Throwable t) {
+                                }
+                            });
+                            dialog.dismiss();
+                        }
+                    });
+
+                    clsBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Call<Game> getUser = apiInterface.abandonTheGame(args.getIdGame());
+                            getUser.enqueue(new Callback<Game>() {
+                                @Override
+                                public void onResponse(Call<Game> call, Response<Game> response) {
+                                    binding.text.setText("Игра отменена");
+                                }
+                                @Override
+                                public void onFailure(Call<Game> call, Throwable t) {
+                                }
+                            });
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
+                   /* Call<Game> getUser = apiInterface.gameSetStatus(args.getIdGame(),"ACCEPTED");
                     getUser.enqueue(new Callback<Game>() {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
                             if(response.body() != null){
-
                                 observableAll();
                             }
                         }
