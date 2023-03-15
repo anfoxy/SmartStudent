@@ -168,8 +168,8 @@ public class ResultGameFragment extends Fragment {
         if(gameSubjects.isEmpty()) return ;
         binding.nameSub.setText(whoWon());
 
-        binding.resultFriend.setText(""+gameSubjects.get(0).getGameId().getFriendId().getFriendId().getLogin()+": "+friendWin);
-        binding.resultHost.setText(""+gameSubjects.get(0).getGameId().getFriendId().getUserId().getLogin()+": "+hostWin);
+        binding.resultFriend.setText("Результат друга\n"+friendWin+" бал(ов)");
+        binding.resultHost.setText("Ваш результат\n"+hostWin+" бал(ов)");
         setQuestions();
 
 
@@ -210,9 +210,9 @@ public class ResultGameFragment extends Fragment {
         }
 
         if (hostWin > friendWin) {
-            return "Выиграл "+gameSubjects.get(0).getGameId().getFriendId().getUserId().getLogin();
+            return "Вы выиграли!";
         } else if (friendWin > hostWin) {
-            return "Выиграл "+gameSubjects.get(0).getGameId().getFriendId().getFriendId().getLogin();
+            return "Победу одержал "+gameSubjects.get(0).getGameId().getFriendId().getFriendId().getLogin();
         } else {
             return "Ничья";
         }

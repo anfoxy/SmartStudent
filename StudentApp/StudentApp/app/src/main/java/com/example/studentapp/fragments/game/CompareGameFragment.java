@@ -1,5 +1,6 @@
 package com.example.studentapp.fragments.game;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,11 @@ public class CompareGameFragment extends Fragment {
     FragmentCompareGameBinding binding;
     CompareGameFragmentArgs args;
     GameSubjects gameSubjects;
+
+    int flag1 = 0;
+    int flag2 = 0;
+    int res = -1;
+    int n_click = 0;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -38,19 +44,56 @@ public class CompareGameFragment extends Fragment {
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(2);
+                if(res!=-1) {
+                    setResult(res);
+                    flag1 = 0;
+                    flag2 = 0;
+                    n_click = 0;
+                    res = -1;
+                    binding.answerTitleMe.setBackgroundColor(getResources().getColor(R.color.color_back));
+                    binding.answerTitleFriend.setBackgroundColor(getResources().getColor(R.color.color_back));
+                }
             }
         });
         binding.answerMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(1);
+                if(flag1==0) { // если фон начальный
+                    flag1 = 1;
+                    n_click++;
+                    if (n_click == 1) { // если клик первый
+                        res = 1;
+                } else { // если клик второй
+                        res = 2;
+                    }
+                    binding.answerTitleMe.setBackgroundColor(getResources().getColor(R.color.green));
+                } else if (flag1==1) { // если фон уже установлен
+                    flag1 = 0;
+                    res=-1;
+                    n_click--;
+                    binding.answerTitleMe.setBackgroundColor(getResources().getColor(R.color.color_back));
+                }
             }
         });
+
         binding.answerFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(0);
+                if(flag2==0) {
+                    flag2 = 1;
+                    n_click++;
+                    if (n_click == 1) {
+                        res = 0;
+                    } else {
+                        res = 2;
+                    }
+                    binding.answerTitleFriend.setBackgroundColor(getResources().getColor(R.color.green));
+                } else if (flag2==1) {
+                    flag2 = 0;
+                    res=-1;
+                    n_click--;
+                    binding.answerTitleFriend.setBackgroundColor(getResources().getColor(R.color.color_back));
+                }
             }
         });
 

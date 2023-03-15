@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:windowSoftInputMode="adjustResize"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,6 +18,8 @@
         android:background="#F1F1F1"
         android:orientation="vertical"
         tools:context=".fragments.game.QuestionGameFragment">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -129,20 +136,19 @@
             android:id="@+id/tv_answer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:height="250dp"
             android:layout_marginHorizontal="10dp"
-            android:elevation="10dp"
-            android:scrollbars="vertical"
-            android:scrollbarSize="10dp"
-            android:scrollbarStyle="insideInset"
+            android:layout_weight="1"
             android:background="#FFFFFF"
+            android:elevation="10dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:gravity="clip_horizontal"
             android:hint="Ответ"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            app:layout_constraintTop_toBottomOf="@+id/tv_question"
-            tools:layout_editor_absoluteX="20dp" />
+            android:padding="15dp"
+            android:scrollbarSize="10dp"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:textSize="18sp" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -160,4 +166,6 @@
             />
 
     </LinearLayout>
+
+    </ScrollView>
 </layout>

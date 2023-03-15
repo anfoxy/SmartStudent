@@ -22,8 +22,8 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginBottom="5dp"
             android:layout_gravity="center"
-
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/nameSub"
                 android:layout_width="match_parent"
@@ -36,6 +36,7 @@
                 android:text="Проверяем результаты"
                 android:textColor="@color/textcolor"
                 android:textSize="26sp" />
+
             <ImageView
                 android:id="@+id/check"
                 android:layout_width="35dp"
@@ -116,7 +117,6 @@
                     android:id="@+id/answer"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
-
                     android:background="#fff"
                     android:scrollbars="vertical"
                     android:scrollbarSize="10dp"
@@ -131,9 +131,21 @@
             </LinearLayout>
         </ScrollView>
 
-
+        <TextView
+            android:layout_width="match_parent"
+            android:height="45dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:background="#DCFFED"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:layout_marginHorizontal="10dp"
+            android:elevation="5dp"
+            android:layout_marginTop="7dp"
+            android:layout_height="wrap_content"
+            android:text="Выберите один или несколько правильных ответов" />
 
         <TextView
+            android:id="@+id/answer_title_me"
             android:layout_width="match_parent"
             android:height="40dp"
             android:fontFamily="@font/sourcesanspro_semibold"
@@ -162,21 +174,22 @@
                     android:id="@+id/answer_me"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
-                    android:background="#fff"
-                    android:scrollbars="vertical"
-                    android:scrollbarSize="10dp"
-                    android:scrollbarStyle="insideInset"
                     android:layout_marginHorizontal="10dp"
+                    android:background="#fff"
                     android:elevation="10dp"
                     android:fontFamily="@font/sourcesanspro_semibold"
                     android:gravity="center"
                     android:padding="10dp"
+                    android:scrollbarSize="10dp"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
                     android:text="TextView"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
 
         <TextView
+            android:id="@+id/answer_title_friend"
             android:layout_width="match_parent"
             android:height="40dp"
             android:fontFamily="@font/sourcesanspro_semibold"
@@ -228,14 +241,11 @@
             android:layout_marginVertical="10dp"
             android:backgroundTint="#6A7AD5"
             android:fontFamily="@font/sourcesanspro_semibold"
-            android:text="Оба ответа верны"
+            android:text="Принять и продолжить"
             android:textColor="@color/textbutton"
             android:textSize="15sp"
             app:cornerRadius="5dp"
             />
-
-
-
 
     </LinearLayout>
 </layout>
