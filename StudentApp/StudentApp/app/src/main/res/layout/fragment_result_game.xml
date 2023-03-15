@@ -14,35 +14,67 @@
         android:orientation="vertical"
         tools:context=".fragments.game.ResultGameFragment">
 
-        <TextView
-            android:id="@+id/nameSub"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:gravity="center"
-            android:text="Загрузка..."
-            android:textColor="@color/textcolor"
-            android:textSize="36sp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="45dp"
+            android:background="#fff"
+            android:elevation="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/result_host"
+            <ImageView
+                android:id="@+id/check"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@drawable/exit" />
+            <TextView
+                android:id="@+id/nameSub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sourcesanspro_semibold"
+                android:gravity="center"
+                android:layout_gravity="center"
+
+                android:layout_weight="1"
+                android:text="Загрузка..."
+                android:textColor="@color/textcolor"
+                android:textSize="26sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:text="Рез друга"
-            android:textColor="@color/textcolor"
-            android:textSize="24sp"
-            android:layout_marginBottom="10dp" />
-        <TextView
-            android:id="@+id/result_friend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sourcesanspro_semibold"
-            android:text="Мой рез"
-            android:textColor="@color/textcolor"
-            android:textSize="24sp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/result_friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/sourcesanspro_semibold"
+                android:text="Ваш результат"
+                android:textColor="@color/textcolor"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/result_host"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/sourcesanspro_semibold"
+                android:text="Результат друга"
+                android:textColor="@color/textcolor"
+                android:textSize="24sp" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listVop"
