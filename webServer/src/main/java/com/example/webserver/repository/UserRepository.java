@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT id_user From public.user " +
             "WHERE email IN(:email) " +
             "AND   user_password IN(:user_password);",nativeQuery = true)
-    String searchUserByEmailAndPassword(@Param("email") String email,
+    Long searchUserByEmailAndPassword(@Param("email") String email,
                                               @Param("user_password") String user_password);
 
     User findByEmail(String email);

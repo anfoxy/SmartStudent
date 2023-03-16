@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class FriendSubjectsService {
@@ -80,16 +83,17 @@ public class FriendSubjectsService {
         if (count > 0) {
             subject.setName(subjectService.replaceNumberInBrackets(subject.getName(),count));
         }
-        System.out.println("новое имя предмета "+subject.getName());
 
         subject.setQuestions(new ArrayList<>());
 
         for (Question q:questionService.findAllBySubId(friends.getSubId())) {
            subject.getQuestions().add(new Question(null,q.getQuestion(),q.getAnswer(),q.getDate(),0,0,null));
         }
+
         subject = subjectService.save(subject);
         questionService.createQuestion((ArrayList<Question>) subject.getQuestions(),subject);
-
+        subject.getQuestions()
+                .forEach(q -> q.setSubId(null));
         return subject;
 
     }

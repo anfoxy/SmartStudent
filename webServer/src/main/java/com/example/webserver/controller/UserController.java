@@ -4,6 +4,7 @@ import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.model.Msg;
 import com.example.webserver.model.Subject;
 import com.example.webserver.model.User;
+import com.example.webserver.repository.UserRepository;
 import com.example.webserver.service.DeleteSercice;
 import com.example.webserver.service.UserService;
 
@@ -23,6 +24,8 @@ public class UserController {
     UserService userService;
     @Autowired
     DeleteSercice deleteSercice;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/users/update")
     public ResponseEntity<ArrayList<Subject>> update(@Valid @RequestBody ArrayList<Subject> subjects) throws ResourceNotFoundException {

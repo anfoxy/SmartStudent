@@ -145,7 +145,7 @@
             android:text="Выберите один или несколько правильных ответов" />
 
         <TextView
-            android:id="@+id/answer_title_me"
+            android:id="@+id/answer_title_host"
             android:layout_width="match_parent"
             android:height="40dp"
             android:fontFamily="@font/sourcesanspro_semibold"

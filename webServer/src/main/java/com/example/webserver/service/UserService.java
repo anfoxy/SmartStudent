@@ -53,10 +53,8 @@ public class UserService {
         return user;
     }
     public User login(String userName, String password) {
-        String str =  userRepository.searchUserByEmailAndPassword(userName, password);
-        return userRepository.findById(Long.valueOf(str)).orElseThrow(null);
-
-
+        Long str =  userRepository.searchUserByEmailAndPassword(userName, password);
+        return str == null ? null : userRepository.findById(str).orElse(null);
     }
     public String register(User user) {
         if (userRepository.findByEmail(user.getEmail()) != null) return "email exists";

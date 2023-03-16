@@ -50,7 +50,7 @@ public class CompareGameFragment extends Fragment {
                     flag2 = 0;
                     n_click = 0;
                     res = -1;
-                    binding.answerTitleMe.setBackgroundColor(getResources().getColor(R.color.color_back));
+                    binding.answerTitleHost.setBackgroundColor(getResources().getColor(R.color.color_back));
                     binding.answerTitleFriend.setBackgroundColor(getResources().getColor(R.color.color_back));
                 }
             }
@@ -66,12 +66,12 @@ public class CompareGameFragment extends Fragment {
                 } else { // если клик второй
                         res = 2;
                     }
-                    binding.answerTitleMe.setBackgroundColor(getResources().getColor(R.color.green));
+                    binding.answerTitleHost.setBackgroundColor(getResources().getColor(R.color.green));
                 } else if (flag1==1) { // если фон уже установлен
                     flag1 = 0;
                     res=-1;
                     n_click--;
-                    binding.answerTitleMe.setBackgroundColor(getResources().getColor(R.color.color_back));
+                    binding.answerTitleHost.setBackgroundColor(getResources().getColor(R.color.color_back));
                 }
             }
         });
@@ -137,6 +137,13 @@ public class CompareGameFragment extends Fragment {
                         gameSubjects = response.body();
                         binding.question.setText(gameSubjects.getQuestion());
                         binding.answer.setText(gameSubjects.getAnswer());
+
+                        binding.answerTitleFriend.setText(String.format("Ответ %s",
+                                gameSubjects.getGameId().getFriendId().getFriendId().getLogin()));
+
+                        binding.answerTitleHost.setText(String.format("Ответ %s",
+                                gameSubjects.getGameId().getFriendId().getUserId().getLogin()));
+
                         binding.answerMe.setText(gameSubjects.getAnswerHost());
                         binding.answerFriend.setText(gameSubjects.getAnswerFriend());
                     }
