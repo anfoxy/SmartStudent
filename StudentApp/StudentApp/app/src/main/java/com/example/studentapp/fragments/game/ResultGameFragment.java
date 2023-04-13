@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.QuestionAddRecycler;
-import com.example.studentapp.adapters.QuestionGameAddRecycler;
+import com.example.studentapp.adapters.SubjectAdapterGameResult;
 import com.example.studentapp.al.Question;
 import com.example.studentapp.databinding.FragmentCompareGameBinding;
 import com.example.studentapp.databinding.FragmentResultGameBinding;
@@ -54,7 +55,7 @@ public class ResultGameFragment extends Fragment {
     private ArrayList<GameSubjects> gameSubjects ;
     private int friendWin;
     private int hostWin;
-    private QuestionGameAddRecycler.OnItemClickListener itemClick;
+    private SubjectAdapterGameResult.OnItemClickListener itemClick;
     private boolean endGame = false;
 
     @Override
@@ -64,7 +65,7 @@ public class ResultGameFragment extends Fragment {
         setGameSubjects();
         update();
 
-        itemClick = new QuestionGameAddRecycler.OnItemClickListener() {
+        itemClick = new SubjectAdapterGameResult.OnItemClickListener() {
 
             @Override
             public void onClickQuestion(GameSubjects ques, int position) {
@@ -88,6 +89,8 @@ public class ResultGameFragment extends Fragment {
                 TextView answerHost = customLayout.findViewById(R.id.text_answer_host);
                 TextView answerFriend = customLayout.findViewById(R.id.text_answer_friend);
                 AppCompatButton clsBtn = customLayout.findViewById(R.id.exit);
+                int color = ContextCompat.getColor(getContext(), R.color.normal);
+                int color2 = ContextCompat.getColor(getContext(), R.color.no_normal);
 
                 answer.setText(""+ques.getAnswer());
                 question.setText(""+ques.getQuestion());
@@ -97,18 +100,18 @@ public class ResultGameFragment extends Fragment {
                 if((ques.getResultFriend()==1 && ques.getResultHost() ==1)||
                         (ques.getResultFriend()==2 && ques.getResultHost() ==1)||
                         (ques.getResultFriend()==1 && ques.getResultHost() ==2)) {
-                    answerHost.setBackgroundColor(Color.GREEN);
-                    answerFriend.setBackgroundColor(Color.RED);
+                    answerHost.setBackgroundColor(color);
+                    answerFriend.setBackgroundColor(color2);
                 }
                 else if((ques.getResultFriend()==0 && ques.getResultHost() ==0)||
                         (ques.getResultFriend()==2 && ques.getResultHost() ==0)||
                         (ques.getResultFriend()==0 && ques.getResultHost() ==2)) {
-                    answerHost.setBackgroundColor(Color.RED);
-                    answerFriend.setBackgroundColor(Color.GREEN);
+                    answerHost.setBackgroundColor(color2);
+                    answerFriend.setBackgroundColor(color);
                 }
                 else {
-                    answerHost.setBackgroundColor(Color.GREEN);
-                    answerFriend.setBackgroundColor(Color.GREEN);
+                    answerHost.setBackgroundColor(color);
+                    answerFriend.setBackgroundColor(color);
                 }
 
                 clsBtn.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +182,7 @@ public class ResultGameFragment extends Fragment {
     private void setQuestions(){
         binding.listVop.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listVop.setHasFixedSize(true);
-        binding.listVop.setAdapter(new QuestionGameAddRecycler(getContext(), gameSubjects, itemClick));
+        binding.listVop.setAdapter(new SubjectAdapterGameResult(getContext(), gameSubjects, itemClick));
     }
 
     private String whoWon() {
