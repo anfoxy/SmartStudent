@@ -14,22 +14,27 @@
         android:orientation="vertical"
         tools:context=".fragments.game.ResultGameFragment">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="60dp"
             android:background="#fff"
             android:elevation="10dp"
-            android:layout_marginHorizontal="10dp"
             android:layout_marginBottom="5dp"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/check"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:src="@drawable/exit" />
             <TextView
                 android:id="@+id/nameSub"
                 android:layout_width="match_parent"
@@ -37,42 +42,73 @@
                 android:fontFamily="@font/sourcesanspro_semibold"
                 android:gravity="center"
                 android:layout_gravity="center"
-
                 android:layout_weight="1"
-                android:text="Загрузка..."
-                android:textColor="@color/textcolor"
+                android:text="Ожидание.."
+                android:textColor="#494949"
                 android:textSize="26sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:background="#E1E5FD"
+            android:padding="5dp"
+            android:layout_marginVertical="2dp"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/result_friend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:fontFamily="@font/sourcesanspro_semibold"
-                android:text="Ваш результат"
-                android:textColor="@color/textcolor"
-                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/result_host"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:gravity="center"
+                android:layout_marginEnd="1dp"
+                android:layout_gravity="center"
+                android:paddingVertical="5dp"
                 android:layout_weight="1"
+                android:background="#C9D1FF"
                 android:fontFamily="@font/sourcesanspro_semibold"
-                android:text="Результат друга"
-                android:textColor="@color/textcolor"
-                android:textSize="24sp" />
+                android:text="Твой результат\n1"
+                android:textColor="#494949"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/result_friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingVertical="5dp"
+                android:layout_marginEnd="1dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#C9D1FF"
+                android:fontFamily="@font/sourcesanspro_semibold"
+                android:text="Результат друга\n1"
+                android:textColor="#494949"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#fff"
+            android:elevation="1dp"
+            android:layout_marginVertical="5dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sourcesanspro_semibold"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Результаты игры"
+                android:textColor="#606060"
+                android:textSize="22sp" />
 
         </LinearLayout>
 
@@ -90,10 +126,23 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp"
+
+            android:backgroundTint="#D56A6A"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:text="Удалить историю игры"
+            android:textColor="@color/textbutton"
+            android:textSize="15sp"
+            app:cornerRadius="5dp"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="5dp"
             android:backgroundTint="#6A7AD5"
             android:fontFamily="@font/sourcesanspro_semibold"
-            android:text="Удалить"
+            android:text="Посмотреть историю игр"
             android:textColor="@color/textbutton"
             android:textSize="15sp"
             app:cornerRadius="5dp"
