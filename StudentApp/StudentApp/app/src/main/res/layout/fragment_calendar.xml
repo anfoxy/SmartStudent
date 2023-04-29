@@ -47,6 +47,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/selected_view_color" />
+
             <com.github.sundeepk.compactcalendarview.CompactCalendarView
                 android:id="@+id/compactcalendarview"
                 android:layout_width="fill_parent"
@@ -63,15 +68,66 @@
                 app:compactCalendarTextSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+
                 />
 
-            <ImageView
-                android:id="@+id/line_view"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CFCFCF"
-                android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/bottom_bar" />
+                android:layout_height="15dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:id="@+id/imageViewGreen"
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/newgreen" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  Подготовка"
+                        android:textSize="10dp" />
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp" />
+
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Экзамен"
+                    android:textSize="10dp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Прошедшее"
+                    android:textSize="10dp" />
+
+
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_sub"
@@ -81,6 +137,7 @@
                 tools:listitem="@layout/subj_card">
 
             </androidx.recyclerview.widget.RecyclerView>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
