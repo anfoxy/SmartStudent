@@ -58,12 +58,12 @@
 
         <ImageButton
             android:id="@+id/camera_btn"
-            android:layout_width="63dp"
+            android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_gravity="center"
-
-            android:background="#FFEB3B"
-            app:srcCompat="@drawable/ic_camera"
+            android:layout_marginHorizontal="2dp"
+            android:background="@color/color_back"
+            app:srcCompat="@drawable/foto"
             tools:ignore="VectorDrawableCompat" />
 
         <androidx.appcompat.widget.AppCompatButton

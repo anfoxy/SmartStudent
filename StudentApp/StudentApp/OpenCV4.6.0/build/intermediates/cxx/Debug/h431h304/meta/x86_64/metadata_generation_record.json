@@ -1,0 +1,44 @@
+[
+  {
+    "level_": 0,
+    "message_": "Start JSON generation. Platform version: 21 min SDK version: x86_64",
+    "file_": "C:\\projects\\diplom\\DiplomGit\\SmartStudent\\StudentApp\\StudentApp\\OpenCV4.6.0\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "debug|x86_64",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -47420098
+  },
+  {
+    "level_": 0,
+    "message_": "JSON \u0027C:\\projects\\diplom\\DiplomGit\\SmartStudent\\StudentApp\\StudentApp\\OpenCV4.6.0\\.cxx\\Debug\\h431h304\\x86_64\\android_gradle_build.json\u0027 was up-to-date",
+    "file_": "C:\\projects\\diplom\\DiplomGit\\SmartStudent\\StudentApp\\StudentApp\\OpenCV4.6.0\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "debug|x86_64",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 856284920
+  },
+  {
+    "level_": 0,
+    "message_": "JSON generation completed without problems",
+    "file_": "C:\\projects\\diplom\\DiplomGit\\SmartStudent\\StudentApp\\StudentApp\\OpenCV4.6.0\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "debug|x86_64",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 377796794
+  }
+]

@@ -3,10 +3,12 @@ package com.example.studentapp.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +45,15 @@ import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
 import com.example.studentapp.db_local.MyDBManager;
 import com.googlecode.tesseract.android.TessBaseAPI;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,6 +89,50 @@ public class EditPlanFragment extends Fragment {
 
     TessBaseAPI tessBaseAPI;
     EditText tvAnswer;
+
+    private Bitmap selectedImage;
+
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(getActivity()) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i("OpenCV", "OpenCV loaded successfully");
+                    if(selectedImage!=null){
+                        Mat imgMat = new Mat();
+                        Utils.bitmapToMat(selectedImage, imgMat);
+
+                        // Преобразование в серое изображение
+                        Mat grayMat = new Mat();
+                        Imgproc.cvtColor(imgMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+
+//                        // Удаление шума изображения с помощью медианного фильтра
+//                        Imgproc.medianBlur(grayMat, grayMat, 3);
+
+                        // Улучшение четкости изображения с помощью фильтра "unsharp masking"
+                        Mat blurred = new Mat();
+                        Imgproc.GaussianBlur(grayMat, blurred, new Size(0, 0), 3);
+                        Mat sharpened = new Mat();
+                        Core.addWeighted(grayMat, 1.5, blurred, -0.5, 0, sharpened);
+
+                        // Применение бинаризации изображения
+                        Mat binaryMat = new Mat();
+                        Imgproc.threshold(sharpened, binaryMat, 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
+
+                        // Копирование изображения из Mat в Bitmap
+                        selectedImage = Bitmap.createBitmap(selectedImage.getWidth(), selectedImage.getHeight(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(binaryMat, selectedImage);
+                    }
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -218,6 +274,18 @@ public class EditPlanFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d("OpenCV", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, getActivity(), mLoaderCallback);
+        } else {
+            Log.d("OpenCV", "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
     }
 
     private void save() {
@@ -385,38 +453,11 @@ public class EditPlanFragment extends Fragment {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                tessBaseAPI = new TessBaseAPI();
-                String datapath = getContext().getFilesDir() + "/tesseract/";
-                File dir = new File(datapath + "tessdata/");
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                String lang = "rus";
-                String lang1 = "eng";
-                File file = new File(datapath + "tessdata/" + lang + lang1 + ".traineddata");
-                if (!file.exists()) {
-                    try {
-                        InputStream in = getContext().getAssets().open("tessdata/" + lang + ".traineddata");
-                        OutputStream out = new FileOutputStream(file);
-                        byte[] buffer = new byte[1024];
-                        int read;
-                        while ((read = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, read);
-                        }
-                        in.close();
-                        out.flush();
-                        out.close();
-                    } catch (Exception e) {
-                        Log.e("Error", e.getMessage());
-                    }
-                }
-                tessBaseAPI.init(datapath, lang+lang1);
-                tessBaseAPI.setImage(selectedImage);
-                String text = tessBaseAPI.getUTF8Text();
-                tvAnswer.setText(text);
-                tessBaseAPI.end();
-                Log.d(TAG, "Text recognition success: " + text);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                TextView textView = tvAnswer;
+                com.example.myapplication2.TesseractOCR tesseractOCR = new com.example.myapplication2.TesseractOCR(getActivity(), textView);
+                tesseractOCR.execute(selectedImage);
+                Log.d(TAG, "Text recognition success ");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
