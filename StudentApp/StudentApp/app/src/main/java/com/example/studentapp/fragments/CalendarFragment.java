@@ -1,6 +1,7 @@
 package com.example.studentapp.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,11 +31,15 @@ import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -58,6 +63,31 @@ public class CalendarFragment extends Fragment {
             updateDB();
         }
         localDate = LocalDate.now();
+
+        //Добавление точек в календарь
+        {
+            ArrayList<PlanToSub> subjs =  MainActivity.myDBManager.getFromDB();
+
+            List<Event> events = new ArrayList<>();
+
+            for (int i = 0; i < subjs.size();i++){
+                //прошедшие даты
+                for(int j=0; j<subjs.get(i).getLastPlan().size(); j++){
+                    subjs.get(i).getPlans().get(j).getDate();
+                    events.add(new Event(Color.GRAY, subjs.get(i).getLastPlan().get(j).getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(), ""));
+                }
+                //будущие даты
+                for(int j=0; j<subjs.get(i).getFuturePlan().size(); j++){
+                    subjs.get(i).getPlans().get(j).getDate();
+                    events.add(new Event(Color.GREEN, subjs.get(i).getFuturePlan().get(j).getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(), ""));
+                }
+                //экзамен
+                events.add(new Event(Color.RED, subjs.get(i).getDateOfExams().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(), ""));
+
+            }
+            binding.compactcalendarview.addEvents(events);
+        }
+
         itemClick = new SubjectPlanAdapter.OnItemClick() {
             @Override
             public void onClickPlanItem(PlanToSub subject, int position) {
@@ -69,16 +99,20 @@ public class CalendarFragment extends Fragment {
         getSubjs();
 
 
-        binding.chooseDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        binding.compactcalendarview.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView,  int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH,month);
-                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+            public void onDayClick(Date dateClicked) {
+                myCalendar.setTime(dateClicked);
                 localDate =  myCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 getSubjs();
             }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+
+            }
         });
+
     }
 
     private void updateDB(){
