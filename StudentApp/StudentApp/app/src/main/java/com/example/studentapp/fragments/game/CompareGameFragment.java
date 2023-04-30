@@ -1,10 +1,13 @@
 package com.example.studentapp.fragments.game;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,7 +47,7 @@ public class CompareGameFragment extends Fragment {
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(res!=-1) {
+
                     setResult(res);
                     flag1 = 0;
                     flag2 = 0;
@@ -52,7 +55,6 @@ public class CompareGameFragment extends Fragment {
                     res = -1;
                     binding.answerTitleHost.setBackgroundColor(getResources().getColor(R.color.color_back));
                     binding.answerTitleFriend.setBackgroundColor(getResources().getColor(R.color.color_back));
-                }
             }
         });
         binding.answerMe.setOnClickListener(new View.OnClickListener() {
@@ -138,10 +140,10 @@ public class CompareGameFragment extends Fragment {
                         binding.question.setText(gameSubjects.getQuestion());
                         binding.answer.setText(gameSubjects.getAnswer());
 
-                        binding.answerTitleFriend.setText(String.format("Ответ %s",
+                        binding.answerTitleFriend.setText(String.format("Ответ игрока:  %s",
                                 gameSubjects.getGameId().getFriendId().getFriendId().getLogin()));
 
-                        binding.answerTitleHost.setText(String.format("Ответ %s",
+                        binding.answerTitleHost.setText(String.format("Ответ игрока: %s",
                                 gameSubjects.getGameId().getFriendId().getUserId().getLogin()));
 
                         binding.answerMe.setText(gameSubjects.getAnswerHost());
@@ -160,6 +162,32 @@ public class CompareGameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getContext());
+
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.dialog_info,
+                        null);
+        builder.setView(customLayout);
+
+        AlertDialog dialog
+                = builder.create();
+        Button out = customLayout.findViewById(R.id.okay);
+        TextView text = customLayout.findViewById(R.id.text_info);
+
+        text.setText("Ознакомьтесь с правильным вариантом ответа и выберите один или несколько вариантов, которые наиболее подходят. Если ни один из вариантов не является верным, просто продолжите, нажав на кнопку \n«Принять и продолжить»");
+
+        out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_compare_game, container, false);
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
