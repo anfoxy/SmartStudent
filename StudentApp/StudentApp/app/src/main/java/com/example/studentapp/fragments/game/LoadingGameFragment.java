@@ -80,17 +80,17 @@ public class LoadingGameFragment extends Fragment {
                     final View customLayout
                             = getLayoutInflater()
                             .inflate(
-                                    R.layout.dialog_out,
+                                    R.layout.dialog_start_game,
                                     null);
                     builder.setView(customLayout);
 
                     AlertDialog dialog
                             = builder.create();
 
-                    TextView text = customLayout.findViewById(R.id.text_out);
+                    TextView text = customLayout.findViewById(R.id.text_start);
                     text.setText("Принять игру?");
-                    Button out = customLayout.findViewById(R.id.out_acc);
-                    AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+                    Button out = customLayout.findViewById(R.id.start_game);
+                    AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_game);
 
                     out.setText("Начать");
                     clsBtn.setText("Отказаться");

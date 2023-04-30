@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text_out"
+        android:id="@+id/text_start"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="#E0F2FF"
@@ -17,7 +16,7 @@
         android:textSize="18sp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Вы действительно хотите выйти \n из аккаунта?"
+        android:text="Принять игру?"
         />
 
     <LinearLayout
@@ -26,27 +25,27 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel_window"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#6A7AD5"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/sourcesanspro_semibold"
-        android:layout_marginLeft="20dp"
-        android:text="Закрыть"
- />
+            android:id="@+id/cancel_game"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="#FF8177"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:layout_marginLeft="20dp"
+            android:text="Отказаться"
+            />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/out_acc"
+            android:id="@+id/start_game"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_height="40dp"
+
             android:layout_marginRight="20dp"
             android:layout_weight="1"
-            android:background="#E6746B"
+            android:background="#61CD66"
             android:fontFamily="@font/sourcesanspro_semibold"
-            android:text="Выход" />
+            android:text="Начать" />
 
     </LinearLayout>
     <TextView
@@ -54,7 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="#FF837A"
         android:textSize="20dp"
         android:gravity="center_horizontal"
         />
