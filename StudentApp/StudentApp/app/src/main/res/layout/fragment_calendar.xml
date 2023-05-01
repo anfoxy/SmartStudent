@@ -55,12 +55,12 @@
 
             <com.github.sundeepk.compactcalendarview.CompactCalendarView
                 android:id="@+id/compactcalendarview"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginTop="0dp"
-                android:paddingLeft="10dp"
-                android:layout_marginHorizontal="8dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="50dp"
+                android:paddingTop="20dp"
+                android:paddingRight="50dp"
                 app:compactCalendarBackgroundColor="@color/selected_view_color"
                 app:compactCalendarCurrentDayBackgroundColor="#67B9F1"
                 app:compactCalendarCurrentSelectedDayBackgroundColor="#B35BF1"
@@ -70,7 +70,6 @@
                 app:compactCalendarTextSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-
                 />
 
 

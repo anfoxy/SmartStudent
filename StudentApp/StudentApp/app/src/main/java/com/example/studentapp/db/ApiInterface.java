@@ -128,8 +128,8 @@ public interface ApiInterface {
     @POST("/game_subjects/get_result/{id}")
     Call<GameSubjects> gameGetResult(@Path("id") long id,@Body Users user);
 
-    @GET("/game/get_question_list/{id}")
-    Call<ArrayList<GameSubjects>> gameGetQuestionList(@Path("id") long id);
+    @GET("/game/get_question_list/{id_game}/{id_user}")
+    Call<ArrayList<GameSubjects>> gameGetQuestionList(@Path("id_game") long id_game,@Path("id_user") long id_user);
 
     @POST("/game_history/get_all/{id}")
     Call<ArrayList<Game>> getAllGamesByUserId(@Path("id") long id,@Body Users user);

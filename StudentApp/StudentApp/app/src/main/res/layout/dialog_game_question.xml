@@ -133,7 +133,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_answer_friend"
+                android:id="@+id/text_answer_host"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#fff"
@@ -175,7 +175,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_answer_host"
+                android:id="@+id/text_answer_friend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#fff"

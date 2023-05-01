@@ -230,11 +230,38 @@ public class GameService {
         return figure < 10 ? "0" + figure : "" + figure;
     }
 
-    public ArrayList<GameSubjects> gameGetQuestionList(Long game) throws ResourceNotFoundException {
+    public ArrayList<GameSubjects> gameGetQuestionList(Long game,Long usr) throws ResourceNotFoundException {
         Game g = findById(game);
-        return g != null ? gameSubjectsService.getAllByGameId(g) : null;
+        if(g!=null) {
+            ArrayList<GameSubjects> gameSubjectsArrayList = gameSubjectsService.getAllByGameId(g);
+            if(g.getFriendId().getFriendId().getId().equals(usr)) return swapAnswersAndResults(gameSubjectsArrayList);
+            return gameSubjectsArrayList;
+        }
+        return null;
     }
+    public ArrayList<GameSubjects> swapAnswersAndResults(ArrayList<GameSubjects> gameSubjectsList) {
+        ArrayList<GameSubjects> result = new ArrayList<>();
 
+        for (GameSubjects gameSubject : gameSubjectsList) {
+
+            GameSubjects swappedSubject = new GameSubjects(
+                    gameSubject.getId(),
+                    gameSubject.getGameId(),
+                    gameSubject.getQuestion(),
+                    gameSubject.getAnswer(),
+                    gameSubject.getAnswerFriend(),
+                    gameSubject.getAnswerHost(),
+                    swapResult(gameSubject.getResultFriend()),
+                    swapResult(gameSubject.getResultHost()));
+            result.add(swappedSubject);
+        }
+        return result;
+    }
+    private int swapResult(int res){
+        if(res == 0) return  1;
+        if(res == 1) return  0;
+        return res;
+    }
     public Long exitingTheGame(Long usr,Game game) throws ResourceNotFoundException {
         game = findById(game.getId());
         game.setStatus("END");

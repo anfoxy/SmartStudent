@@ -179,6 +179,7 @@ public class QuestionGameFragment extends Fragment {
         timerStart = true;
 
         if (gameSubjects != null) {
+            binding.predmetName.setText(gameSubjects.getGameId().getName());
             second = Integer.parseInt(gameSubjects.getGameId().getDate());
             Integer id = args.getId();
 

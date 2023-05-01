@@ -89,39 +89,45 @@ public class ResultGameFragment extends Fragment {
                 TextView answerHost = customLayout.findViewById(R.id.text_answer_host);
                 TextView answerFriend = customLayout.findViewById(R.id.text_answer_friend);
                 AppCompatButton clsBtn = customLayout.findViewById(R.id.exit);
-                int color = ContextCompat.getColor(getContext(), R.color.normal);
-                int color2 = ContextCompat.getColor(getContext(), R.color.no_normal);
+                int green = ContextCompat.getColor(getContext(), R.color.normal);
+                int red = ContextCompat.getColor(getContext(), R.color.no_normal);
 
-                answer.setText(""+ques.getAnswer());
-                question.setText(""+ques.getQuestion());
-                answerHost.setText(""+ques.getAnswerHost());
-                answerFriend.setText(""+ques.getAnswerFriend());
-                if(ques.getResultFriend()!=null && ques.getResultHost()!= null)
-                if((ques.getResultFriend()==1 && ques.getResultHost() ==1)||
-                        (ques.getResultFriend()==2 && ques.getResultHost() ==1)||
-                        (ques.getResultFriend()==1 && ques.getResultHost() ==2)) {
-                    answerHost.setBackgroundColor(color);
-                    answerFriend.setBackgroundColor(color2);
-                }
-                else if((ques.getResultFriend()==0 && ques.getResultHost() ==0)||
-                        (ques.getResultFriend()==2 && ques.getResultHost() ==0)||
-                        (ques.getResultFriend()==0 && ques.getResultHost() ==2)) {
-                    answerHost.setBackgroundColor(color2);
-                    answerFriend.setBackgroundColor(color);
-                }
-                else {
-                    answerHost.setBackgroundColor(color);
-                    answerFriend.setBackgroundColor(color);
-                }
-
-                clsBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
+                answer.setText("" + ques.getAnswer());
+                question.setText("" + ques.getQuestion());
+                answerHost.setText("" + ques.getAnswerHost());
+                answerFriend.setText("" + ques.getAnswerFriend());
+                if (ques.getResultFriend() != null && ques.getResultHost() != null) {
+                    if ((ques.getResultFriend() == -1 && ques.getResultHost() == -1)) {
+                        answerHost.setBackgroundColor(red);
+                        answerFriend.setBackgroundColor(red);
+                    } else if ((ques.getResultFriend() == 1 && ques.getResultHost() == -1) ||
+                            (ques.getResultFriend() == -1 && ques.getResultHost() == 1) ||
+                            (ques.getResultFriend() == 1 && ques.getResultHost() == 1) ||
+                            (ques.getResultFriend() == 2 && ques.getResultHost() == 1) ||
+                            (ques.getResultFriend() == 1 && ques.getResultHost() == 2)) {
+                        answerHost.setBackgroundColor(green);
+                        answerFriend.setBackgroundColor(red);
+                    } else if ((ques.getResultFriend() == 0 && ques.getResultHost() == -1) ||
+                            (ques.getResultFriend() == -1 && ques.getResultHost() == 0) ||
+                            (ques.getResultFriend() == 0 && ques.getResultHost() == 0) ||
+                            (ques.getResultFriend() == 2 && ques.getResultHost() == 0) ||
+                            (ques.getResultFriend() == 0 && ques.getResultHost() == 2)) {
+                        answerHost.setBackgroundColor(red);
+                        answerFriend.setBackgroundColor(green);
+                    } else {
+                        answerHost.setBackgroundColor(green);
+                        answerFriend.setBackgroundColor(green);
                     }
-                });
 
-                dialog.show();
+                    clsBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                }
             }
 
         };
@@ -151,7 +157,8 @@ public class ResultGameFragment extends Fragment {
     }
 
     private void setGameSubjects(){
-        Call<ArrayList<GameSubjects>> getRes = apiInterface.gameGetQuestionList(args.getId());
+
+        Call<ArrayList<GameSubjects>> getRes = apiInterface.gameGetQuestionList(args.getId(),Users.getUser().getId());
         getRes.enqueue(new Callback<ArrayList<GameSubjects>>() {
             @Override
             public void onResponse(Call<ArrayList<GameSubjects>> call, Response<ArrayList<GameSubjects>> response) {
@@ -192,30 +199,42 @@ public class ResultGameFragment extends Fragment {
 
         for (GameSubjects gs: gameSubjects) {
 
+            System.out.println("ответ хоста "+gs.getAnswerHost());
+            System.out.println("ответ друга "+gs.getAnswerFriend());
+            System.out.println("оценка хоста "+gs.getResultHost());
+            System.out.println("оценка друга "+gs.getResultFriend());
             if(gs.getResultFriend() == null || gs.getResultHost()== null) {
 
                 friendWin = 0;
                 hostWin = 0;
                 return "Ожидаем другого участника";
             }
-            if((gs.getResultFriend()==1 && gs.getResultHost() ==1)||
+            if(gs.getResultFriend()==-1 && gs.getResultHost() ==-1){
+            } else if((gs.getResultFriend()==1 && gs.getResultHost() ==-1)||
+                    (gs.getResultFriend()==-1 && gs.getResultHost() ==1)||
+                    (gs.getResultFriend()==1 && gs.getResultHost() ==1)||
                     (gs.getResultFriend()==2 && gs.getResultHost() ==1)||
-                    (gs.getResultFriend()==1 && gs.getResultHost() ==2))
+                    (gs.getResultFriend()==1 && gs.getResultHost() ==2)) {
+                System.out.println("хост +");
                 hostWin++;
-            else if((gs.getResultFriend()==0 && gs.getResultHost() ==0)||
+            } else if((gs.getResultFriend()==-1 && gs.getResultHost() ==0)||
+                    (gs.getResultFriend()==0 && gs.getResultHost() ==-1)||
+                    (gs.getResultFriend()==0 && gs.getResultHost() ==0)||
                     (gs.getResultFriend()==2 && gs.getResultHost() ==0)||
-                    (gs.getResultFriend()==0 && gs.getResultHost() ==2))
+                    (gs.getResultFriend()==0 && gs.getResultHost() ==2)) {
+                System.out.println("друг +");
                 friendWin++;
-            else {
+            }else {
                 hostWin++;
                 friendWin++;
+                System.out.println("оба +");
             }
         }
 
         if (hostWin > friendWin) {
             return "Вы выиграли!";
         } else if (friendWin > hostWin) {
-            return "Победу одержал "+gameSubjects.get(0).getGameId().getFriendId().getFriendId().getLogin();
+            return "Победу одержал "+gameSubjects.get(0).getGameId().getFriendId().getUserId().getLogin();
         } else {
             return "Ничья";
         }

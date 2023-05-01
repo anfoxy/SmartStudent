@@ -39,7 +39,6 @@ public class ListSubjectGameFragment extends Fragment {
             @Override
             public void onClickSubject(PlanToSub subject, int position) {
                 // переход на экран редактирования режима игры
-           // int[] i =  {subject.getId(),args.getId()};
                 ListSubjectGameFragmentDirections
                         .ActionListSubjectGameFragmentToSettingGameFragment action =
                         ListSubjectGameFragmentDirections

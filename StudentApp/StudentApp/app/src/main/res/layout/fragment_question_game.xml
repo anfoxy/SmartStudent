@@ -61,17 +61,17 @@
         <TextView
             android:id="@+id/predmet_name"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
             android:height="45dp"
-            android:fontFamily="@font/sourcesanspro_semibold"
             android:background="#AEB8F3"
+            android:elevation="5dp"
+            android:fontFamily="@font/sourcesanspro_semibold"
             android:gravity="center"
             android:padding="10dp"
-            android:textSize="21sp"
-            android:elevation="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_height="wrap_content"
-            android:text="Название предмета" />
+            android:text="Название предмета"
+            android:textSize="21sp" />
 
         <TextView
             android:layout_width="match_parent"

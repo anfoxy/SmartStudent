@@ -156,7 +156,7 @@ public class LoadingGameFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Game> call, Response<Game> response) {
                             if(response.body() != null){
-                                binding.text.setText("Идет загрузка игры...");
+                                binding.text.setText("Идет загрузка...");
                                 try {
                                     Thread.sleep(1000);
                                 } catch (InterruptedException e) {

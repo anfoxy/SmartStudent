@@ -75,9 +75,9 @@ public class GameController {
         return  gameService.checkStart(game_id,user_id);
     }
 
-    @GetMapping("/game/get_question_list/{id}")
-    public ArrayList<GameSubjects> gameGetQuestionList(@PathVariable(value = "id") Long game_id) throws ResourceNotFoundException {
-        return  gameService.gameGetQuestionList(game_id);
+    @GetMapping("/game/get_question_list/{id_game}/{id_user}")
+    public ArrayList<GameSubjects> gameGetQuestionList(@PathVariable(value = "id_game") Long game_id,@PathVariable(value = "id_user") Long user_id) throws ResourceNotFoundException {
+        return  gameService.gameGetQuestionList(game_id,user_id);
     }
 
 
