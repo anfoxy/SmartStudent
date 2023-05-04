@@ -61,6 +61,34 @@ public class QuestionGameFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getQuestion();
+
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getContext());
+
+            final View customLayout
+                    = getLayoutInflater()
+                    .inflate(
+                            R.layout.dialog_info,
+                            null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog
+                    = builder.create();
+            Button out = customLayout.findViewById(R.id.okay);
+            TextView text = customLayout.findViewById(R.id.text_info);
+
+            text.setText("Постарайтесь ответить на все вопросы в течении обозначенного времени.");
+
+            out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setView(customLayout);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

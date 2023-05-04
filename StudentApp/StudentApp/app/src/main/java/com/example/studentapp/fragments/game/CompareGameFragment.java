@@ -187,7 +187,9 @@ public class CompareGameFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-        dialog.show();
+        dialog.setView(customLayout);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_compare_game, container, false);
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);

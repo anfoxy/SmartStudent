@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,6 +76,35 @@ public class AnotherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.myDBManager.tr_From_DB_Menu()==0) {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getContext());
+
+            final View customLayout
+                    = getLayoutInflater()
+                    .inflate(
+                            R.layout.dialog_info,
+                            null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog
+                    = builder.create();
+            Button out = customLayout.findViewById(R.id.okay);
+            TextView text = customLayout.findViewById(R.id.text_info);
+
+            text.setText("В меню навигации вам доступны самые основные разделы. Но если у вас отсутствует интернет, то некоторые разделы будут недоступны до тех пор, пока вы не будете в сети.");
+            out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setView(customLayout);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            MainActivity.myDBManager.update_TRAINING(1, 4);
+        }
         // Inflate the layout for this fragment
         View anotherFrag = inflater.inflate(R.layout.fragment_another, container, false);
         aboutConstraint = anotherFrag.findViewById(R.id.constraint_about);

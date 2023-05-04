@@ -1,5 +1,6 @@
 package com.example.studentapp.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +43,7 @@ public class ListFragment extends Fragment {
     FragmentListBinding binding;
     ApiInterface apiInterface;
     SubjectAdapter.OnItemClickListener itemClickListener;
+    int flag = 0;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -114,6 +118,41 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.myDBManager.tr_From_DB_List_Sub()==0) {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getContext());
+
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.dialog_info,
+                        null);
+        builder.setView(customLayout);
+
+        AlertDialog dialog
+                = builder.create();
+        Button out = customLayout.findViewById(R.id.okay);
+        TextView text = customLayout.findViewById(R.id.text_info);
+
+        text.setText("Тут отображается список твоих предметов. Нажав на предмет, ты сможешь узнать подробную информацию о нем, редактировать его или удалить.");
+
+        out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Переход на второй слайд обучения
+                if(flag == 0) {
+                    flag = 1;
+                    text.setText("Для создания предмета - нажми на кнопку 'Создать новый предмет'");
+                    // иначе для этого экрана диалоговое окно больше не откроется
+                } else dialog.dismiss();
+            }
+        });
+        dialog.setView(customLayout);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        MainActivity.myDBManager.update_TRAINING(1, 2);
+    }
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_list, container, false);
         Paper.init(getContext());
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.FriendsAdapter;
 import com.example.studentapp.adapters.FriendsInAdapter;
@@ -302,7 +304,36 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.myDBManager.tr_From_DB_Friends()==0) {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getContext());
 
+            final View customLayout
+                    = getLayoutInflater()
+                    .inflate(
+                            R.layout.dialog_info,
+                            null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog
+                    = builder.create();
+            Button out = customLayout.findViewById(R.id.okay);
+            TextView text = customLayout.findViewById(R.id.text_info);
+
+            text.setText("Тут ты сможешь добавить своих друзей, поделиться с ними предметами и вместе сыграть в соревновательный режим.");
+
+            out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setView(customLayout);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            MainActivity.myDBManager.update_TRAINING(1, 6);
+        }
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_friends, container, false);
         Paper.init(getContext());
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);

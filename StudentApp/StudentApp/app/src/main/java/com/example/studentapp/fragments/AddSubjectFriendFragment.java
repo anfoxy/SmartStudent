@@ -1,11 +1,14 @@
 package com.example.studentapp.fragments;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.adapters.FriendSubjectsRecycler;
 import com.example.studentapp.db.ApiInterface;
@@ -138,7 +143,36 @@ public class AddSubjectFriendFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(MainActivity.myDBManager.tr_From_DB_Give_Sub()==0) {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getContext());
 
+            final View customLayout
+                    = getLayoutInflater()
+                    .inflate(
+                            R.layout.dialog_info,
+                            null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog
+                    = builder.create();
+            Button out = customLayout.findViewById(R.id.okay);
+            TextView text = customLayout.findViewById(R.id.text_info);
+
+            text.setText("Выбери один или несколько предметов, которыми хочешь поделиться с другом. Как только он подтвердит получение, у него будет полная копия предмета.");
+
+            out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setView(customLayout);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            MainActivity.myDBManager.update_TRAINING(1, 8);
+        }
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_subject_friend, container, false);
         Paper.init(getContext());
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);

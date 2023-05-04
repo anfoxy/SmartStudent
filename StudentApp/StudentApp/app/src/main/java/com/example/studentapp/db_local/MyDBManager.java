@@ -88,6 +88,43 @@ public class MyDBManager {
         db.insert(MyConstants.TABLE_PLAN, null, cv);
     }
 
+    public void update_TRAINING(int tr, int flag) {
+        ContentValues cv = new ContentValues();
+        switch (flag) {
+            case 1:
+                cv.put(MyConstants.KEY_CALENDAR, tr);
+                db.insert(MyConstants.TABLE_TRAINING, null, cv);
+                break;
+            case 2:
+                cv.put(MyConstants.KEY_LIST_SUB, tr);
+                break;
+            case 3:
+                cv.put(MyConstants.KEY_ADD_SUB, tr);
+                break;
+            case 4:
+                cv.put(MyConstants.KEY_MENU, tr);
+                break;
+            case 5:
+                cv.put(MyConstants.KEY_PROFILE, tr);
+                break;
+            case 6:
+                cv.put(MyConstants.KEY_FRIENDS, tr);
+                break;
+            case 7:
+                cv.put(MyConstants.KEY_PROFILE_FRIEND, tr);
+                break;
+            case 8:
+                cv.put(MyConstants.KEY_GIVE_SUB, tr);
+                break;
+            case 9:
+                cv.put(MyConstants.KEY_BEGIN_GAME, tr);
+                break;
+        }
+        if(flag!=1) {
+            db.update(MyConstants.TABLE_TRAINING, cv, null, null);
+        }
+    }
+
     public void insert_TABLE_QUESTION(PlanToSub pl, int i) {
         ContentValues cv = new ContentValues();
         String date = pl.getSub().getQuestion(i).dateToString();
@@ -117,6 +154,17 @@ public class MyDBManager {
         openDB();
         Cursor data = db.rawQuery("SELECT * FROM " + "table_subject", null);
         return data;
+    }
+
+    public int tr_From_DB_Calendar () {
+        String query_tr = "SELECT " + MyConstants.KEY_CALENDAR + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
     }
 
     public ArrayList<PlanToSub> getFromDB() {
@@ -372,4 +420,92 @@ public class MyDBManager {
         cv.put(MyConstants.KEY_ID_SUBJECT, pl.getId());
         db.update(MyConstants.TABLE_SUBJECT, cv, MyConstants.KEY_SUBJECT_NAME + "= ?",new String[] {pl.getSub().getNameOfSubme()});
     }
+
+    public int tr_From_DB_List_Sub() {
+        String query_tr = "SELECT " + MyConstants.KEY_LIST_SUB + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Add_Sub() {
+        String query_tr = "SELECT " + MyConstants.KEY_ADD_SUB + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Menu() {
+        String query_tr = "SELECT " + MyConstants.KEY_MENU + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Profile() {
+        String query_tr = "SELECT " + MyConstants.KEY_PROFILE + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+    public int tr_From_DB_Friends() {
+        String query_tr = "SELECT " + MyConstants.KEY_FRIENDS + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Profile_Friends() {
+        String query_tr = "SELECT " + MyConstants.KEY_PROFILE_FRIEND + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Give_Sub() {
+        String query_tr = "SELECT " + MyConstants.KEY_GIVE_SUB + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Begin_Game() {
+        String query_tr = "SELECT " + MyConstants.KEY_BEGIN_GAME + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
 }

@@ -17,6 +17,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(MyConstants.CREATE_TABLE_PLAN);
         db.execSQL(MyConstants.CREATE_TABLE_QUESTION);
         db.execSQL(MyConstants.CREATE_TABLE_SUBJECT);
+        db.execSQL(MyConstants.CREATE_TABLE_TRAINING);
     }
 
     @Override
@@ -24,6 +25,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(MyConstants.DROP_TABLE_PLAN);
         db.execSQL(MyConstants.DROP_TABLE_QUESTION);
         db.execSQL(MyConstants.DROP_TABLE_SUBJECT);
+        db.execSQL(MyConstants.DROP_TABLE_TRAINING);
         onCreate(db);
     }
 }
