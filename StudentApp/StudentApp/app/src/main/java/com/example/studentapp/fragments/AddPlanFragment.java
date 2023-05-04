@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -287,7 +288,36 @@ public class AddPlanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.myDBManager.tr_From_DB_Add_Sub()==0) {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getContext());
 
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.dialog_info,
+                        null);
+        builder.setView(customLayout);
+
+        AlertDialog dialog
+                = builder.create();
+        Button out = customLayout.findViewById(R.id.okay);
+        TextView text = customLayout.findViewById(R.id.text_info);
+
+        text.setText("По мимо стандартного занесения информации для вопроса - можно загрузить фото с текстом и мы сделаем это за тебя\n\nПримечание: фото должно быть скрином либо изображением хорошего качества.");
+
+        out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setView(customLayout);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+            MainActivity.myDBManager.update_TRAINING(1, 3);
+        }
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_plan, container, false);
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);

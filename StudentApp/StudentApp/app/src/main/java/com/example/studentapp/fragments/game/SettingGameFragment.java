@@ -1,15 +1,18 @@
 package com.example.studentapp.fragments.game;
 
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
@@ -138,7 +141,36 @@ public class SettingGameFragment extends Fragment implements SeekBar.OnSeekBarCh
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(MainActivity.myDBManager.tr_From_DB_Begin_Game()==0) {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getContext());
 
+            final View customLayout
+                    = getLayoutInflater()
+                    .inflate(
+                            R.layout.dialog_info,
+                            null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog
+                    = builder.create();
+            Button out = customLayout.findViewById(R.id.okay);
+            TextView text = customLayout.findViewById(R.id.text_info);
+
+            text.setText("Настрой соревновательный режим. После настройки нажми кнопку - Продолжить.\n\nКак только друг примет приглашение, игра запустится по указанным настройкам.\n\nЧтобы друг принял игру, ему необходимо зайти к вам в профиль и нажать - Начать/продолжить игру с другом.");
+
+            out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setView(customLayout);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            MainActivity.myDBManager.update_TRAINING(1, 9);
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting_game, container, false);
         apiInterface = ServiceBuilder.buildRequest().create(ApiInterface.class);
         args = SettingGameFragmentArgs.fromBundle(getArguments());

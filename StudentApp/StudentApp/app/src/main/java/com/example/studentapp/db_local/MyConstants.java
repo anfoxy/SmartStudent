@@ -6,7 +6,7 @@ import com.example.studentapp.db.Subjects;
 
 public class MyConstants {
     // При изменении в бд +1
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 11;
 
     // Название бд
     public static final String DB_NAME = "smart_student";
@@ -15,6 +15,20 @@ public class MyConstants {
     public static final String TABLE_PLAN = "table_plan";
     public static final String TABLE_QUESTION = "table_question";
     public static final String TABLE_SUBJECT = "table_subject";
+
+    public static final String TABLE_TRAINING = "table_training";
+
+    // Название колонн для таблицы TABLE_TRAINING
+    public static final String KEY_CALENDAR = "tr_calendar";
+    public static final String KEY_LIST_SUB = "tr_list_sub";
+    public static final String KEY_ADD_SUB = "tr_add_sub";
+    public static final String KEY_MENU = "tr_menu";
+    public static final String KEY_PROFILE = "tr_profile";
+    public static final String KEY_FRIENDS = "tr_friends";
+    public static final String KEY_PROFILE_FRIEND = "tr_profile_friends";
+    public static final String KEY_GIVE_SUB = "tr_give_sub";
+    public static final String KEY_BEGIN_GAME = "tr_begin_game";
+
 
     // Название колонн для таблицы TABLE_PLAN
     public static final String KEY_ID_PLAN = "plan_id";
@@ -49,7 +63,14 @@ public class MyConstants {
             + " (" + KEY_ID_SUBJECT + " INTEGER PRIMARY KEY," + KEY_SUBJECT_NAME + " TEXT," + KEY_SUBJECT_DATE + " TEXT,"
             + KEY_TODAY_LEARNED + " INTEGER," + KEY_USER_ID + " INTEGER" + ")";
 
+    public static final String CREATE_TABLE_TRAINING = "CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING
+            + " (" + KEY_CALENDAR + " INTEGER," + KEY_LIST_SUB + " INTEGER," + KEY_ADD_SUB
+            + " INTEGER," + KEY_MENU + " INTEGER," + KEY_PROFILE + " INTEGER," + KEY_FRIENDS
+            + " INTEGER," + KEY_PROFILE_FRIEND + " INTEGER," + KEY_GIVE_SUB + " INTEGER,"
+            + KEY_BEGIN_GAME + " INTEGER" + ")";
+
     public static final String DROP_TABLE_PLAN = "DROP TABLE IF EXISTS " + TABLE_PLAN;
     public static final String DROP_TABLE_QUESTION = "DROP TABLE IF EXISTS " + TABLE_QUESTION;
     public static final String DROP_TABLE_SUBJECT = "DROP TABLE IF EXISTS " + TABLE_SUBJECT;
+    public static final String DROP_TABLE_TRAINING = "DROP TABLE IF EXISTS " + TABLE_TRAINING;
 }

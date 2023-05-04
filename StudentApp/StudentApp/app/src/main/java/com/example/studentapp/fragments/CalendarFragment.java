@@ -1,5 +1,6 @@
 package com.example.studentapp.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -9,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,6 +56,7 @@ public class CalendarFragment extends Fragment {
     ApiInterface apiInterface;
     LocalDate localDate;
     SubjectPlanAdapter.OnItemClick itemClick;
+    int flag = 0;
     final Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -177,6 +181,44 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if(MainActivity.myDBManager.tr_From_DB_Calendar()==0) {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getContext());
+
+            final View customLayout
+                    = getLayoutInflater()
+                    .inflate(
+                            R.layout.dialog_info,
+                            null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog
+                    = builder.create();
+            Button out = customLayout.findViewById(R.id.okay);
+            TextView text = customLayout.findViewById(R.id.text_info);
+
+            text.setText("Добро пожаловать в Smart Student! Тут ты сможешь смотреть план и проходить обучение. Все просто- под календарем расположены блоки, которые нужно выполнить за день. Нажатием на них ты перейдешь в режим обучения.");
+
+            out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Переход на второй слайд обучения
+                    if (flag == 0) {
+                        flag = 1;
+                        text.setText("Для того, чтобы начать обучение - перейди в 'Список предметов' и создай свой первый предмет");
+                        // иначе для этого экрана диалоговое окно больше не откроется
+                    } else dialog.dismiss();
+                }
+            });
+            dialog.setView(customLayout);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+
+            dialog.show();
+            MainActivity.myDBManager.update_TRAINING(1, 1);
+        }
+
 
         binding = DataBindingUtil.inflate(inflater , R.layout.fragment_calendar, container, false);
         Paper.init(getContext());
