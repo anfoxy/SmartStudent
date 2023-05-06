@@ -6,7 +6,7 @@ import com.example.studentapp.db.Subjects;
 
 public class MyConstants {
     // При изменении в бд +1
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
 
     // Название бд
     public static final String DB_NAME = "smart_student";
@@ -28,6 +28,7 @@ public class MyConstants {
     public static final String KEY_PROFILE_FRIEND = "tr_profile_friends";
     public static final String KEY_GIVE_SUB = "tr_give_sub";
     public static final String KEY_BEGIN_GAME = "tr_begin_game";
+    public static final String KEY_STATISTIC = "tr_statistic";
 
 
     // Название колонн для таблицы TABLE_PLAN
@@ -65,7 +66,7 @@ public class MyConstants {
 
     public static final String CREATE_TABLE_TRAINING = "CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING
             + " (" + KEY_CALENDAR + " INTEGER," + KEY_LIST_SUB + " INTEGER," + KEY_ADD_SUB
-            + " INTEGER," + KEY_MENU + " INTEGER," + KEY_PROFILE + " INTEGER," + KEY_FRIENDS
+            + " INTEGER," + KEY_STATISTIC + " INTEGER," + KEY_MENU + " INTEGER," + KEY_PROFILE + " INTEGER," + KEY_FRIENDS
             + " INTEGER," + KEY_PROFILE_FRIEND + " INTEGER," + KEY_GIVE_SUB + " INTEGER,"
             + KEY_BEGIN_GAME + " INTEGER" + ")";
 

@@ -119,6 +119,9 @@ public class MyDBManager {
             case 9:
                 cv.put(MyConstants.KEY_BEGIN_GAME, tr);
                 break;
+            case 10:
+                cv.put(MyConstants.KEY_STATISTIC, tr);
+                break;
         }
         if(flag!=1) {
             db.update(MyConstants.TABLE_TRAINING, cv, null, null);
@@ -423,6 +426,17 @@ public class MyDBManager {
 
     public int tr_From_DB_List_Sub() {
         String query_tr = "SELECT " + MyConstants.KEY_LIST_SUB + " FROM " + MyConstants.TABLE_TRAINING;
+        Cursor cursor = db.rawQuery(query_tr, null);
+        int k = 0;
+        if (cursor.moveToFirst()) {
+            k = cursor.getInt(0);
+        }
+        cursor.close();
+        return k;
+    }
+
+    public int tr_From_DB_Statistic() {
+        String query_tr = "SELECT " + MyConstants.KEY_STATISTIC + " FROM " + MyConstants.TABLE_TRAINING;
         Cursor cursor = db.rawQuery(query_tr, null);
         int k = 0;
         if (cursor.moveToFirst()) {
