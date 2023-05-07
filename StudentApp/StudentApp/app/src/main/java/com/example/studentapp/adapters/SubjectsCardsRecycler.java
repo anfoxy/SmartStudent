@@ -119,11 +119,11 @@ public class SubjectsCardsRecycler extends RecyclerView.Adapter<SubjectsCardsRec
             );
 
             if (position == 0) {
-                holder.itemView.setPadding(110, 20, 2, 20); // Применение отступов
+                holder.itemView.setPadding(100, 20, 2, 20); // Применение отступов
             }
             // Последний элемент
             else if (position == questions.size() - 1) {
-                holder.itemView.setPadding(2, 20, 110, 20); // Применение отступов
+                holder.itemView.setPadding(2, 20, 100, 20); // Применение отступов
             } else {
                 holder.itemView.setPadding(2, 20, 2, 20); // Применение отступов
             }

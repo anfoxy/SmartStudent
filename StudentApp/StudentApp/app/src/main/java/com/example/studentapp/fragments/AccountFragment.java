@@ -92,7 +92,6 @@ public class AccountFragment extends Fragment {
                 binding.password.setVisibility(View.GONE);
                 binding.layProfile.setVisibility(View.GONE);
                 // тут условия достижений
-                // ...
 
                 // если 5 выученных вопросов и более то:
                 if (subjs.stream()
@@ -113,7 +112,6 @@ public class AccountFragment extends Fragment {
                         if (response.body() != null && !response.body().isEmpty()) {
                             binding.profFriendNo.setVisibility(View.GONE);
                             binding.profFriendYes.setVisibility(View.VISIBLE);
-//                            user.trueAch(2);
                         }
                     }
 
@@ -125,18 +123,14 @@ public class AccountFragment extends Fragment {
 
 
                 // если один и более выученных предметов то:
-                if (subjs.stream().anyMatch(item -> item.getSub().getSizeKnow() == item.getSub().getSizeNoKnow())) {
+                if (subjs.stream().anyMatch(item -> item.getSub().getSizeNoKnow() == 0)) {
                     binding.profSubNo.setVisibility(View.GONE);
                     binding.profSubYes.setVisibility(View.VISIBLE);
-//                    user.trueAch(3);
                 }
-//
 
-                // если один и более прошло за всё время экзаменов(наступил день экзамена) то:
-                if (subjs.stream().anyMatch(item -> item.getDateOfExams().isBefore(LocalDate.now()))) {
+                if (subjs.stream().anyMatch(item -> item.getDateOfExams().isBefore(LocalDate.now().plusDays(1)))) {
                     binding.profExNo.setVisibility(View.GONE);
                     binding.profExYes.setVisibility(View.VISIBLE);
-//                    user.trueAch(4);
                 }
                 // соревновательный режим
                 binding.profFirstGameNo.setVisibility(View.GONE);
