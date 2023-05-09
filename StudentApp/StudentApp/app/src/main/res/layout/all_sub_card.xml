@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/lau"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#F1F1F1"
+        android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="320dp"
+        android:layout_height="220dp"
+        android:layout_marginVertical="10dp"
+        app:cardCornerRadius="7dp"
+        android:layout_gravity="center"
+        app:cardElevation="100dp"
+        android:layout_marginHorizontal="10dp">
+
+        <ImageButton
+            android:id="@+id/expand_btn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#fff"
+            android:visibility="gone"
+            app:srcCompat="@drawable/expand" />
+
+        <TextView
+            android:id="@+id/text_question"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:gravity="center"
+            android:maxLines="11"
+            android:padding="15dp"
+            android:text="Текст с вопросом"
+            android:textSize="20sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/text_answer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/sourcesanspro_semibold"
+            android:gravity="center"
+            android:padding="20dp"
+            android:ellipsize="end"
+            android:maxLines="11"
+            android:layout_gravity="center"
+            android:text="Текст с ответом"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>
+</layout>

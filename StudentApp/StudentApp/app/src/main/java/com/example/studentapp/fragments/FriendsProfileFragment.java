@@ -5,7 +5,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
-import com.example.studentapp.adapters.FriendsAdapter;
-import com.example.studentapp.adapters.FriendsInAdapter;
 import com.example.studentapp.adapters.FriendsInSubjectsAdapter;
-import com.example.studentapp.adapters.FriendsIsAdapter;
 import com.example.studentapp.adapters.FriendsIsSubjectsAdapter;
-import com.example.studentapp.adapters.SubjectAddRecycler;
 import com.example.studentapp.al.PlanToSub;
 
 import com.example.studentapp.databinding.FragmentProfileFriendsBinding;
@@ -35,7 +30,6 @@ import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Friends;
 import com.example.studentapp.db.FriendsSubjects;
 import com.example.studentapp.db.Game;
-import com.example.studentapp.db.Plan;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Subjects;
 import com.example.studentapp.db.Users;

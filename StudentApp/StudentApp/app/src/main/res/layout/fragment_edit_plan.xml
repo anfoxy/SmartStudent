@@ -42,6 +42,7 @@
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:gravity="center"
+                    android:maxLength="25"
                     android:paddingRight="10dp"
                     android:textColor="@color/textcolor"
                     android:textCursorDrawable="@null" />
