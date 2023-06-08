@@ -108,7 +108,7 @@ public class EditPlanFragment extends Fragment {
                         Imgproc.cvtColor(imgMat, grayMat, Imgproc.COLOR_BGR2GRAY);
 
 //                        // Удаление шума изображения с помощью медианного фильтра
-//                        Imgproc.medianBlur(grayMat, grayMat, 3);
+                        Imgproc.medianBlur(grayMat, grayMat, 3);
 
                         // Улучшение четкости изображения с помощью фильтра "unsharp masking"
                         Mat blurred = new Mat();
