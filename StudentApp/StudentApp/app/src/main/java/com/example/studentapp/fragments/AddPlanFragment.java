@@ -86,7 +86,6 @@ public class AddPlanFragment extends Fragment {
 
             @Override
             public void onClickQuestion(Question ques, int position) {
-                Toast.makeText(getActivity(), "Что-то нажали", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder
                         = new AlertDialog.Builder(getContext());
 
@@ -155,9 +154,12 @@ public class AddPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
+                LocalDate minDay =  LocalDate.now().plusDays(1);
+
+
                 minDate.set(Calendar.YEAR, LocalDate.now().getYear());
                 minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue() - 1);
-                minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
+                minDate.set(Calendar.DAY_OF_MONTH, minDay.getDayOfMonth());
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
                 datePickerDialog.show();

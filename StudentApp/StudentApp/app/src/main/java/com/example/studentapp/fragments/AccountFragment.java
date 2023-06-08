@@ -133,17 +133,17 @@ public class AccountFragment extends Fragment {
                     binding.profExYes.setVisibility(View.VISIBLE);
                 }
                 // соревновательный режим
-                binding.profFirstGameNo.setVisibility(View.GONE);
-                binding.profFirstGameYes.setVisibility(View.VISIBLE);
+                binding.profFirstGameNo.setVisibility(View.VISIBLE);
+                binding.profFirstGameYes.setVisibility(View.GONE);
 
-                binding.profGameWowNo.setVisibility(View.GONE);
-                binding.profGameWowYes.setVisibility(View.VISIBLE);
+                binding.profGameWowNo.setVisibility(View.VISIBLE);
+                binding.profGameWowYes.setVisibility(View.GONE);
 
-                binding.profQueAllGameNo.setVisibility(View.GONE);
-                binding.profQueAllGameYes.setVisibility(View.VISIBLE);
+                binding.profQueAllGameNo.setVisibility(View.VISIBLE);
+                binding.profQueAllGameYes.setVisibility(View.GONE);
 
-                binding.profGameCompletedNo.setVisibility(View.GONE);
-                binding.profGameCompletedYes.setVisibility(View.VISIBLE);
+                binding.profGameCompletedNo.setVisibility(View.VISIBLE);
+                binding.profGameCompletedYes.setVisibility(View.GONE);
 
                 binding.cardDostiz.setVisibility(View.VISIBLE);
                 binding.cardSorev.setVisibility(View.VISIBLE);

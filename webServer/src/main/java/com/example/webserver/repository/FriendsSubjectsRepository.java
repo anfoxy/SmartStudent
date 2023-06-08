@@ -14,5 +14,7 @@ public interface FriendsSubjectsRepository extends JpaRepository<FriendsSubjects
     ArrayList<FriendsSubjects> findAllByUserIdOrFriendId(User userId1, User userId2);
 
     void deleteAllBySubId(Subject subject);
+
+    void deleteAllByFriendId(Friends friends);
     ArrayList<FriendsSubjects> findAllBySubId(Subject subject);
 }

@@ -168,9 +168,10 @@ public class EditPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
+                LocalDate minDay =  LocalDate.now().plusDays(1);
                 minDate.set(Calendar.YEAR, LocalDate.now().getYear());
                 minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue() - 1);
-                minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
+                minDate.set(Calendar.DAY_OF_MONTH, minDay.getDayOfMonth());
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date,
                         myCalendar.get(Calendar.YEAR),
                         myCalendar.get(Calendar.MONTH),

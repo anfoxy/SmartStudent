@@ -2,10 +2,11 @@ package com.example.webserver.service;
 
 import com.example.webserver.exception.ResourceNotFoundException;
 import com.example.webserver.mapper.CustomerMapper;
-import com.example.webserver.model.Friends;
-import com.example.webserver.model.Plan;
-import com.example.webserver.model.User;
+import com.example.webserver.model.*;
 import com.example.webserver.repository.FriendsRepository;
+import com.example.webserver.repository.FriendsSubjectsRepository;
+import com.example.webserver.repository.GameHistoryRepository;
+import com.example.webserver.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,39 @@ public class FriendService {
     CustomerMapper mapper;
     @Autowired
     UserService userService;
+    @Autowired
+    FriendsSubjectsRepository friendsSubjectsRepository;
+    @Autowired
+    GameRepository gameRepository;
+    @Autowired
+    GameSubjectsService gameSubjectsService;
+    @Autowired
+    private GameHistoryRepository gameHistoryRepository;
 
-
-    public String deleteFriends(Friends friends){
+    public String deleteFriends(Friends friends) throws ResourceNotFoundException {
         if(friends.getFriendId() != null && friends.getUserId() != null){
-            Friends friends1 = friendsRepository.findByUserIdAndFriendId(friends.getUserId(),friends.getFriendId());
+            User friendId = userService.findById(friends.getUserId().getId());
+            User userId = userService.findById(friends.getFriendId().getId());
+            Friends friends1 = friendsRepository.findByUserIdAndFriendId(userId,friendId);
+            System.out.println(friends1);
+            friendsSubjectsRepository.deleteAllByFriendId(friends1);
+            deleteGame(friends1);
             friendsRepository.delete(friends1);
-            Friends friends2 = friendsRepository.findByUserIdAndFriendId(friends.getFriendId(),friends.getUserId());
+            Friends friends2 = friendsRepository.findByUserIdAndFriendId(friendId,userId);
+            deleteGame(friends2);
+            friendsSubjectsRepository.deleteAllByFriendId(friends2);
             friendsRepository.delete(friends2);
             return "ok";
         } else
             return "no";
+    }
+    private void deleteGame(Friends friends){
+        ArrayList<Game> gameList = gameRepository.findAllByFriendId(friends);
+        for (Game game: gameList) {
+            gameSubjectsService.deleteAllByGameId(game);
+            gameHistoryRepository.deleteAllByGameId(game);
+            gameRepository.delete(game);
+        }
     }
 
     public void acceptFriends(Friends friends){
@@ -123,7 +146,10 @@ public class FriendService {
 
     public void delete(Long id) throws ResourceNotFoundException {
         Friends friends = findById(id);
-        friendsRepository.delete(friends);
+        if(friends!= null){
+            friendsRepository.delete(friends);
+        }
+
     }
    /* public void deleteAll(User user) throws ResourceNotFoundException {
         friendsRepository.deleteAll(friendsRepository.findAllByUserIdOrFriendId(user, user));
