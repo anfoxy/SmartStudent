@@ -42,6 +42,15 @@ import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Users;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -74,6 +83,60 @@ public class AddPlanFragment extends Fragment {
     TessBaseAPI tessBaseAPI;
     EditText tvAnswer;
 
+    private Bitmap selectedImage;
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(getActivity()) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i("OpenCV", "OpenCV loaded successfully");
+                    if(selectedImage!=null){
+                        Mat imgMat = new Mat();
+                        Utils.bitmapToMat(selectedImage, imgMat);
+
+                        // Преобразование в серое изображение
+                        Mat grayMat = new Mat();
+                        Imgproc.cvtColor(imgMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+
+                        // Удаление шума изображения с помощью медианного фильтра
+                        Imgproc.medianBlur(grayMat, grayMat, 3);
+
+                        // Улучшение четкости изображения с помощью фильтра "unsharp masking"
+                        Mat blurred = new Mat();
+                        Imgproc.GaussianBlur(grayMat, blurred, new Size(0, 0), 3);
+                        Mat sharpened = new Mat();
+                        Core.addWeighted(grayMat, 1.5, blurred, -0.5, 0, sharpened);
+
+                        // Применение бинаризации изображения
+                        Mat binaryMat = new Mat();
+                        Imgproc.threshold(sharpened, binaryMat, 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
+
+                        // Копирование изображения из Mat в Bitmap
+                        selectedImage = Bitmap.createBitmap(selectedImage.getWidth(), selectedImage.getHeight(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(binaryMat, selectedImage);
+                    }
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
+
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d("OpenCV", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, getActivity(), mLoaderCallback);
+        } else {
+            Log.d("OpenCV", "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -86,7 +149,6 @@ public class AddPlanFragment extends Fragment {
 
             @Override
             public void onClickQuestion(Question ques, int position) {
-                Toast.makeText(getActivity(), "Что-то нажали", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder
                         = new AlertDialog.Builder(getContext());
 
@@ -155,9 +217,12 @@ public class AddPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Calendar minDate = Calendar.getInstance();
+                LocalDate minDay =  LocalDate.now().plusDays(1);
+
+
                 minDate.set(Calendar.YEAR, LocalDate.now().getYear());
                 minDate.set(Calendar.MONTH, LocalDate.now().getMonth().getValue() - 1);
-                minDate.set(Calendar.DAY_OF_MONTH, LocalDate.now().getDayOfMonth());
+                minDate.set(Calendar.DAY_OF_MONTH, minDay.getDayOfMonth());
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
                 datePickerDialog.show();
@@ -248,7 +313,17 @@ public class AddPlanFragment extends Fragment {
         EditText tvQ = customLayout.findViewById(R.id.tv_question);
         Button addBtn = customLayout.findViewById(R.id.add_question);
         ImageButton addBtnCam = customLayout.findViewById(R.id.camera_btn);
+
         AppCompatButton clsBtn = customLayout.findViewById(R.id.cancel_window);
+        ImageButton foto;
+        foto= customLayout.findViewById(R.id.camera_btn);
+        foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_GALLERY);
+            }
+        });
 
         addBtnCam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -333,39 +408,11 @@ public class AddPlanFragment extends Fragment {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                tessBaseAPI = new TessBaseAPI();
-                String datapath = getContext().getFilesDir() + "/tesseract/";
-                File dir = new File(datapath + "tessdata/");
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                String lang = "rus";
-                String lang1 = "eng";
-                File file = new File(datapath + "tessdata/" + lang + lang1 + ".traineddata");
-                if (!file.exists()) {
-                    try {
-                        InputStream in = getContext().getAssets().open("tessdata/" + lang + ".traineddata");
-                        OutputStream out = new FileOutputStream(file);
-                        byte[] buffer = new byte[1024];
-                        int read;
-                        while ((read = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, read);
-                        }
-                        in.close();
-                        out.flush();
-                        out.close();
-                    } catch (Exception e) {
-                        Log.e("Error", e.getMessage());
-                    }
-                }
-                tessBaseAPI.init(datapath, lang+lang1);
-
-                tessBaseAPI.setImage(selectedImage);
-                String text = tessBaseAPI.getUTF8Text();
-                tvAnswer.setText(text);
-                tessBaseAPI.end();
-                Log.d(TAG, "Text recognition success: " + text);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                TextView textView = tvAnswer;
+                com.example.myapplication2.TesseractOCR tesseractOCR = new com.example.myapplication2.TesseractOCR(getActivity(), textView);
+                tesseractOCR.execute(selectedImage);
+                Log.d(TAG, "Text recognition success ");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

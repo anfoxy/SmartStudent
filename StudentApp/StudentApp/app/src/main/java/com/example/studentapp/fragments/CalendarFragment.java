@@ -125,7 +125,7 @@ public class CalendarFragment extends Fragment {
         update.enqueue(new Callback<ArrayList<Subjects>>() {
             @Override
             public void onResponse(Call<ArrayList<Subjects>> call, Response<ArrayList<Subjects>> response) {
-                Toast.makeText(getContext(), "Есть подключение к серверу", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Есть подключение к серверу", Toast.LENGTH_SHORT).show();
                 if(response.body() != null) {
                     MainActivity.myDBManager.deleteAllSub();
                     for (PlanToSub pl: MainActivity.getAllPlanToSub(response.body())) {

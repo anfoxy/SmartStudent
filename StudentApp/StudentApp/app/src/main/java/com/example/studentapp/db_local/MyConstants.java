@@ -2,7 +2,7 @@ package com.example.studentapp.db_local;
 
 public class MyConstants {
     // При изменении в бд +1
-    public static final int DATABASE_VERSION = 16;
+    public static final int DATABASE_VERSION = 18;
 
     // Название бд
     public static final String DB_NAME = "smart_student";

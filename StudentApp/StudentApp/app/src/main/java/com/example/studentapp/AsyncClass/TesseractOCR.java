@@ -51,19 +51,15 @@ public class TesseractOCR extends AsyncTask<Bitmap, Void, String> {
                     in.close();
                     out.flush();
                     out.close();
-                    textView.setText("Загрузка..");
                 } catch (Exception e) {
-                    textView.setText(lastText);
                     Log.e("Error", e.getMessage());
                 }
             }
             tessBaseAPI.init(datapath, lang+lang1);
             tessBaseAPI.setImage(bitmaps[0]);
-            textView.setText("Загрузка...");
             result = tessBaseAPI.getUTF8Text();
             tessBaseAPI.end();
         } catch (Exception e) {
-            textView.setText(lastText);
             e.printStackTrace();
         }
         return result;
