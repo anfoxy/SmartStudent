@@ -1,9 +1,5 @@
 package com.example.studentapp.db_local;
 
-import com.example.studentapp.db.Plan;
-import com.example.studentapp.db.Questions;
-import com.example.studentapp.db.Subjects;
-
 public class MyConstants {
     // При изменении в бд +1
     public static final int DATABASE_VERSION = 16;
