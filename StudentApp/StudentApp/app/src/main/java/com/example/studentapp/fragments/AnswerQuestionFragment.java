@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
-import android.graphics.fonts.SystemFonts;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -16,19 +15,13 @@ import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.fragment.app.Fragment;
-
 import com.example.studentapp.MainActivity;
 import com.example.studentapp.R;
 import com.example.studentapp.al.PlanToSub;
@@ -36,32 +29,26 @@ import com.example.studentapp.al.Question;
 import com.example.studentapp.al.Study;
 import com.example.studentapp.databinding.FragmentAnswerQuestionBinding;
 import com.example.studentapp.db.ApiInterface;
-import com.example.studentapp.db.Questions;
 import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Users;
-
 import java.io.IOException;
 import java.text.BreakIterator;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Locale;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import io.paperdb.Paper;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-
 public class AnswerQuestionFragment extends Fragment {
 
     FragmentAnswerQuestionBinding binding;
     ApiInterface apiInterface;
     AnswerQuestionFragmentArgs args;
-    //ArrayList<Questions> questions;
     int number = 1;
     private Spannable spannable;
     private int selectedCount = 0;
@@ -350,7 +337,7 @@ public class AnswerQuestionFragment extends Fragment {
 
         Request request = new Request.Builder()
                 .url("https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize")
-                .header("Authorization", "API-key AQVNwoX88VhKO5IYmYMvl4IsgdDq3MmnrVSp56gW")
+                .header("Authorization", "API-key AQVN1rVBvaVf2jdxdbldi3FMBQrulX_WmNlDKMl6")
                 .post(formBody)
                 .build();
         okhttp3.Call call = client.newCall(request);

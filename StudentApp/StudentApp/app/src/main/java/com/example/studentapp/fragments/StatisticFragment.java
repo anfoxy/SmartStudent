@@ -52,11 +52,6 @@ public class StatisticFragment extends Fragment {
     StatisticFragmentArgs args;
     PlanToSub planToSub;
 
-    CardView cardView;
-    TextView textQuestion;
-    TextView textAnswer;
-    ScrollView scrollText2;
-
     private Spannable spannable;
     private int selectedCount = 0;
     private int totalCount = 0;
