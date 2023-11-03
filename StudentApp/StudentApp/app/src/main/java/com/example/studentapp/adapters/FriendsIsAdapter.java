@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentapp.R;
 import com.example.studentapp.db.ApiInterface;
 import com.example.studentapp.db.Friends;
-import com.example.studentapp.db.ServiceBuilder;
 import com.example.studentapp.db.Users;
 
 import java.util.ArrayList;
